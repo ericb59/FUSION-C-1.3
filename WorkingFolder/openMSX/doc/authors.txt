@@ -1,0 +1,76 @@
+Prime Developers:
+David Heremans       <david.heremans@gnu-linux.net>
+Wouter Vermaelen     <vermaelen.wouter@gmail.com>
+Maarten ter Huurne   <maarten@treewalker.org>
+Manuel Bilderbeek    <manuel@msxnet.org>
+Arnold Metselaar     <arnold_m@operamail.com>
+Patrick van Arkel    <vampiermsx@gmail.com>
+Max Feingold
+Sean Young           <sean@msxnet.org>
+Alex Wulms
+Albert Beevendorp    <bifimsx@users.sourceforge.net>
+
+An actual overview of contributors can be found here:
+http://www.ohloh.net/p/openmsx/contributors
+
+Retired Developers:
+Eric Boon            <eric@auroramsx.nl>
+Joost Yervante Damad <joost@damad.be>
+Herman Oudejans      <hn.oudejans@quicknet.nl>
+Reikan               <openMSX4Win32@ranpub.com>
+
+And before altering (or completely rewriting) we
+used code from the following contributors:
+
+TMS9918A:
+    Sean Young <sean@msxnet.org>
+VDP command engine:
+    Alex Wulms <awulms@inter.nl.net>
+z80:
+    Marcel de Kogel
+SDL_Console:
+    Garrett Banuk <mongoose@mongeese.org>
+AY8910:
+    Mostly taken from xmame-0.37b16.1.
+        Based on various code snippets by Ville Hallik,
+        Michael Cuddy, Tatsuyuki Satoh, Fabrice Frances,
+        Nicola Salmoria
+Y8950 and YM2413 emulator:
+    written by Mitsutaka Okazaki
+other YM2413 emulator:
+    written by Jarek Burczynski
+TC8566AF disk controller:
+    Based on code from NLMSX written by Frits Hilderink
+SDL surface scaling:
+    Taken from the rotozoomer written by A. Schiffler
+    http://www.ferzkopp.net/Software/SDL_gfx-2.0
+YMF262:
+    code taken from MAME, written by Jarek Burczynski
+YMF278:
+    code taken from MAME, written by R. Belmont and O. Galibert
+cas to wav conversion:
+    based on "cas2wav" by Vincent van Dam
+
+With many thanks to:
+Alex Wulms           <awulms@inter.nl.net>
+Marcel Harkema       <marcel@qahwah.net>
+Jon De Schrijder     <jon@msx.ch>
+atarulum             <atarulum@yahoo.co.jp>
+Patriek Lesparre     <patriekl@dds.nl>
+Manuel Pazos         <mpazos@mundivia.es>
+Tetsuo Honda         <t-honda@hondarer-soft.com>
+Albert Beevendorp    <bifi@msxnet.org>
+Jorrith Schaap       <jorrith@home.nl>
+Jan Lukens           <j.lukens@xs4all.nl>
+Daniel Vik           <daniel@vik.cc>
+SukkoPera
+Maarten van Strien
+Laurens Holst        <laurens.hg@grauw.nl>
+Filip H.F. Slagter
+
+And a special "thank you" goes to
+???????????          <sklaitin@mappi.helsinki.fi>
+for providing an original 'Way of the Tiger', a tape based
+game with its own data encoding, to test our tape emulation.
+
+... this list is not complete!! ... [please add]

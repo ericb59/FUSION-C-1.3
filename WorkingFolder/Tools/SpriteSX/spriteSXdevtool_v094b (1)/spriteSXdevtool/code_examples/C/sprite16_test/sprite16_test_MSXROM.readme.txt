@@ -1,0 +1,88 @@
+TEST SpriteSX 16x16 monochrome· MSX ROM
+v1.0 (27 February 2014) 
+Project WEB: https://code.google.com/p/spritesx-ed/
+
+
+--------------------------------------------------------------------------------
+Index:
+
+ 1. Introduction
+ 2. Acknowledgments
+ 3. File list
+ 4. Requirements
+
+   
+   
+--------------------------------------------------------------------------------
+1. Introduction:
+
+   This application tests 16x16 monochrome sprites from TMS9918 VDP.
+   
+   The purpose of this software is the test data output from SpriteSX and 
+   learning.
+
+   This software is in 16k ROM format for MSX computers.
+
+   Programmed in SDCC C and Assembler.
+ 
+
+                    
+--------------------------------------------------------------------------------
+2. Acknowledgments
+
+   Nerlaska > http://albertodehoyonebot.blogspot.com.es
+   Avelino Herrera > http://msx.atlantes.org/index_es.html
+   Marq/Lieves!Tuore > http://www.kameli.net/lt/
+   Sapphire/Z80ST > http://z80st.auic.es/
+   Pentacour > http://pentacour.com/
+   JamQue/TPM > http://www.thepetsmode.com/
+   Andrear > http://andrear.altervista.org/home/msxsoftware.php
+   MSX Assembly Page > http://map.grauw.nl/resources/msxbios.php
+   Portar MSX Tech Doc  > http://nocash.emubase.de/portar.htm
+   MSX Resource Center  > http://www.msx.org/
+   Karoshi MSX Community > http://karoshi.auic.es/
+   BlueMSX >> http://www.bluemsx.com/
+   OpenMSX >> http://openmsx.sourceforge.net/   
+
+
+
+--------------------------------------------------------------------------------
+3. File list
+
+  \MAKEFILE.BAT                   <-- Script for compile object (WinOS)
+  \build\                         <-- folder for compilation output
+  \dist\SPRITE16.ROM              <-- final file (ROM)                       <<< 
+  \include\newTypes.h             <-- header need for compile object
+  \include\VDP_TMS9918.h          <-- header from TMS9918 lib
+  \include\VDP_SPRITE.h           <-- header from TMS9918 Sprites Lib.
+  \libs\crt0msx.16k.4000.rel      <-- CRT for MSX 16k ROM
+  \libs\VDP_TMS9918_MSXBIOS.rel   <-- object from TMS9918 Lib.
+  \libs\VDP_SPRITE_MSXBIOS.rel    <-- object from TMS9918 Sprites Lib.  
+  \src\sprite16_test.c            <-- source
+
+ 
+ 
+--------------------------------------------------------------------------------
+4. Requirements
+
+   To compile this application, you'll need this:
+    
+   * Small Device C Compiler (SDCC) v2.9.7 or higher
+     http://sdcc.sourceforge.net/
+
+   * Hex2bin v1.0.10 or higher
+     http://hex2bin.sourceforge.net/
+
+   * FillFile.exe by Nerlaska (in Windows OS)
+     http://www.nerlaska.com/msx/fillfille.rar
+ 
+   * CRT for create a MSX 16k ROM aplication.
+     crt0msx.16k.4000.rel (included)
+   
+   * VDP_TMS9918 Libs for SDCC (included)
+     https://code.google.com/p/vdp-tms9918-sdcc-functionslib/
+   
+
+   
+
+--------------------------------------------------------------------------------

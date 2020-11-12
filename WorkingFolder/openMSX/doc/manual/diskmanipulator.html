@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link title="Purple" rel="stylesheet" href="manual-purple.css"
+  type="text/css">
+  <link title="Minty" rel="alternate stylesheet" href=
+  "manual-minty.css" type="text/css">
+  <link title="Plain" rel="alternate stylesheet" href="manual.css"
+  type="text/css">
+  <title>Using Diskmanipulator</title>
+</head>
+
+<body>
+  <h1>Using Diskmanipulator</h1>
+
+  <p>The <code>diskmanipulator</code> command is probably the most exuberant console command available
+  in openMSX. It implements the basic stuff needed to handle files
+  and subdirectories on MSX media. It also helps one creating new disk
+  image files, both simple 360 kB and 720 kB disks as well as
+  hard disk images containing up to 30 partitions of 32 MB each (only for Sunrise IDE!).
+  Creating disk images and manipulating the files on them can be
+  done without the need of a running emulated MSX (<code>set power
+  off</code>).</p>
+
+  <p>First we will see the generic syntax of the command, then
+  the individual commands are explained in more depth. At the end
+  of this document you will find some <a class="internal" href="#examples">examples of typical use</a>.</p>
+
+  <div class="note">
+    Note: For now, this command does not work with SCSI/SD disks and drives!
+    So, you cannot create valid formatted SCSI hard disk images, SD card images
+    or manipulate files on hard disks formatted for use with a SCSI interface
+    or SD cards for an SD interface.
+  </div>
+
+  <h2>General Syntax</h2>
+
+  <p>The general command syntax is always of the form:</p>
+
+  <p><code>diskmanipulator &lt;command&gt; &lt;disk name&gt;
+  &lt;command arguments&gt;</code></p>
+
+  <p><code>&lt;command&gt;</code> specifies the action to be performed. The next section lists the commands available and explains them.</p>
+
+  <p><code>&lt;disk name&gt;</code> specifies the disk to operate on. Typical values are: <code><a class="external" href="commands.html#disk">diska</a></code>, <code>diskb</code>, <code><a class="external" href="commands.html#hd">hda</a></code> or the special <code><a class="external" href="commands.html#disk">virtual_drive</a></code> device. <code>disk&lt;x&gt;</code> and <code>hd&lt;x&gt;</code> are the drives available to the running emulated MSX machine. This allows interaction with the currently used disk images.<br />
+  In case the disk contains a Sunrise IDE (or Beer IDE 1.9RC1) compatible partition table (FAT12 only!) you can add a partition number (from 1 till 31) to the disk name to specify on which partition the command will act. For example <code>hda2</code> is the second partition on the master IDE disk, <code>hdb3</code> is the third partition on the slave IDE disk.</p>
+
+  <p><code>&lt;command arguments&gt;</code> depend upon the command involved, see the detailed descriptions of the commands below.</p>
+
+  <p>The diskmanipulator and all its commands (including most parameters) can be tab completed in the console.</p>
+
+  <h2>Commands</h2>
+
+  <p>These are the commands understood by the diskmanipulator:</p>
+
+  <ol class="inlinetoc">
+    <li><a class="internal" href="#chdir">chdir</a></li>
+
+    <li><a class="internal" href="#create">create</a></li>
+
+    <li><a class="internal" href="#dir">dir</a></li>
+
+    <li><a class="internal" href="#export">export</a></li>
+
+    <li><a class="internal" href="#format">format</a></li>
+
+    <li><a class="internal" href="#import">import</a></li>
+
+    <li><a class="internal" href="#mkdir">mkdir</a></li>
+
+    <li><a class="internal" href="#savedsk">savedsk</a></li>
+  </ol>
+
+  <h3><a id="chdir">chdir</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator chdir &lt;disk name&gt; &lt;MSX
+  directory&gt;</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>This command selects the directory on the MSX disk image
+  that will be used for the <code><a class="internal" href="#export">export</a></code> and <code><a class="internal" href="#import">import</a></code> commands.</p>
+
+  <div class="note">
+    Note: The directory structure on the MSX disk image cannot be tab
+    completed.
+  </div>
+
+  <h3><a id="create">create</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator create &lt;dskfilename&gt;
+  &lt;size|option&gt; &lt;size|option&gt; ...</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>You can create new disk images using this command.</p>
+
+  <p>This new disk will be formatted using an MSX-DOS2 boot
+  sector, unless you specify the option <code>-dos1</code>.</p>
+
+  <p>You can specify multiple sizes in which case a Sunrise IDE compatible
+  partitioned image will be created (FAT12 only!), each partition will be
+  formatted as required. If a size of 360 kB or 720 kB is given, a normal
+  floppy disk image is created single or double sided, respectively. Any larger
+  value will result in a Sunrise IDE hard disk image.</p>
+
+  <p>You can specify the disk/partition sizes by using the
+  following postfixes:</p>
+
+  <ul>
+    <li>S or s -&gt; size in sectors</li>
+
+    <li>B or b -&gt; size in bytes</li>
+
+    <li>K or k -&gt; size in kilobytes (default)</li>
+
+    <li>M or m -&gt; size in megabytes</li>
+  </ul>
+
+  <h3><a id="dir">dir</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator dir &lt;disk name&gt;</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>This will show the directory content of the current working
+  directory. The output is formatted similarly to the MSX Disk BASIC 2.x command <code>files,l</code>.</p>
+
+  <h3><a id="export">export</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator export &lt;disk name&gt; &lt;host
+  directory&gt;</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>This will export the files and subdirectories from the disk
+  inserted in <code>&lt;disk name&gt;</code> to the <code>&lt;host directory&gt;</code> on
+  your host OS. The subdirectory that will be exported from the MSX
+  disk image is selected by the <code><a class="internal" href="#chdir">chdir</a></code> command.</p>
+
+  <h3><a id="format">format</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator format &lt;disk name&gt;</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>The currently selected partition from <code>&lt;disk name&gt;</code> will
+  be cleanly formatted with a MSX-DOS2 boot sector, unless the option
+  <code>-dos1</code> is specified.
+  FAT and directory sectors will be correctly initialised.
+  Any data on the disk image / partition is lost!</p>
+
+  <h3><a id="import">import</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator import &lt;disk name&gt; &lt;host
+  directory|host file&gt; ...</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>This will import the single <code>&lt;host file&gt;</code> into the disk
+  inserted in <code>&lt;disk name&gt;</code>. In case of a <code>&lt;host
+  directory&gt;</code> it will import the files and subdirectories in
+  <code>&lt;host directory&gt;</code> into the inserted disk. Multiple files and
+  directories can be specified at the same time. The place were the
+  files will be added in the MSX directory structure is selected
+  by the <code><a class="internal" href="#chdir">chdir</a></code> command.</p>
+
+  <p>If you want to use wildcards when importing files, you will have to use
+  the Tcl <a class="external" href="http://www.tcl.tk/man/tcl8.5/TclCmd/glob.htm">
+  <code>glob</code></a> command. This command will perform the wildcard
+  expansion and return a Tcl list. Enclose the <code>glob</code> command in
+  between '[' and ']':</p>
+
+  <p><code>diskmanipulator import hda1 [glob *.txt] [glob
+  *.asc]</code></p>
+
+  <p>This command will copy all files matching <code>*.txt</code> and <code>*.asc</code> in
+  the current directory on the host OS to the first partition of
+  the master IDE drive on the emulated MSX.</p>
+
+  <p>The <code>glob</code> command can also take extra options. For instance, if
+  you only want to expand regular files and not the names of
+  directories you can do this:</p>
+
+  <p><code>diskmanipulator import hda1 [glob -type f
+  info*]</code></p>
+
+  <p>Consult your local Tcl guru or documentation for more info
+  about the <code>glob</code> command and Tcl lists.</p>
+
+  <h3><a id="mkdir">mkdir</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator mkdir &lt;disk name&gt; &lt;MSX
+  directory&gt;</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>This command will create the specified directory on the MSX disk image.
+  All the needed parent directories will be created if they do not
+  yet exist.</p>
+
+  <h3><a id="savedsk">savedsk</a></h3>
+
+  <div class="subsectiontitle">
+    syntax:
+  </div>
+
+  <p><code>diskmanipulator savedsk &lt;disk name&gt;
+  &lt;dskfilename&gt;</code></p>
+
+  <div class="subsectiontitle">
+    explanation:
+  </div>
+
+  <p>This simply reads all the sectors of the <code>&lt;disk name&gt;</code> and
+  saves them again in the file specified by <code>&lt;dskfilename&gt;</code>.
+  This command is mostly equivalent to copying a disk image file on your host OS, but it has the additional possibilities:</p>
+
+  <ul>
+    <li>saving a ramdsk (see <code><a class="external" href="commands.html#disk">diska</a> ramdsk</code>) into a real disk image file</li>
+
+    <li>saving your current DirAsDisk image into a real disk image file</li>
+
+    <li>saving your disk image which has undergone IPS patches as a patched disk image</li>
+
+    <li>copying the currently active image file in case your host OS would give sharing violations while the file is being used by openMSX (Windows)</li>
+
+    <li>saving a disk image if you removed the directory entry by accident, but openMSX still has an open file handle for the file (UNIX-like systems)</li>
+  </ul>
+
+  <h2><a id="examples">Examples</a></h2>
+
+  <p>In these examples we will run the diskmanipulator while the
+  emulated MSX is powered off.
+  It is possible to run these commands while the machine is
+  turned on of course, but be warned that this might have some
+  strange, unexpected behaviour depending on the emulated MSX model
+  and the running software on this MSX.</p>
+
+  <p>For instance, the turboR models contain a physical switch
+  inside their diskdrives to detect disk changes. If no disk change
+  is detected their internal MSX-DOS2 kernel will cache certain
+  sectors, so that files imported using the <code>diskmanipulator import</code>
+  command will not show up if you perform a <code>files</code> or
+  <code>dir</code>. Even worse, if you would write from the
+  emulated MSX to the disk you will overwrite the result of the import.
+  The same would happen if you were running a disk cache
+  program in your emulated MSX machine.</p>
+
+  <h3>creating a new disk with content</h3>
+
+  <p>
+    Here we create a regular 720 kB (double sided, double density)
+    disk. Then we place the files and subdirectories from the directory
+    <code>/tmp/todisk/</code> on this new disk:
+  </p>
+
+  <div class="commandline">
+    set <a class="external" href="commands.html#power">power</a> off
+    <br />
+    diskmanipulator <a class="internal" href="#create">create</a> /tmp/new-disk.dsk 720
+    <br />
+    <a class="external" href="commands.html#disk">virtual_drive</a> /tmp/new-disk.dsk
+    <br />
+    diskmanipulator <a class="internal" href="#import">import</a> virtual_drive /tmp/todisk/
+  </div>
+
+  <h3>creating a new harddisk image with content</h3>
+
+  <p>
+    Here we create a new HD image with 3 partitions the first
+    partition is 32 MB, then 16 MB and finally a small
+    one of 720 kB.
+    Then we place the files and subdirs of the directory
+    <code>/tmp/topart1/</code> on the first partition and <code>/tmp/topart3/</code> on the third partition:
+  </p>
+
+  <div class="commandline">
+    set <a class="external" href="commands.html#power">power</a> off
+    <br />
+    <a class="external" href="commands.html#ext">ext</a> ide
+    <br />
+    diskmanipulator <a class="internal" href="#create">create</a> /tmp/new-hd.dsk 32M 16M 720
+    <br />
+    <a class="external" href="commands.html#hd">hda</a> /tmp/new-hd.dsk
+    <br />
+    diskmanipulator <a class="internal" href="#import">import</a> hda1 /tmp/topart1
+    <br />
+    diskmanipulator <a class="internal" href="#import">import</a> hda3 /tmp/topart3
+  </div>
+
+  <h3>importing data in a new subdirectory</h3>
+
+  <p>
+    On the diskimage <code>/tmp/disk.dsk</code> we will create a new
+    subdirectory called <code>newsub</code> and then we fill this subdirectory with the
+    <code>.txt</code> files from <code>/home/david/sources</code>:
+  </p>
+
+  <div class="commandline">
+    set <a class="external" href="commands.html#power">power</a> off
+    <br />
+    <a class="external" href="commands.html#disk">diska</a> /tmp/disk.dsk
+    <br />
+    diskmanipulator <a class="internal" href="#mkdir">mkdir</a> diska newsub
+    <br />
+    diskmanipulator <a class="internal" href="#chdir">chdir</a> diska newsub
+    <br />
+    diskmanipulator <a class="internal" href="#import">import</a> diska [glob -type f /home/david/sources/*.txt]
+  </div>
+
+  <h3>extracting files from an MSX harddisk image to the host OS</h3>
+
+  <p>
+    We will extract files from the currently used harddisk image on
+    partition1 in the MSX subdir <code>\demos\calculus</code> to <code>/tmp/</code>:
+  </p>
+
+  <div class="commandline">
+    set <a class="external" href="commands.html#power">power</a> off
+    <br />
+    <a class="external" href="commands.html#ext">ext</a> ide
+    <br />
+    diskmanipulator <a class="internal" href="#chdir">chdir</a> hda1 /demos/calculus
+    <br />
+    diskmanipulator <a class="internal" href="#export">export</a> hda1 /tmp
+  </div>
+
+</body>
+</html>

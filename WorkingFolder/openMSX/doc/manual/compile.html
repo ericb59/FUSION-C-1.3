@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link title="Purple" rel="stylesheet" href="manual-purple.css" type="text/css">
+  <link title="Minty" rel="alternate stylesheet" href="manual-minty.css" type="text/css">
+  <link title="Plain" rel="alternate stylesheet" href="manual.css" type="text/css">
+  <title>openMSX Compilation Guide</title>
+</head>
+
+<body>
+
+<h1>openMSX Compilation Guide</h1>
+
+<h2>Contents</h2>
+<ol class="toc">
+	<li><a class="internal" href="#intro">1. Introduction</a>
+		<ol class="toc">
+			<li><a class="internal" href="#newver">1.1 New Versions of this Document</a></li>
+			<li><a class="internal" href="#purpose">1.2 Purpose</a></li>
+			<li><a class="internal" href="#contrib">1.3 Contributors</a></li>
+			<li><a class="internal" href="#history">1.4 Revision History</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#preparation">2. Preparation</a>
+		<ol class="toc">
+			<li><a class="internal" href="#tools">2.1 Build Tools</a></li>
+			<li><a class="internal" href="#libs">2.2 Libraries</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#getsource">3. Getting the Source Code</a>
+		<ol class="toc">
+			<li><a class="internal" href="#getrelease">3.1 Released Version</a></li>
+			<li><a class="internal" href="#getscm">3.2 Git Clone</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#local">4. Binary for Local System</a>
+		<ol class="toc">
+			<li><a class="internal" href="#compilelocal">4.1 Compilation</a></li>
+			<li><a class="internal" href="#installlocal">4.2 Installation</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#standalone">5. Stand-alone Binary</a>
+		<ol class="toc">
+			<li><a class="internal" href="#compilestandalone">5.1 Compilation</a></li>
+			<li><a class="internal" href="#installstandalone">5.2 Installation</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#androidbuild">6. Android build (openMSX 0.15.0 only)</a>
+		<ol class="toc">
+			<li><a class="internal" href="#androidbuildintegrate">6.1 Integrate SDL Android build with openMSX build</a></li>
+			<li><a class="internal" href="#androidcompilationandinstallation">6.2 Compilation and installation</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#next">7. Next Steps</a></li>
+<li><a class="internal" href="#contact">8. Contact Info</a></li>
+</ol>
+
+<h2><a id="intro">1. Introduction</a></h2>
+
+<h3><a id="newver">1.1 New Versions of this Document</a></h3>
+<p>
+The latest version of the openMSX manual can be found on the openMSX home page:
+</p>
+<p>
+<a class="external" href="http://openmsx.org/manual/">http://openmsx.org/manual/</a>
+</p>
+<p>
+You can also use this URL to get up-to-date versions of the hyperlinks
+if you printed out this manual.
+</p>
+
+<h3><a id="purpose">1.2 Purpose</a></h3>
+<p>
+This guide is about openMSX, the open source MSX emulator that tries to achieve
+near-perfect emulation by using a novel emulation model.
+You can find more information about openMSX on the
+<a class="external" href="http://openmsx.org/">openMSX home page</a>.
+</p>
+
+<p>
+If you just want to use openMSX, there is likely <a class="external" href="faq.html#easyinstall">a pre-packaged version</a> you can use. This document describes how you can compile openMSX from source, which is useful if:
+</p>
+<ul>
+<li>There is not yet a pre-packaged version for your favourite platform.</li>
+<li>You want to closely follow the latest developments.</li>
+<li>You want to make changes to openMSX.</li>
+</ul>
+
+<p>
+If you need help compiling openMSX, please
+<a class="internal" href="#contact">contact us</a>.
+If you needed any modifications to make openMSX compile,
+please send those modifications to us,
+so we can make openMSX ever more portable.
+</p>
+
+<h3><a id="contrib">1.3 Contributors</a></h3>
+
+<p>
+The following people contributed to this document in one way or another:
+</p>
+<ul>
+<li>Jorrith Schaap</li>
+<li>Manuel Bilderbeek</li>
+<li>Maarten ter Huurne</li>
+<li>other openMSX developers</li>
+</ul>
+<p>
+Thanks to all of them!
+</p>
+
+<h3><a id="history">1.4 Revision History</a></h3>
+
+<p>
+For the revision history, please refer to the <a class="external"
+href="https://github.com/openMSX/openMSX/commits/master/doc/manual/compile.html">commit log</a>.
+</p>
+
+<h2><a id="preparation">2. Preparation</a></h2>
+
+<p>
+Before you can start compiling openMSX, you have to make sure your system
+has all the necessary build tools installed, as well as the libraries
+openMSX depends upon. The following sections tell you how you can prepare your system.
+</p>
+<p>
+Every section starts with generic instructions, that apply to all platforms and
+compilers. At the end of each section, platform specific notes cover differences or additional steps for certain platforms
+or compilers.
+</p>
+
+<h3><a id="tools">2.1 Build Tools</a></h3>
+
+<p>
+For compilation, you need <a class="external" href="http://www.python.org/download/">Python</a>, a C++ compiler, and some compiler-specific programs.
+If you have compiled packages from source before, you probably have some of these installed already.
+</p>
+
+<dl>
+
+<dt><a class="external" href="http://www.python.org/download/">Python</a></dt>
+<dd>A compact and dynamic programming language. The latest version should work fine. Note: on Windows 7 you may have to add the path to Python (e.g. <code>C:\Python</code>) to your <code>PATH</code> manually.</dd>
+<dt>C++ compiler</dt>
+<dd>There are three compilers that are supported to build openMSX: GCC, clang
+and Visual C++. The GCC compiler builds openMSX on all supported platforms, clang is the default on macOS, while Visual C++ is the primary compiler for Windows.</dd>
+
+</dl>
+
+<h4>GCC</h4>
+
+<p>For compilation with GCC, you need GNU Make and g++:</p>
+
+<dl>
+
+<dt>make</dt>
+<dd>GNU implementation of the Make tool.
+Make interprets rules that define how a project should be built.
+Version 3.79 or higher should suffice, but 3.80 or higher is recommended and even necessary if you are building a standalone binary with the method described below.</dd>
+
+<dt>g++</dt>
+<dd>The GNU C++ compiler.
+Version 7 or later is required to build openMSX.
+</dd>
+
+</dl>
+
+<h5>Microsoft Windows (MinGW)</h5>
+
+<p>You need to install MinGW (with MSYS).</p>
+
+<p>You can download the latest version of <code>mingw-get-inst</code> from <a class="external" href="http://sourceforge.net/project/showfiles.php?group_id=2435">the download page</a> of the MinGW project (it's the default download if you're on Windows). Double click on this installer after downloading. Click Next, Next, select "Download latest repository catalogues" and click Next again. Accept the license agreement and click Next. Use the default installation directory (<code>C:\MinGW</code>), or at least a <strong>clean and empty</strong> (e.g. non-existing) directory without spaces and <strong>not</strong> a network folder (i.e. shared folder on another computer) and click Next. Click Next again. In the "Select Components" step, make sure to check "C++ Compiler" and "MSYS Basic System" and click Next. Then click Install. This will then update the package repositories first, which takes a while. After this, it will download all the MinGW packages and install them.
+</p>
+
+<h5>OpenDingux</h5>
+
+<p>For compilation for OpenDingux to run on GCW Zero, you need to install the
+GCW Zero toolchain. This toolchain is for x86 Linux; if you have an x86 machine but no Linux, you can install Linux in a virtual machine. You can find the toolchain and installation instructions in the <a href="http://www.gcw-zero.com/develop">development section of the GCW Zero web site</a>.
+</p>
+
+<h4>clang</h4>
+
+<h5>macOS</h5>
+
+<p>
+Install Xcode from Apple, which you can find in the Mac App Store. The openMSX build is not done inside the Xcode IDE, but it uses the SDK and command line tools that are provided by Xcode.
+</p>
+
+<h4>Visual C++</h4>
+
+<p>To build with Visual C++ you need to have the latest version of it installed. Currently, this is 2019.</p>
+
+<p>Use this way to obtain the Visual C++ compiler:</p>
+<dl>
+	<dt><a class="external" href="http://www.visualstudio.com/downloads/">Visual Studio Community</a></dt>
+	<dd>This is a free (as in beer) IDE and development environment. It builds 32 and 64-bit binaries out of the box. Make sure you download the latest version. </dd>
+
+</dl>
+
+<p>To generate an MSI installation package, you also need:</p>
+
+<dl>
+
+<dt> <a class="external" href="http://wixtoolset.org/">WiX</a></dt>
+<dd>This is a tool that generates MSI installer packages. We recommend using
+version 3.0 or later. If you see a message that the &quot;Votive&quot;
+component won't install, that's not a problem, just continue.</dd>
+
+</dl>
+
+<h4>Android (openMSX 0.15.0 only)</h4>
+<p><strong>Warning:</strong> the build instructions here are <em>only</em> valid for openMSX 0.15.0!</p>
+<p><strong>Warning:</strong> the build of the Android version is only supported on a Linux or Unix host platform. If you want
+to build the Android version on a Windows host, then you must install a virtual machine with a Linux distribution on it. This is because the Android build depends on the "commandergenius" SDL Android port, which can only be build on Linux and Unix platforms.</p>
+
+<p>The Android build depends on the following toolkits and libraries that must first be installed:</p>
+<dl>
+	<dt>The Android SDK</dt>
+	<dd>Download the Android SDK command line tools from the <a
+	href="http://developer.android.com/sdk/index.html">Android SDK
+	site</a>. It is sufficient to download the SDK Tools or SDK Manager only package. For
+	openMSX you do not need the so-called ADT bundle. An older SDK Tools
+	only package that we used is
+    <a class="external" href="http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz">Android SDK R23.0.2 Linux</a>. The latest seems to be <a class="external" href="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip">Android SDK Tools Linux 26.1.1</a>. Most instructions below are based on the older SDK manager.
+	After downloading it, unpack it to your favourite location. See below for further instructions.
+	See the README in the ${ANDROID-SDK} directory for further instructions on how to download extra tools and libraries.</dd>
+	<dt>The Android NDK</dt>
+	<dd>Download the Android NDK from the <a href="http://developer.android.com/tools/sdk/ndk/index.html">Android NDK site</a>,
+	unpack it to your favourite location and add the following Android NDK directory to your PATH environment
+	variable: <code>${ANDROID_NDK_HOME}</code>. It is advisable to do this in your <code>~/.profile</code>
+	script so that the setting remains available on each login. Note that <code>${ANDROID_NDK_HOME}</code> stands for the
+	directory in which you installed the Android NDK, for example <code>/opt/android/android-ndk-r18b</code>. We currently only support Android NDK 18b! On top of that, it is also necessary to create a stand-alone toolchain from this NDK. The following works: <code>$ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py --arch arm --api 16 --install-dir /opt/Android_NDK/r18b-android16-arm-standalone-toolchain</code>. The destination dir here is just an example. You must add the <code>bin</code> subdir to your <code>PATH</code> environment variable, e.g.: <code>/opt/Android_NDK/r18b-android16-arm-standalone-toolchain/bin/</code></dd>
+	<dt>The "commandergenius" SDL Android port</dt>
+	<dd>Download the SDL Android port from the git repository to your favourite location. You can download it
+	into the current directory with the following command: <code>git clone https://github.com/pelya/commandergenius.git</code>. Once that is done, you must set-up an environment variable called SDL_ANDROID_PORT_PATH with the location
+	of the SDL android port. For example <code>/opt/android/commandergenius</code>. You must also make sure to put it on to the revision that we are currently supporting. Set it to 61c5b7352b22be464487d559df5cb0d50bfbc605. You also need a to make a little change to it... in <code>project/jni/Application.mk</code> in the line with <code>APP_STL :=</code> replace <code>c++_static</code> with <code>c++_shared</code>.</dd>
+	<dt>Java Development Kit</dt>
+	<dd>Make sure you install the JDK from your distro. Example packages: <code>openjdk-8-jdk</code> (Debian), <code>java-1.7.0-openjdk</code> (SuSE 12.2).</dd>
+	<dt>Ant</dt>
+	<dd>Make sure you install Ant build tool from your distro. Example packages: <code>ant</code> (Debian), <code>ant-1.8.2-11.1.1.noarch</code> (SuSE 12.2).</dd>
+	<dt>Ant-optional</dt>
+	<dd>Make sure you install Ant-optional extensions from your distro. Example packages: <code>ant-optional</code> (Debian). Note that this seems to be not applicable for SuSE 12.2; apparently everything is bundled in the ant package.</dd>
+	<dt>zip</dt>
+	<dd>Make sure you install the zip command line tool from your distro. Example packages: <code>zip</code> (Debian Squeeze/6.0), <code>zip</code> (SuSE 12.2).</dd>
+	<dt>libz 32-bit</dt>
+	<dd>Make sure that if you have a 64-bit distro, you (also) install the 32-bit version of libz (it is required by the Android NDK). Example packages: <code>lib32z1</code> (Debian), <code>zlib-32bit</code> (SuSE 12.2).</dd>
+	<dt>libstdc++6 32-bit</dt>
+	<dd>Make sure that if you have a 64-bit distro, you (also) install the 32-bit version of libstdc++6 (it is required by the Android NDK). Example packages: <code>lib32stdc++6</code> (Debian), <code>libstdc++47-32bit</code> (SuSE 12.2).</dd>
+</dl>
+
+<p>
+After you installed the Android SDK, you actually only installed the "Android SDK Manager". You'll have to use this manager to install the proper Android SDK packages. Start up this tool by running <code>android</code> in a terminal (it is located in the <code>tools</code> folder of the SDK manager you downloaded). This works for the above mentioned older SDK Tools, but it doesn't for the new ones, so you should check these instructions which packages to install with the newer SDK managers. The old SDK manager opens a new window. You should first get some messages in the status bar that it is fetching the repositories. After that, you should get a list of all possible SDK API versions. If you get errors like <code>HttpHostConnect Connection to http://dl-ssl.google.com refused</code>, you are hitting this bug: <a class="external" href="http://skybert.net/java/ipv46-related-network-problems/">IPv4/6 Related Network Problems</a>. You'll have to solve this to proceed.
+</p>
+<p>Once you have the list of packages, you must select the following options for installation:</p>
+<ul>
+	<li> Tools -&gt; Android SDK Tools
+	</li>
+	<li> Tools -&gt; Android SDK Platform-tools
+	</li>
+	<li> Tools -&gt; Android SDK Build-tools 28.0.2
+	</li>
+	<li> Android 9 (API 28) -&gt; SDK Platform 28 6
+	</li>
+	<li> Android 4.1.2 (API 16) -&gt; SDK Platform 16 5
+	</li>
+</ul>
+<p>It may be possible that by default another version of the Android API is pre-selected. We're at least trying to target API 16 with this build. You may unselect other APIs in order to save download time and diskspace. (You also don't need the Android Support Package, so if it gets selected, you can also unselect that one.) Next step is to click the "Install N packages" button (N seems to vary a bit... it may be like 12) to install the packages (accept the license terms). After downloading and installing, you can close the Android SDK Manager. When you are trying to execute a build later on, and it stops with "license not accepted for package XYZ", then start the SDK Manager again to install the requested package.</p>
+
+<p>
+Finally, add following Android SDK directories to your PATH environment
+variable: <code>${ANDROID_SDK}/tools:${ANDROID_SDK}/platform-tools:${ANDROID_SDK}/build-tools/${ANDROID_SDK_VERSION}</code>. The first one only exists for older SDK managers, as explained earlier.
+It is advisable to do this in your <code>~/.profile</code>
+script so that the setting remains available on each login. Note that <code>${ANDROID_SDK}</code> stands for the
+directory in which you installed the Android SDK, for example <code>/opt/android/android-sdk-linux</code>
+and <code>${ANDROID_SDK_VERSION}</code> stands for the version of the Android SDK Build-tools you installed with the SDK manager, for example <code>28.0.2</code> (see above).
+</p>
+
+<h3><a id="libs">2.2 Libraries</a></h3>
+
+<p>
+openMSX depends on the following libraries:
+</p>
+<dl>
+
+<dt><a class="external" href="http://www.libsdl.org/">SDL</a></dt>
+<dd>Simple DirectMedia Layer version 2, a cross-platform library that provides low-level access to video, audio and input devices.</dd>
+
+<dt><a class="external" href="http://www.libsdl.org/projects/SDL_ttf/">SDL_ttf</a></dt>
+<dd>Library that provides support for TrueType Fonts in SDL.</dd>
+
+<dt><a class="external" href="http://www.libpng.org/pub/png/libpng.html">libpng</a></dt>
+<dd>Library for handling PNG images.</dd>
+
+<dt><a class="external" href="http://www.zlib.org/">zlib</a></dt>
+<dd>Library for file compression.</dd>
+
+<dt><a class="external" href="http://www.tcl.tk/">Tcl</a></dt>
+<dd>The Tool Command Language, an embeddable scripting language. openMSX requires Tcl 8.6; older versions will not work.</dd>
+
+<dt><a class="external" href="http://www.opengl.org/">OpenGL</a> (optional)</dt>
+<dd>Library for accelerated graphics. It is likely that OpenGL is already installed on your system. If not, you should probably get the OpenGL implementation from the manufacturer of your graphics card. On Linux, using <a class="external" href="http://www.mesa3d.org/">Mesa</a> with a DRI driver can be an alternative.</dd>
+
+<dt><a class="external" href="http://glew.sourceforge.net/">GLEW</a> (optional)</dt>
+<dd>The OpenGL Extension Wrangler, a library that greatly simplifies the use of OpenGL extensions.</dd>
+
+<dt><a class="external" href="http://www.xiph.org/ogg/">Ogg</a> (optional)</dt>
+<dd>The Laserdisc emulation expects files in the Ogg container format for the video and audio of Laserdiscs.</dd>
+
+<dt><a class="external" href="http://www.xiph.org/vorbis/">Vorbis</a> (optional)</dt>
+<dd>The Laserdisc emulation expects audio encoded with Vorbis in the ogg container format for the audio of Laserdiscs. Vorbis was chosen since it is not patent-encumbered.</dd>
+
+<dt><a class="external" href="http://www.xiph.org/theora/">Theora</a> (optional)</dt>
+<dd>The Laserdisc emulation expects video encoded with the Theora codec in the ogg container format for the video of Laserdiscs. Again, Theora was chosen since it is not patent-encumbered.</dd>
+
+<dt><a class="external" href="http://www.alsa-project.org/">ALSA</a> (optional, Linux only)</dt>
+<dd>The ALSA library for ALSA MIDI out support on Linux.</dd>
+
+</dl>
+
+<h4>GCC / clang</h4>
+<p>
+You can install the required libraries systemwide, or you can use the "3rd party libraries" support in the openMSX build system and build a stand-alone binary. Systemwide is recommended if you run a modular operating system (such as Linux, BSD or macOS with MacPorts, Homebrew or Fink) and you intend to only use the openMSX binary on your computer. The 3rd party library system is recommended if you build for other operating systems (Windows, plain macOS or embedded systems) or if you want to build a binary that can be used on other computers besides your own. If you choose the latter, please skip to the <a class="internal" href="#standalone">Stand-alone Binary</a> chapter.
+</p>
+<h5>Android</h5>
+<p>
+For Android, the required SDL library is built in the SDL Android port that you downloaded
+in the "Build Tools" section. The rest of the libraries are arranged by the
+"3rd party libraries" support in the openMSX build system. If you want to build
+openMSX for Android, you can immediately jump to the <a class="internal"
+href="#getsource">Getting the source code</a> chapter.
+</p>
+
+<h5>Debian and Ubuntu Linux</h5>
+<p>
+You can easily install all required packages using the "build dependencies" feature of the APT package manager:
+</p>
+<div class="commandline">
+sudo apt-get build-dep openmsx
+</div>
+<p>
+Do note that if the Debian/Ubuntu package that is in the version of the distribution you are currently running is older than the openMSX version you are trying to compile (which is typically so), you might miss some dependencies that were added in the newer version. The build system will complain and you will have to install the remaining (missing) packages manually. Read on to get some tips about that.
+</p>
+
+<h5>OpenDingux</h5>
+
+<p>We only support the <a class="internal" href="#standalone">Stand-alone
+Binary</a> method, which means the openMSX build system will download
+and compile all libraries automatically.</p>
+
+<h5>Other Linux</h5>
+<p>
+Most Linux distributions have libraries split over two packages: a runtime package and a development package.
+The runtime package for the "Foo" library is typically called
+<code>libfoo</code>, the development package is typically named
+<code>libfoo-dev</code> or <code>libfoo-devel</code>.
+Applications that use a library only require the runtime package to be installed, but compilation requires both the runtime package and the development package to be installed.
+</p>
+
+<h5>macOS</h5>
+
+<p>
+The easiest thing to do is to use the <a class="internal" href="#standalone">stand-alone binary</a> method, which will get the libraries automatically.</p>
+<p>
+If you want to do things manually, you can get the libraries from
+<a class="external" href="http://www.macports.org/">MacPorts</a>,
+<a class="external" href="http://brew.sh/">Homebrew</a>
+or
+<a class="external" href="http://www.finkproject.org/">Fink</a>. These are tools to give you access to a large collection of software packages (or ports). You can use them to install those packages (or ports). The manual approach is not regularly tested by the openMSX developers; unless you enjoy tinkering with builds we suggest you use the stand-alone binary approach instead.
+</p>
+
+<h5>Microsoft Windows (MinGW)</h5>
+
+<p>
+We strongly recommend using the <a class="internal" href="#standalone">Stand-alone
+Binary</a> method, which means the openMSX build system will download and compile all libraries automatically.
+</p>
+
+<h4>Visual C++</h4>
+
+<p>
+When building with Visual C++, the optional libraries mentioned above are
+arranged as follows:</p>
+<ul>
+	<li>Headers and libraries for OpenGL are included with Visual C++ by default.</li>
+	<li>The GLEW, Ogg, Theora and Vorbis libraries are required.</li>
+</ul>
+<p>
+Also, when building with Visual C++, the &quot;3rd party libraries&quot; support in the openMSX
+build system must be used. The resulting binary statically links in all
+dependencies, including the C runtime. For more details, please see the <a class="internal" href="#standalone">
+Stand-alone Binary</a> chapter.
+</p>
+<h2><a id="getsource">3. Getting the Source Code</a></h2>
+
+<p>
+openMSX is developed using the tools
+<a class="external" href="http://github.com/">GitHub</a>
+freely offers to open source projects.
+The code is stored in Git, an open source version management system.
+Once in a while an openMSX release is made.
+</p>
+
+<p>
+There are several options for getting the source code:
+</p>
+
+<dl>
+
+<dt><a class="internal" href="#getrelease">Released Version</a></dt>
+<dd>
+These are tested versions, which should give you little problems compiling
+and running.
+However, as openMSX development if often quite fast, they may not have all
+the latest features.
+Also there could be bugs that have been fixed since the last release.
+</dd>
+
+<dt><a class="internal" href="#getscm">Git Clone</a></dt>
+<dd>
+Through Git you can get the same development version the
+openMSX developers are using.
+This is the bleeding edge:
+the latest stuff, which may be great or may be horribly broken.
+Usually the latest openMSX code compiles and runs fine, but we're only human,
+so once in a while it breaks.
+Also there may be changes that are not documented yet.
+</dd>
+
+</dl>
+
+<p>
+Releases are intended for general users, Git Clone is intended for
+(would be) developers, heavy testers and people who want to follow new
+developments closely. It might be a good idea to play with a release first. If
+you like what you see and want to get in deeper, you can switch to a Git Clone later.
+A Git Clone is very comfortable, because then you can do efficient
+incremental updates, saving network bandwidth and compile time.
+</p>
+
+<p>
+If you downloaded a version that is either a lot older or a lot newer than
+this guide, it is a good idea to read the guide included in your downloaded
+version instead of the version you're reading right now.
+You can find the Compilation Guide in the directory
+<code>doc/manual</code>.
+</p>
+
+<h3><a id="getrelease">3.1 Released Version</a></h3>
+
+<p>
+You can download a released version of openMSX from
+<a class="external" href="https://github.com/openMSX/openMSX/releases/"
+>the releases page on GitHub</a>.
+The latest version is probably the best one. This guide assumes that you are using the latest release.
+</p>
+
+<p>
+After downloading, type the following in a UNIX or MinGW Shell (in your start menu), or use another
+decompression tool:
+</p>
+<div class="commandline">tar xzvf openmsx-VERSION.tar.gz</div>
+<p>
+in which <code>VERSION</code> is the openMSX version you downloaded, or use the
+file name you saved the tar.gz file with. The directory that is created by uncompressing the <code>tar.gz</code> file
+is called <em>the top of the source tree</em>.
+</p>
+
+<h3><a id="getscm">3.2 Git Clone</a></h3>
+
+<p>
+Getting a Git clone means you use Git to retrieve the latest version
+of the source code of openMSX.
+This means you will need to install a Git client.
+This package is usually named <code>git</code>.
+There are graphical front-ends for Git,
+but this guide will tell you how to use Git from the command line. More information about Git can be found on the <a class="external"
+href="http://git-scm.com/documentation">Git Documentation</a> site.</p>
+<p>
+Windows
+users might want to look at <a class="external" href="https://git-for-windows.github.io/">msysGit</a> for a command line tool, <a class="external" href="http://code.google.com/p/tortoisegit/">TortoiseGit</a> for Windows Explorer integration, or <a class="external" href="http://gitextensions.github.io/">Git Extensions</a>, which also includes Visual Studio integration.
+</p>
+
+<p>
+With the following line (which is also displayed when you <a class="external" href="https://github.com/openMSX">browse an openMSX git repository</a>) you can retrieve the latest sources (also works on Windows when using msysGit):
+</p>
+<div class="commandline">
+git clone https://github.com/openMSX/openMSX.git openMSX
+</div>
+<p>
+In this line you specified where you want to retrieve the files from
+(host name of the Git server),
+what project you want to retrieve (<em>openMSX</em> in this case), what
+module you want to get (<em>openMSX.git</em> in this case, which is the module that contains
+the sources of the main openMSX program) and what directory it should be
+cloned to (we chose <em>openMSX</em> in this example).
+</p>
+
+<p>
+When compiling openMSX on Windows with GCC, it's often convenient to use <code>C:\MinGW\msys\1.0\home\&lt;username&gt;\openMSX</code>
+as the target directory, as this is easy to reach from your MinGW Shell - it's
+your MinGW home directory.
+</p>
+
+<p>
+If you're a developer, it makes sense to use this git commandline:
+</p>
+<div class="commandline">
+git clone git@github.com:openMSX/openMSX.git openMSX
+</div>
+
+<p>
+For this to work smoothly, without having to type your password all the time, it's probably a good idea to <a class="external" href="https://help.github.com/articles/generating-ssh-keys/#platform-all">read the GitHub docs about SSH keys</a>.
+</p>
+
+<p>
+The Git command creates a directory called <code>openMSX</code> for you
+in the current directory (or in the directory you specified in TortoiseGit).
+This directory is what we call in this manual <em>the top
+of the source tree</em>.
+In addition to the openMSX code, you will see a hidden
+Git administration directory called <code>.git</code>.
+Do not mess with it (nor move contents of this directory around), otherwise Git will get confused.
+</p>
+
+<p>
+If you want to update your source tree later,
+go to the top of the source tree and type:
+</p>
+<div class="commandline">
+git pull
+</div>
+<p>
+or right click on the openMSX directory in Windows Explorer and select "TortoiseGit -&gt; Pull...".
+</p>
+
+<h2><a id="local">4. Binary for Local System</a></h2>
+
+<p>
+This section explains how to build openMSX for a local system. If you want to build openMSX for Android, you can skip this section and use the <a class="internal" href="#androidbuild">Android build</a> method. If you want to create a binary that runs everywhere, we recommend to skip this chapter and use the <a class="internal" href="#standalone">stand-alone binary</a> method. We also recommend to do that for macOS and especially for Microsoft Windows systems.
+</p>
+
+<h3><a id="compilelocal">4.1 Compilation</a></h3>
+
+<p>
+Now that all the necessary tools and libraries are installed,
+you are almost ready to start the actual compilation of openMSX.
+</p>
+
+<h4>GCC / clang</h4>
+
+<p>
+The first thing you may want to know is that you can build openMSX in
+different flavours. The default flavour depends on the CPU, but is always one that is optimized for performance. For example for x86 processors the default
+flavour is "i686": i.e., with optimisations for Pentium II and higher,
+without any debugging stuff. The generic optimized flavour "opt" should work for all CPUs.
+</p>
+<p>
+If you are testing new openMSX developments or making changes in openMSX, you can benefit from asserts and debug symbols. To get those, you should select the "devel" flavour, like this:
+</p>
+<div class="commandline">
+export OPENMSX_FLAVOUR=devel
+</div>
+<p>
+Although the default flavours will probably be OK for most cases, you may want to write a specific flavour for your particular wishes. The flavour files are all named <code>build/flavour-*.mk</code>.
+</p>
+
+<p>
+You can select the C++ compiler to be used by setting the <code>CXX</code> environment variable like this:
+</p>
+<div class="commandline">
+export CXX=g++-5
+</div>
+<p>
+or:
+</p>
+<div class="commandline">
+export CXX=clang++
+</div>
+<p>
+This can be useful if the default compiler on your system is an old version which is either not capable of compiling openMSX, or generates less efficient code.
+</p>
+
+<p>
+Now we can let a script check if you have indeed all necessary libraries and headers installed.
+Go to the top of your openMSX source tree and run the following script:
+</p>
+<div class="commandline">
+./configure
+</div>
+<p>
+This script will report what versions of libraries you have installed.
+It also reports which components can be built with those libraries.
+If the script reports that it can't build the openMSX core component,
+you should install the missing ones before you can continue.
+Otherwise, you can decide to install the libraries needed for the optional
+components, or to continue without building some components (e.g. the OpenGL based renderers).
+</p>
+
+<p>
+If installing the correct libraries doesn't help,
+<a class="internal" href="#contact">contact the openMSX developers</a>.
+If you file a bug report, please attach the <code>probe.log</code> file
+that is written by the <code>configure</code> script in the directory
+<code>derived/&lt;cpu&gt;-&lt;os&gt;-&lt;flavour&gt;/config/</code>.
+</p>
+
+<p>
+You can customise the build process by editing the file
+<code>build/custom.mk</code>.
+The most likely thing you might want to customise is the installation directory (<code>INSTALL_BASE</code>).
+If you are installing openMSX on a system on which you do not have
+superuser (root) privileges, you can set the installation directory
+to a subdirectory of your home directory.
+</p>
+
+<p>
+After successfully running <code>configure</code>,
+it's time to compile everything.
+To start compilation, type:
+</p>
+<div class="commandline">
+make
+</div>
+<p>
+Depending on how fast your system is,
+this may take several minutes to half an hour.
+</p>
+
+<p>
+If you get errors during compilation,
+there may be something wrong that was not detected by configure.
+Verify that you installed
+<a class="internal" href="#libs">all required libraries</a>,
+both the run time and development packages.
+If that doesn't help, or we forgot to list a library openMSX depends on,
+<a class="internal" href="#contact">contact the openMSX developers</a>.
+Make sure you provide us with the error message you got.
+</p>
+
+<p>
+If you want to debug openMSX compilation problems yourself, you can add <code>V=1</code> (verbose) to the Make command line to see all build commands as they are executed.
+</p>
+
+<h5>macOS</h5>
+
+<p>
+Since openMSX 0.10.0, the minimum required macOS release to build openMSX out of the box is 10.7. This implies that only x86_64 CPUs (64-bit Intel) are supported.
+</p>
+<p>
+Building for older macOS releases should be possible in theory, but it requires a lot of effort to set up the compiler and SDK (C++11 support is required), adjust the openMSX build (<code>build/platform-darwin.mk</code>) etc. It's easier to try an older openMSX release instead.
+</p>
+
+<h4>Visual C++</h4>
+
+<p>
+While it is possible to configure the supplied Visual C++ project files to
+dynamically link against import libraries, this is not currently supported.</p>
+<h3><a id="installlocal">4.2 Installation</a></h3>
+
+<h4>GCC / clang</h4>
+
+<h5>Linux and BSD</h5>
+
+<p>
+To install openMSX, run the following command:
+</p>
+<div class="commandline">
+make install
+</div>
+<p>
+This installs openMSX, by default in <code>/opt/openMSX</code>.
+Note that only root has rights to write to system-wide directories such as
+<code>/opt</code>,
+so you may have to do <code>su</code> before <code>make install</code>, or use <code>sudo</code>.
+</p>
+
+<h5>macOS</h5>
+
+<p>
+On macOS, the build creates an application folder. You can "install" this by copying it to a different location. The application folder will depend on systemwide installed libraries, so it will not work on Macs without those libraries.
+</p>
+<p>
+You can run openMSX from the application folder with the following command:
+</p>
+<div class="commandline">
+open derived/&lt;cpu&gt;-darwin-&lt;flavour&gt;/bindist/openMSX.app
+</div>
+<p>
+If you want to see the messages openMSX prints to stdout and stderr, start openMSX like this:
+</p>
+<div class="commandline">
+derived/&lt;cpu&gt;-darwin-&lt;flavour&gt;/bindist/openMSX.app/Contents/MacOS/openmsx
+</div>
+
+<h2><a id="standalone">5. Stand-alone Binary</a></h2>
+
+<p>
+This chapter describes how to build a binary of openMSX that does not depend on any libraries except those that are available on the platform by default. This procedure is highly recommended on Microsoft Windows. It is also recommended on macOS.
+</p>
+
+<p>
+The stand-alone binary is made by linking statically against all libraries which are not available as part of the basic platform. The build system will automatically download the sources for these libraries and build them in the minimal configuration needed by openMSX.</p>
+
+<h3><a id="compilestandalone">5.1 Compilation</a></h3>
+
+<h4>GCC / clang</h4>
+<p>
+If you want to change something about this process, for example switch to a newer library release, edit the <code>build/3rdparty.mk</code> Makefile.
+</p>
+
+<p>
+Just like for normal compilation, you can set environment variables such as <code>OPENMSX_FLAVOUR</code>, <code>CXX</code>, <code>OPENMSX_TARGET_CPU</code> and <code>OPENMSX_TARGET_OS</code>.
+</p>
+
+<p>
+To build a stand-alone binary, run the following command at the top of the source tree:
+</p>
+<div class="commandline">
+make staticbindist
+</div>
+<p>
+The final output files will be produced in <code>derived/&lt;cpu&gt;-&lt;os&gt;-&lt;flavour&gt;-3rd/bindist</code>.
+</p>
+
+<h5>macOS</h5>
+
+<p>
+The final output is a DMG file (Mac disk image) containing the openMSX application folder and documentation. This file is internet-enabled, which means it will be automatically mounted after it is downloaded.
+</p>
+
+<h5>Microsoft Windows (MinGW)</h5>
+
+<p>
+Here's the very short version if you want quick results on Microsoft Windows
+with GCC:
+</p>
+<ul>
+<li>Open a MinGW Shell</li>
+<li>Go to the <em>top of the source tree</em> (e.g.: <code>cd openMSX</code> if you chose the MinGW home directory as target directory)</li>
+<li>Type: <code>make staticbindist</code></li>
+</ul>
+<p>A complete package will be created in <code>derived\x86-mingw32-i686-3rd\bindist\install</code>.
+</p>
+
+<p>
+If you additionally want to build an (by current developers unused) openMSX installer, you should refer to the <a class="external" href="https://github.com/openMSX/package-windows/"><code>package-windows</code></a> module in our Git repository. It contains a README file with a short manual.
+</p>
+
+<p>
+Note: on a 64-bit Windows system, MinGW will pretend to have built 64-bit binaries (target directory is <code>derived\x86_64-mingw32-opt-3rd\bindist\install</code>), but they're actually just 32-bit.
+</p>
+
+<h5>OpenDingux</h5>
+
+<p>After having the toolchain installed, you can simply compile openMSX with
+this command:</p>
+<div class="commandline">
+make staticbindist OPENMSX_TARGET_CPU=mipsel OPENMSX_TARGET_OS=dingux OPENMSX_FLAVOUR=opt
+</div>
+
+<p>When this is done, you have a ready to use OPK file for distribution in the folder <code>derived/mipsel-dingux-opt-3rd/</code>.</p>
+
+<h4>Visual C++</h4>
+
+<p>When building with Visual C++, the result is a static executable with minimal
+dynamic library dependencies. Two platforms are supported:</p>
+<ul>
+	<li><strong>Win32</strong> - a 32-bit binary that runs on both 32 and 64-bit versions of Windows</li>
+	<li><strong>x64</strong> - a native 64-bit binary that runs only on 64-bit versions of Windows</li>
+</ul>
+<p>Three different configurations are supported:</p>
+<ul>
+	<li><strong>Debug</strong>: assertions enabled, debug prints enabled, no optimization,
+	very slow</li>
+	<li><strong>Developer</strong>: assertions enabled, debug prints disabled, no optimization</li>
+	<li><strong>Release</strong>: assertions disabled, debug prints disabled, full optimization</li>
+</ul>
+<p>When building with Visual C++, you can either use the IDE or build from the command line using <code>msbuild</code>. To do the latter, you need to open a Visual Studio command prompt. A shortcut to a Visual Studio command prompt can usually be found in your start menu. For Visual Studio Community 2017, it will be in &quot;Microsoft Visual Studio 2017\Visual Studio Tools&quot; as the &quot;Visual Studio Command Prompt&quot;.</p>
+<!-- TODO - Replace this section when we have integration with the broader 3rd party system -->
+<p>In order to build openMSX, the libraries it depends on need to be
+downloaded and unpacked:</p>
+<ul>
+	<li>Open a command prompt and go to the <em>top of the openMSX source tree</em></li>
+	<li>Type <code>python build\thirdparty_download.py windows</code></li>
+</ul>
+
+<p>
+The following steps can then be used to build openMSX:</p>
+<ul>
+<li>Open a Visual Studio command prompt</li>
+	<li>Go to the <em>top of the openMSX source tree</em></li>
+	<li>To build 3rd party libraries, type <code>msbuild -p:Configuration=<strong>Release</strong>;Platform=<strong>Win32</strong> build\3rdparty\3rdparty.sln</code></li>
+	<li>To build openMSX, type <code>msbuild -p:Configuration=<strong>Release</strong>;Platform=<strong>Win32</strong> build\msvc\openmsx.sln</code></li>
+</ul>
+
+<p>The openMSX executable will be generated in <code>derived\Win32-VC-Release\install</code>.</p>
+<p>To build for other platforms or configurations, simply replace &quot;Release&quot; and
+&quot;Win32&quot;&nbsp;in the command lines above with the desired options.</p>
+<p>To build using the Visual C++ IDE, simply open the aforementioned solution files and from the Build menu select &quot;Build Solution&quot;. This is exactly equivalent to building from the command line using <code>msbuild</code>.</p>
+<h3><a id="installstandalone">5.2 Installation</a></h3>
+
+<!-- TODO - generalize this for both MinGW and VC++, integrate into make install -->
+<!-- TODO - ensure wxCatapult is optional -->
+<h4>Visual C++</h4>
+<p>
+The following step creates .zip and .msi installation packages for openMSX on Windows using WiX:</p>
+<ul>
+	<li>Build <a href="#standalone_compilation">openMSX</a> and
+	<a class="external" href="http://openmsx.org/catapult-manual/compile.html">wxCatapult</a>
+	for a given platform (Win32 or x64) and configuration (usually Release builds)</li>
+	<li>Go to the <em>top of the openMSX source tree</em></li>
+	<li>Run <code>build\package-windows\package.cmd <strong>platform configuration</strong>
+	<strong>catapult_source_path</strong></code>:<ul>
+		<li><strong>platform</strong> is one of { Win32, x64 }</li>
+		<li><strong>configuration</strong> is one of { Release, Developer, Debug }</li>
+		<li><strong>catapult_source_path</strong> is the path to the wxCatapult directory</li>
+	</ul>
+	</li>
+</ul>
+
+<p>An example command line would be (for 64 bit):</p>
+<div class="commandline">
+	build\package-windows\package.cmd x64 Release ..\wxCatapult</div>
+
+<p>The resulting package files can be found in <code>derived\x64-VC-Release\package-windows.</code></p>
+
+<h4>OpenDingux</h4>
+
+<p>Just copy the OPK file into the <code>apps</code> directory.</p>
+
+<h2><a id="androidbuild">6. Android build (openMSX 0.15.0 only)</a></h2>
+
+<p><strong>Warning:</strong> the build instructions here are <em>only</em> valid for openMSX 0.15.0!</p>
+
+<p>
+This chapter describes how to build an Android APK package of openMSX for Android and install it
+on an Android device.
+</p>
+<h3><a id="androidbuildintegrate">Integrate SDL Android build with openMSX build</a></h3>
+
+<p>Once you have downloaded the openMSX source (see
+<a class="internal" href="#getsource">Getting the Source Code</a> chapter) and the toolkits and libraries
+(see <a class="internal" href="#preparation">Preparation</a> chapter), you must integrate the openMSX build
+system with the SDL Android port build system.</p>
+<p>Basically, the build will be driven by the build system of the SDL Android port and
+you must set that one up in order to be able to build openMSX. In order to do that, you must execute the following
+commands, whereby <code>OPENMSX_SRC_HOME</code> stands for the directory into which the openMSX source has been loaded:</p>
+<div class="commandline">
+<pre>
+	cd $OPENMSX_SRC_HOME/build/android
+	./setup_anddev.sh
+</pre>
+</div>
+
+<h3><a id="androidcompilationandinstallation">Compilation and installation</a></h3>
+
+<h4>Build of the Android version</h4>
+<p>
+In order to build the Android version, you must enter the following commands:</p>
+<div class="commandline">
+<pre>
+	cd $OPENMSX_SRC_HOME/build/android/openmsx
+	./launch_anddev_build.sh
+</pre>
+</div>
+
+<p>If this gives an error like "Unable to find a javac compiler; com.sun.tools.javac.Main is not on the classpath. Perhaps JAVA_HOME does not point to the JDK.", you may have to set the environment variable <code>JAVA_HOME</code> manually. E.g. if <code>javac</code> is actually installed in <code>/usr/lib/jvm/java-6-openjdk-amd64/bin</code>, make sure to <code>export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64</code> before running this command.</p>
+
+<h4>(Re-)installation of the Android version</h4>
+<p>
+In order to install the Android version, you must connect the Android device with a USB cable to
+the computer, enable the "Developer options" in the settings menu and within the "Developers options" enable
+the "USB debugging" option. Once that is done, you can install the APK that was build in the
+previous step with the following commands:</p>
+<div class="commandline">
+<pre>
+	cd $SDL_ANDROID_PORT_PATH
+	adb install -r project/app/build/outputs/apk/app-release.apk
+</pre>
+</div>
+
+<p>Alternatively, you can put this file on a place where you can access it with your device (e.g. on a webserver or sending an e-mail). Then you can download and install it like any APK file.</p>
+
+<h4>Build and (re-)installation of the Android version in one step</h4>
+<p>
+In order to build and directly install the Android version, you must enter the following commands:</p>
+<div class="commandline">
+<pre>
+	cd $OPENMSX_SRC_HOME/build/android/openmsx
+	./launch_anddev_build.sh -i
+</pre>
+</div>
+<p>
+Note that this only works when the "Developer options" -&gt; "USB debugging" setting has been enabled
+on the Android device.</p>
+
+<h2><a id="next">7. Next Steps</a></h2>
+
+<p>
+If all went well, you should have openMSX installed now or have a stand alone working binary.
+You can test it by executing openMSX from the command line:
+</p>
+<div class="commandline">
+openmsx
+</div>
+
+<p>
+or, by tapping (on Android) or double clicking (on other systems) the openMSX executable or icon that resulted
+from the previous step.
+</p>
+
+<p>
+You should get a screen similar to this:
+</p>
+<div class="commandline"><pre>
+C-BIOS 0.25        cbios.sf.net
+
+No cartridge found.
+
+This version of C-BIOS can
+only start cartridges.
+Please restart your MSX
+(emulator) with a cartridge
+inserted.
+</pre></div>
+
+<p>
+C-BIOS MSX2+ is the default system BIOS used by openMSX.
+It was written from scratch by BouKiCHi and he was kind enough to let us
+distribute it together with openMSX.
+It is not perfect yet, but it runs many ROM games well.
+Nowadays C-BIOS is a separate (SourceForge.net) project, with its own <a class="external" href="http://cbios.sourceforge.net/">web page</a>.
+</p>
+
+<p>
+If you have a ROM image ready, you can try to run it with C-BIOS:
+</p>
+<div class="commandline">
+openmsx ~/msx/games/my-favourite-game.rom
+</div>
+
+<p>
+or, you can just drop it on the openMSX executable.
+</p>
+
+<p>
+The next step would be to read the
+<a class="external" href="setup.html">openMSX Setup Guide</a>.
+That document describes how you can configure openMSX to emulate
+actual MSX machines, such as the Panasonic FS-A1GT (turboR).
+It also describes how you can have openMSX start up with your
+personal settings, how you can configure openMSX and your system
+for optimal performance and several other configuration related
+topics.
+And finally there is of course the
+<a class="external" href="user.html">openMSX User's Manual</a>,
+which describes all the things you can do with openMSX once
+it is fully running.
+</p>
+
+<p>
+If you got stuck somewhere in the compilation and installation process,
+please contact us. The next chapter will tell you how.
+</p>
+
+<h5>macOS</h5>
+
+<p>
+You can run the openMSX application folder from Finder or from the command line:
+</p>
+<div class="commandline">
+open derived/&lt;cpu&gt;-darwin-&lt;flavour&gt;-3rd/bindist/openMSX.app
+</div>
+
+<p>
+We do not have a finished GUI yet that works on macOS, so you can either use openMSX from the command line for now, or use third party software like <a class="external" href="http://nekocan.sitemix.jp/?page_id=17">NekoLauncher openMSX</a>.
+</p>
+
+<h5>Microsoft Windows</h5>
+
+<p>
+You can use the <a class="external" href="http://openmsx.org/catapult-manual/">
+Catapult</a> launcher to run openMSX.</p>
+
+<h2><a id="contact">8. Contact Info</a></h2>
+
+<p>
+Since openMSX is still under heavy development, feedback and bug reports are very
+welcome!
+</p>
+
+<p>
+If you encounter problems, you have several options:
+</p>
+
+<ol>
+<li>
+Go to our IRC channel: <code>#openMSX</code> on <code>irc.freenode.net</code>
+and ask your question there. Also reachable via <a class="external" href="http://webchat.freenode.net/?channels=openMSX">webchat</a>! If you don't get a reply immediately, please stick around for a while, or use one of the other contact options. The majority of the developers lives in time zone GMT+1. You may get no response if you contact them in the middle of the night...
+</li>
+<li>
+Post a message on <a class="external" href="http://www.msx.org/forum/semi-msx-talk/openmsx">the openMSX forum on MRC</a>.
+</li>
+<li>
+Create a new issue in the
+<a class="external" href="https://github.com/openMSX/openMSX/issues">openMSX issue tracker</a>
+on GitHub.
+You need a (free) log-in on GitHub to get access.
+</li>
+<li>
+Contact us and other users via one of the mailing lists. If you're a regular user and want to discuss openMSX and possible problems,
+join our <code>openmsx-user</code> mailing list.
+If you want to address the openMSX developers directly,
+post a message to the <code>openmsx-devel</code> mailing list.
+More info on the
+<a class="external" href="https://sourceforge.net/p/openmsx/mailman">openMSX mailing lists</a>,
+including an archive of old messages, can be found at SourceForge.
+</li>
+</ol>
+
+<p>
+In all cases, please provide as much information as possible when you describe your
+bug or request.
+</p>
+
+<h4>GCC / clang</h4><p>For experienced users: if you get a crash or a hang,
+try to provide a <code>gdb</code> backtrace.
+This will only work if you did not strip the openMSX binary
+of its debug symbols.</p>
+
+<p>Another useful thing to do is to install the debug versions of libstdc++ and libc6,
+and then run openmsx with an <code>LD_LIBRARY_PATH=/usr/lib/debug</code> exported in the environment.
+This will give a more detailed stacktrace, especially in optimized code.
+</p>
+
+<h4>Visual C++</h4><p>For experienced users: if you get a crash or a hang,
+try to provide a user dump. This will work for any openMSX binary, including
+pre-built binaries obtained from <a class="external" href="http://openmsx.org/">openmsx.org</a>.</p>
+<p>As of Windows Vista SP1 and later operating systems, you can find user dump files for crashed processes
+in the &quot;%LocalAppData%\CrashDumps&quot; directory. The default Windows crash dump
+behavior can be further customized as per
+<a href="http://msdn.microsoft.com/en-us/library/bb513638(VS.85).aspx">MSDN</a>.</p>
+<p>To generate a user dump on demand on any Windows OS, please read
+<a class="external" href="http://support.microsoft.com/kb/286350">KB286350</a>.</p>
+
+</body>
+</html>

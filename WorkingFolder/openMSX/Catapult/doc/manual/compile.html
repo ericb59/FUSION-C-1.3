@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link title="Purple" rel="stylesheet" href="manual-purple.css" type="text/css">
+	<link title="Minty" rel="alternate stylesheet" href="manual-minty.css" type="text/css">
+	<link title="Plain" rel="alternate stylesheet" href="manual.css" type="text/css">
+	<title>openMSX Catapult Compilation Guide</title>
+</head>
+
+<body>
+
+<h1>Catapult Compilation Guide</h1>
+
+<h2>Contents</h2>
+<ol class="toc">
+	<li><a class="internal" href="#intro">1. Introduction</a>
+		<ol class="toc">
+			<li><a class="internal" href="#newver">1.1. New Versions of this Document</a></li>
+			<li><a class="internal" href="#purpose">1.2. Purpose</a></li>
+			<li><a class="internal" href="#contrib">1.3. Contributors</a></li>
+			<li><a class="internal" href="#history">1.4. Revision History</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#getsource">2. Getting the Source Code</a>
+		<ol class="toc">
+			<li><a class="internal" href="#getrelease">2.1. Released Version</a></li>
+			<li><a class="internal" href="#getgit">2.2. git Clone</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#compile">3. Compilation</a>
+		<ol class="toc">
+			<li><a class="internal" href="#tools">3.1. Build Tools</a></li>
+			<li><a class="internal" href="#libs">3.2. Libraries</a></li>
+			<li><a class="internal" href="#complibs">3.3. Compilation of the
+            Libraries</a></li>
+			<li><a class="internal" href="#compilenow">3.4. Compilation of Catapult Itself</a></li>
+		</ol>
+	</li>
+	<li><a class="internal" href="#install">4. Installation</a></li>
+	<li><a class="internal" href="#next">5. Next Steps</a></li>
+	<li><a class="internal" href="#contact">6. Contact Info</a></li>
+</ol>
+
+<h2><a id="intro">1. Introduction</a></h2>
+
+<p>Note: throughout this guide we will refer to Catapult as wxCatapult. Both
+are the same in every case. The openMSX team used wxCatapult as an internal
+name where Catapult is the application name.</p>
+
+<h3><a id="newver">1.1. New Versions of this Document</a></h3>
+<p>
+The latest version of the openMSX Catapult manual can be found on the openMSX home page:
+</p>
+<p>
+<a class="external" href="http://openmsx.org/catapult-manual/">http://openmsx.org/catapult-manual/</a>
+</p>
+<p>
+The latest version of the openMSX manual can also be found there:
+</p>
+<p>
+<a class="external" href="http://openmsx.org/manual/">http://openmsx.org/manual/</a>
+</p>
+<p>
+You can also use these URLs to get up-to-date versions of the hyper links if you
+printed out this manual.
+</p>
+
+<h3><a id="purpose">1.2. Purpose</a></h3>
+<p>
+This guide is about Catapult, the (optional) GUI for openMSX. You can find more
+information about openMSX on the <a class="external"
+href="http://openmsx.org/">openMSX home page</a>.
+You can also download the emulator itself from there.
+</p>
+
+<p>
+openMSX is in alpha state, which means that some things work but not all
+features are implemented yet.
+Many emulation features are implemented, but in terms of user interface it is
+rather bare bones.
+That's why we decided to create a GUI for it, so most users can use it a little
+bit more comfortably.
+For people who want to (or have to) compile Catapult themselves, we have written
+this guide.
+It explains how you can get it running on your system, i.e. how to get the
+sources and compile them.
+Note that some software distributions may have packaged openMSX Catapult and will enable you to install it directly using package management tools. We refer to the documentation of the tools of the distribution you are using to install openMSX Catapult. If you use such a package, you can skip the largest part of this manual and start reading at chapter <a class="internal" href="#next">5. Next Steps</a>.
+</p>
+
+<p>
+This guide describes how you can get the openMSX sources and compile them.
+The level of support for compilation depends on the operating system:
+</p>
+<dl>
+<dt>Linux</dt>
+<dd>
+Most openMSX developers run some form of Linux, so this is the platform on which compilation is supported best. Compilation instructions for Linux are mostly also valid for other UNIX-like operating systems.
+</dd>
+<dt>Windows</dt>
+<dd>
+Most Windows users will just download the binary release. But if you want to follow the latest developments or like to play with the code a bit, it is possible to compile Catapult on Windows yourself. The former main Catapult developer used mainly Windows, so compilation is very well supported on this platform as well. This manual gives a few pointers in the right direction for that.
+</dd>
+<dt>FreeBSD</dt>
+<dd>
+Catapult was compiled successfully on FreeBSD 4 and 5. FreeBSD is not a platform we support officially, but whenever a user finds compilation problems on FreeBSD, we fix them, so usually FreeBSD compilation should work.
+</dd>
+<dt>macOS</dt>
+<dd>
+Unfortunately, we have not been able to get Catapult working on macOS. There is a port of wxWidgets (the base of Catapult), but version 2.4 doesn't support toggle buttons yet and we did not get the menu working (amongst other things) with version 2.6 and after that we gave up. It may work just fine with 2.8 or 3.0, we don't know.
+</dd>
+<dt>Other operating systems</dt>
+<dd>
+Catapult theoretically can compile on every system where you have g++ (the C++ compiler of GCC) and the required libraries are available. However, in practice every system is slightly different and a new operation system will not work out-of-the-box. Still, it shouldn't take much effort to make Catapult build on a new OS.
+</dd>
+</dl>
+<p>
+If you need help compiling Catapult, please
+<a class="internal" href="#contact">contact us</a>.
+If you needed any modifications to make Catapult compile,
+please send those modifications to us,
+so we can make Catapult more portable.
+</p>
+
+<p>
+<em>Disclaimer:</em>
+We do not claim this guide is complete or even correct.
+What you do with the information in it is entirely at your own risk.
+We just hope it helps you enjoy Catapult (and with that openMSX) more.
+</p>
+
+<h3><a id="contrib">1.3. Contributors</a></h3>
+
+<p>
+The following people contributed to this document in one way or another:
+</p>
+<ul>
+<li>Herman Oudejans</li>
+<li>Manuel Bilderbeek</li>
+<li>Maarten ter Huurne</li>
+<li>Patrick van Arkel</li>
+<li>other openMSX developers</li>
+</ul>
+<p>
+Thanks to all of them!
+</p>
+
+<h3><a id="history">1.4. Revision History</a></h3>
+
+<p>
+This section gives an overview of the changes that were made to this document.
+It doesn't contain every single modification (use the Git log for that),
+only the big picture.
+</p>
+
+<dl>
+	<dt>2004-04-25 Herman Oudejans</dt>
+	<dd>Initial version based on the openMSX manuals by Manuel Bilderbeek, Jorrith Schaap and Maarten ter Huurne.</dd>
+	<dt>2004-10-04 Herman Oudejans</dt>
+	<dd>Added touch.exe to the compilation packages</dd>
+	<dt>2005-02-06 Herman Oudejans</dt>
+	<dd>Updated this manual for compilation with wxWidgets 2.5 and for compilation with MinGW.</dd>
+	<dt>2005-12-30 Manuel Bilderbeek</dt>
+	<dd>Updates for compilation with wxWidgets 2.6.</dd>
+	<dt>2009-04-26 Max Feingold</dt>
+	<dd>Updates for compilation with SVN and Visual C++.</dd>
+	<dt>2010-06-20 Max Feingold</dt>
+	<dd>Updates for compilation with Visual C++ 2010.</dd>
+	<dt>2013-08-05 Patrick van Arkel</dt>
+	<dd>Updates for compilation with Visual Studio 2012 and the use of Git.</dd>
+	<dt>2014-02-12 Manuel Bilderbeek</dt>
+	<dd>Let's stop keeping this revision history, just look at the <a class="external" href="https://github.com/openMSX/wxcatapult/commits/master/doc/manual/compile.html">Git Log</a>.</dd>
+</dl>
+
+<h2><a id="getsource">2. Getting the Source Code</a></h2>
+
+<p>
+Catapult is a sub-project of openMSX, developed using the tools <a
+class="external" href="http://github.com/">GitHub</a> freely
+offers to open source projects. The code is stored in Git, an open source
+version management system.
+Catapult is released at every openMSX release.
+</p>
+
+<p>
+There are several options for getting the source code:
+</p>
+
+<dl>
+
+<dt><a class="internal" href="#getrelease">Released Version</a></dt>
+<dd>
+These are tested versions, which should give you little problem compiling and running. However, they may not have all the latest features. Also there could be bugs that have been fixed since the last release. </dd>
+<dt><a class="internal" href="#getgit">Git Clone</a></dt>
+<dd>
+Through Git you can get the same development version the Catapult developers are using. This is the bleeding edge: the latest stuff, which may be great or may be horribly broken. Usually Catapult Git compiles and runs fine, but we're only human, so once in a while it breaks. Also there may be changes that are not documented yet. </dd>
+</dl>
+
+<p>Releases are intended for general users. It might be a good idea to play with a release first. If you like what you see and want to get in deeper, you can switch to Git later. If you update often, it is best to use a Git checkout rather than a Git snapshot, because with a checkout you can do efficient incremental updates, saving network bandwidth and compile time. </p>
+<p>If you downloaded a version that is either a lot older or a lot newer than this guide, it is a good idea to read the guide included in your downloaded version instead of the version you're reading right now. You can find the Compilation Guide in the directory <code>doc/manual</code>. </p>
+
+<h3><a id="getrelease">2.1. Released Version</a></h3>
+
+<p>
+You can download the latest released version of Catapult from <a class="external" href="http://openmsx.org/">our website</a> (check the Download box).
+</p>
+
+<p>
+After downloading, type:
+</p>
+<div class="commandline">tar xzvf Catapult-VERSION.tar.gz</div>
+<p>
+in which <code>VERSION</code> is the Catapult version you downloaded, or use the
+file name you saved the tar.gz file with.
+The directory that is created by uncompressing the <code>tar.gz</code> file is
+called the <em>top of the source tree</em>.
+</p>
+
+<p>
+Note: Windows doesn't natively support tar or gzip, but there are enough
+utilities available to decompress these sources anyway. Examples of such
+utilities are PowerArchiver 6.1 (free), Wiz (free), 7-Zip (free) or WinZip
+(commercial).
+</p>
+
+<h3><a id="getgit">2.2. Git Clone</a></h3>
+
+<p>
+Getting a Git clone means you use Git to retrieve the latest version
+of the source code of wxcatapult.
+This means you will need to install a Git client.
+This package is usually named <code>git</code>.
+There are graphical front-ends for Git,
+but this guide will tell you how to use Git from the command line. More information about git can be found on the <a class="external"
+href="http://git-scm.com/documentation">Git Documentation</a> site.</p>
+<p>
+Windows
+users might want to look at <a class="external" href="http://code.google.com/p/msysgit/downloads/list?q=full+installer+official+git">msysGit</a> for a command line tool, <a class="external" href="http://code.google.com/p/tortoisegit/">TortoiseGit</a> for Windows Explorer integration, or <a class="external" href="http://code.google.com/p/gitextensions/">Git Extensions</a>, which also includes Visual Studio integration.
+</p>
+
+<p>
+With the following line (which is also displayed when you <a class="external" href="https://github.com/openMSX">browse an openMSX Git repository</a>) you can retrieve the latest sources (also works on Windows when using msysGit):
+</p>
+<div class="commandline">
+git clone https://github.com/openMSX/wxcatapult.git openmsx-wxcatapult
+</div>
+<p>
+In this line you specified where you want to retrieve the files from
+(host name of the Git server),
+what project you want to retrieve (<em>openMSX</em> in this case), what
+module you want to get (<em>wxcatapult.git</em> in this case, which is the module that contains
+the sources of the wxcatapult program) and what directory it should be
+cloned to (we chose <em>openmsx-wxcatapult</em> in this example).
+</p>
+
+<p>
+When compiling wxcatapult on Windows with GCC, it's often convenient to use <code>C:\MinGW\msys\1.0\home\&lt;username&gt;\openmsx-wxcatapult</code>
+as the target directory, as this is easy to reach from your MinGW Shell - it's
+your MinGW home directory.
+</p>
+
+<p>
+If you're a developer, it makes sense to use this Git commandline:
+</p>
+<div class="commandline">
+git clone git@github.com:openMSX/wxcatapult.git openmsx-wxcatapult
+</div>
+
+<p>
+For this to work smoothly, without having to type your password all the time, it's probably a good idea to <a class="external" href="https://help.github.com/articles/generating-ssh-keys/#platform-all">read the GitHub docs about SSH keys</a>.
+</p>
+
+<p>
+The Git command created a directory called <code>openmsx-wxcatapult</code> for you
+in the current directory (or in the directory you specified in TortoiseGit).
+This directory is what we will call in this manual <em>the top
+of the source tree</em>.
+In addition to the wxcatapult code, you will see a hidden
+Git administration directory called <code>.git</code>.
+Do not mess with it (nor move contents of this directory around), otherwise Git will get confused.
+</p>
+
+<p>
+If you want to update your source tree later,
+go to the top of the source tree and type:
+</p>
+<div class="commandline">
+git pull
+</div>
+<p>
+or right click on the openmsx-wxcatapult directory in Windows Explorer and select "TortoiseGit -&gt; Pull...".
+</p>
+
+<h2><a id="compile">3. Compilation</a></h2>
+
+<p>
+Before you can start compiling Catapult, you have to make sure your system has
+all the necessary build tools installed, as well as the libraries Catapult
+depends upon. The former you have probably already done if you have compiled
+openMSX itself before Catapult.
+The following sections list the packages you need.
+</p>
+
+<h3><a id="tools">3.1. Build Tools</a></h3>
+
+<p>For compilation, you need <a href="http://www.python.org/download/">Python</a>, a C++ compiler, and some compiler-specific programs. If you have compiled packages from source before, you probably some of have these installed already.</p>
+<dl>
+	<dt><a href="http://www.python.org/download/">Python</a></dt>
+	<dd>A compact and dynamic programming language. The latest version should work fine.</dd>
+	<dt>C++ compiler</dt>
+	<dd>There are two compilers that are can be used to build Catapult: mingw msys's gcc and Visual C++. The gcc compiler builds Catapult on all supported platforms, while Visual C++ is an alternative option on Windows.</dd>
+</dl>
+<h4>gcc</h4>
+<p>
+For compilation in Linux, you need Make and a C++ compiler.
+If you have compiled packages from source before (like openMSX), you probably
+have these installed already.
+</p>
+
+<dl>
+
+<dt>make</dt>
+<dd>GNU implementation of the Make tool.
+Make interprets rules that define how a project should be built.</dd>
+
+<dt>g++</dt>
+<dd>The GNU C++ compiler.
+Version 3.2 or later is necessary;
+2.95 is not supported for openMSX, so we also don't support it for
+Catapult. To be on the safe side: we recommend 3.4 or later.</dd>
+
+</dl>
+
+<p>
+For compilation in Windows you will need the combination of Minimal System (msys) and Minimalist GNU for Windows (MinGW).
+This is the same combination that is needed to compile openMSX on Windows.
+Although compilation works, the generated executable will be larger than the
+binary released version (which is compiled with Visual C++) and will also need the MinGW runtime DLL.
+</p>
+
+<h4>Visual Studio Community 2017</h4>
+<p>Use this way to obtain the Visual C++ compiler:</p>
+<dl>
+    <dt><a class="external" href="https://www.visualstudio.com/downloads/">Visual Studio Community 2017</a></dt>
+    <dd>
+        This is a free (as in beer) IDE and development environment. It builds 32 and 64-bit
+        binaries out of the box. This is the best option for developers looking to browse
+        the source code or use other benefits of an IDE.</dd>
+</dl>
+	<p>To build with Visual C++ from the command line, you need to open a Visual Studio command prompt. A shortcut for this can usually be found in your start menu.</p>
+<p>When building with Visual C++, the result is a static executable with minimal dynamic library dependencies. Two platforms are supported:</p>
+<ul>
+	<li>Win32 - a 32-bit binary that runs on both 32 and 64-bit versions of Windows</li>
+	<li>x64 - a 64-bit binary that runs only on 64-bit versions of Windows</li>
+</ul>
+<p>Two different configurations are supported:</p>
+<ul>
+	<li>Unicode Debug: assertions enabled, no optimization</li>
+	<li>Unicode Release: assertions disabled, full optimization</li>
+</ul>
+
+<h3><a id="libs">3.2. Libraries</a></h3>
+
+<p>
+Catapult depends on a few libraries.
+Using Linux you must have the runtime packages of these libraries installed to
+be able to run Catapult.
+The runtime package for the "Foo" library is typically called
+<code>libfoo</code>.
+Also, for compiling Catapult you need the development packages of these
+libraries installed as well.
+Development packages are typically named <code>libfoo-dev</code> or
+<code>libfoo-devel</code>. Windows users need to have the proper DLL's installed
+(<code>foo.dll</code>) to be able to run Catapult.
+Compiling in Windows means that you also need the lib-files
+(<code>foo.lib</code>).
+</p>
+
+<p>
+If there are no binary versions of the required libraries available for
+your system or you rather compile them yourself, please see the next section
+for a few hints about compiling them from their sources.
+</p>
+<p>Catapult depends on the following libraries: </p>
+<dl>
+	<dt><a class="external" href="http://www.wxwidgets.org/">wxWidgets</a></dt>
+	<dd>Formerly known as wxWindows, this is a cross-platform C++ GUI toolkit. </dd>
+	<dt><a class="external" href="http://www.xmlsoft.org/">libxml2</a></dt>
+	<dd>XML C library, originally developed for GNOME.</dd>
+</dl>
+<h4>Debian Linux</h4>
+<p>
+On a Debian testing system, the packages are called:
+</p>
+
+<dl>
+<dt>libwxgtk3.0-0v5</dt>
+<dd>This is the main runtime wxWidgets library</dd>
+
+<dt>libwxgtk3.0-dev</dt>
+<dd>This package contains the necessary headers to compile.</dd>
+<dt>libxml2 and libxml2-dev</dt>
+<dd>XML C library, originally developed for GNOME.</dd>
+</dl>
+
+<p>
+Although other versions are available, we recommend to use wxWidgets 3.0, as we haven't tested much with other versions.</p>
+
+<h4>Microsoft Windows</h4>
+<p>
+Get the source code for wxWidgets. Version <a href="https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.zip">3.0.4</a> is what we used, so that's recommended. Please read the next section for instructions for compiling wxWidgets from source.
+</p>
+
+<p>For Windows, version <a href="http://www.xmlsoft.org/sources/libxml2-2.8.0.tar.gz">2.8.0</a> of libxml2 is recommended.</p>
+<p>Unpack the source packages into the derived\3rdparty\src directory. This will generate a subdirectory called libxml2-2.8.0.</p>
+<p>For wxWidgets, unzip the sources somewhere else. For Windows, the compilation inside the 3rdparty folder is not supported at the moment.
+</p>
+
+
+<h3><a id="complibs">3.3. Compilation of the Libraries</a></h3>
+
+<p>
+For some distributions it's necessary to manually compile the libraries. This
+section gives a few pointers to get it to work. It's not intended to be a
+substitute for the documentation supplied with the libraries. The wxWidgets
+sources can be found at <a class="external" href="http://www.wxwidgets.org/">
+wxWidgets Home</a> and the libxml2 sources are available at
+<a class="external" href="http://www.xmlsoft.org">Libxml2 Home</a>.
+</p>
+
+<p>Building the libxml2 library should be easy enough with the docs available. You can also use the libraries that are built in openMSX using the staticbindist method.
+</p>
+<h4>gcc</h4>
+<p>Compilation of wxWidgets couldn't be more straightforward. The docs provided
+are easy to follow and it takes only a few steps. There is no need to give
+any pointers here about this library as its documentation says exaclty how to compile it.
+We do give the proper <code>configure</code> command line here (although some options might be already default):
+</p>
+
+<div class="commandline">mkdir build-openmsx-catapult<br>
+cd build-openmsx-catapult<br>
+../configure --disable-shared --disable-unicode --enable-xrc --enable-controls --with-msw<br>
+make<br>
+make install</div>
+
+<h4>Visual Studio</h4>
+	<p>The following steps build third-party libraries with Visual C++:</p>
+
+		<ul>
+			<li>Open a Visual Studio command prompt.</li>
+			<li>Go to the <em>top of the Catapult source tree</em></li>
+		</ul>
+	<p>for 32-bit</p>	
+		<ul>
+			<li><code>call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86</code></li>
+			<li><code>msbuild -p:Configuration=&quot;<strong>Unipre Release</strong>&quot;;Platform=<strong>Win32</strong> build\3rdparty\3rdparty.sln</code></li>
+		</ul>
+	<p>for 64-bit</p>
+		<ul>		
+			<li><code>call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64</code></li>
+			<li><code>msbuild -p:Configuration=&quot;<strong>Unipre Release</strong>&quot;;Platform=<strong>x64</strong> build\3rdparty\3rdparty.sln</code></li>
+		</ul>
+
+<p>To build for other platforms or configurations, simply replace &quot;Unipre Release&quot; and &quot;Win32&quot; in the command lines above with the desired options, which are explained above.</p>
+<p>It is worth noting that running <code>msbuild</code> from a command line is exactly equivalent to opening the respective solution files in Visual Studio and compiling the projects inside them using the IDE.</p>
+<p>Note that there seems to be confusion on where the <code>vcvarsall.bat</code> is located... Microsoft documented it in <a href="https://docs.microsoft.com/nl-nl/cpp/build/setting-the-path-and-environment-variables-for-command-line-builds">this help page</a>, but <a href="https://stackoverflow.com/questions/43372235/vcvarsall-bat-for-visual-studio-2017">other people seem to disagree</a>... Please check what is applicable for your case.</p>
+
+<p>
+For now, wxWidgets has to extracted to <code>derived\3rdparty\src\wxWidgets-3.0.4</code> (yes, that version and that specific location, otherwise the compiler won't find the include files for the library) and be built manually, after which the results must be manually copied to the proper place in the 3rdparty tree. Here are the steps with a Visual Studio command prompt in the location where the wxWidgets source files were unzipped (<code>derived\3rdparty\src\wxWidgets-3.0.4</code>).
+</p>
+	<p>For 32-bit</p>	
+		<ul>
+			<li><code>call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86</code></li>
+			<li><code>nmake /f makefile.vc BUILD=release TARGET_CPU=x86 RUNTIME_LIBS=static</code></li>
+		</ul>
+	<p>For 64-bit</p>
+		<ul>		
+			<li><code>call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64</code></li>
+			<li><code>nmake /f makefile.vc BUILD=release TARGET_CPU=X64 RUNTIME_LIBS=static</code></li>
+		</ul>
+<p>
+Then copy the results to the Catapult build specific 3rdparty folder. E.g. for 64-bit, copy the contents of <code>lib\vc_x64_lib</code> to <code>derived\x64-VC-Unicode Release\3rdparty\install\lib\</code>.
+</p>
+
+<h3><a id="compilenow">3.4. Compilation of Catapult Itself</a></h3>
+
+<h4>gcc</h4>
+
+<p>
+We have made compilation of Catapult itself as easy as possible. In most cases
+Linux or msys users only have to open a shell, go to the top of the source tree and
+type:
+</p>
+
+<div class="commandline">make</div>
+<p>
+You can build different flavours by setting the <code>CATAPULT_FLAVOUR</code> environment variable.
+The following values are supported:
+</p>
+<dl>
+<dt>debug</dt>
+<dd>No optimization and full debug symbols</dd>
+<dt>devel</dt>
+<dd>Some optimization but still full debug symbols available (this is the recommended flavour for testing)</dd>
+<dt>opt</dt>
+<dd>Fully optimized and no debug symbols (this is the default flavour)</dd>
+</dl>
+
+<p>
+Depending on how fast your system is, this may take several seconds to several minutes.
+</p>
+
+<p>
+If you get errors during compilation, verify that you installed <a
+class="internal" href="#libs">all required libraries</a>, both the run time and
+development packages.
+If that doesn't help, or we forgot to list a library Catapult depends on, <a
+class="internal" href="#contact">contact the openMSX developers</a>.
+Make sure you provide us with the error message(s) you got.
+</p>
+
+<h4>Visual Studio</h4>
+<p>The following steps build Catapult with Visual Studio:</p>
+<ul>
+	<li>Open a Visual Studio command prompt.</li>
+	<li>Go to the <em>top of the Catapult source tree</em></li>
+</ul>
+
+<p>for Win32</p>	
+<ul>
+	<li><code>call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86</code></li>
+	<li><code>msbuild -p:Configuration=&quot;<strong>Unicode Release</strong>&quot;;Platform=<strong>Win32</strong> build\msvc\wxCatapult.sln</code></li>
+</ul>
+<p>for Win64</p>
+<ul>		
+	<li><code>call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64</code></li>
+	<li><code>msbuild -p:Configuration=&quot;<strong>Unicode Release</strong>&quot;;Platform=<strong>x64</strong> build\msvc\wxCatapult.sln</code></li>
+</ul>
+
+<p>To build for other platforms or configurations, simply replace &quot;Unicode Release&quot; and &quot;Win32&quot; in the command lines above with the desired options. Note: the options should be consistent with the ones you provided for the 3rdparty libraries build, see above!</p>
+<p>It is worth noting that running <code>msbuild</code> from a command line is exactly equivalent to opening the respective solution files in Visual Studio and compiling the projects inside them using the IDE.</p>
+<p>Note that there seems to be confusion on where the <code>vcvarsall.bat</code> is located... Microsoft documented it in <a href="https://docs.microsoft.com/nl-nl/cpp/build/setting-the-path-and-environment-variables-for-command-line-builds">this help page</a>, but <a href="https://stackoverflow.com/questions/43372235/vcvarsall-bat-for-visual-studio-2017">other people seem to disagree</a>... Please check what is applicable for your case.</p>
+
+<h2><a id="install">4. Installation</a></h2>
+
+<p>
+To install Catapult in Linux, run the following command:
+</p>
+<div class="commandline">
+make install
+</div>
+<p>
+This installs Catapult, by default in <code>/opt/openMSX-Catapult</code>.
+You can change this location by modifying the <code>config.mk</code> file.
+Note that only root has rights to write to system-wide directories such as
+<code>/opt</code>, so you may have to do <code>su</code> before <code>make
+install</code>.
+</p>
+
+<p>
+Catapult has no individual installation system on Windows, so it's up to you
+to make sure the files are in the right directory. Please follow these pointers
+to make sure it should work:
+</p>
+<ul>
+	<li>The resources (XRC) should be in the directory (relative from
+<code>Catapult.exe</code>) <code>..\resources\dialogs</code></li>
+<li>The bitmaps (png) should be in the directory (also relative
+from <code>Catapult.exe</code>) <code>..\resources\bitmaps</code></li>
+</ul>
+	<h4>gcc</h4>
+
+<ul>
+<li><code>Catapult.exe</code> and <code>libxml2.dll</code> (or <code>libxml2-2.dll</code>) should be in the same directory
+or <code>libxml2.dll</code> should be somewhere in your path</li>
+<li>The same goes for <code>mingwm10.dll</code>, when compiling with MinGW</li>
+</ul>
+	<h2><a id="next">5. Next Steps</a></h2>
+
+<p>
+If all went well, you should have Catapult installed now.
+You can test it by starting Catapult from the command line:
+</p>
+<div class="commandline">
+catapult
+</div>
+<p>or by double clicking the icon in Windows.</p>
+
+<p>
+Using Catapult should be intuitive, but if it's not, please read the <a
+class="external" href="user.html">Catapult User's Manual</a>. This should give a
+complete description on how to use Catapult.
+</p>
+
+<p>
+If you got stuck somewhere in the compilation and installation process, please
+contact us. The next chapter will tell you how.
+</p>
+
+<h2><a id="contact">6. Contact Info</a></h2>
+
+<p>
+Feedback and bug reports are always very welcome!
+</p>
+
+<p>
+If you encounter problems, you have several options:
+</p>
+
+<ol>
+<li>
+Go to our IRC channel: <code>#openMSX</code> on <code>irc.freenode.net</code>
+and ask your question there. Also reachable via <a class="external" href="http://webchat.freenode.net/?channels=openMSX">webchat</a>! If you don't get a reply immediately, please stick around for a while, or use one of the other contact options. The majority of the developers lives in time zone GMT+1. You may get no response if you contact them in the middle of the night...
+</li>
+<li>
+Post a message on <a class="external" href="http://www.msx.org/forum/semi-msx-talk/openmsx">the openMSX forum on MRC</a>.
+</li>
+<li>
+Contact us and other users via one of the mailing lists. If you're a regular user and want to discuss openMSX and possible problems,
+join our <code>openmsx-user</code> mailing list.
+If you want to address the openMSX developers directly,
+post a message to the <code>openmsx-devel</code> mailing list.
+More info on the
+<a class="external" href="https://sourceforge.net/p/openmsx/mailman">openMSX mailing lists</a>,
+including an archive of old messages, can be found at SourceForge.
+</li>
+<li>
+Create a new issue in the
+<a class="external" href="https://github.com/openMSX/openMSX/issues">openMSX issue tracker</a>
+on GitHub.
+You need a (free) log-in on GitHub to get access.
+</li>
+</ol>
+
+<p>
+In all cases, please provide as much information as possible when you describe your
+bug or request.
+</p>
+
+<h4>gcc</h4><p>For experienced users: if you get a crash or a hang,
+try to provide a <code>gdb</code> backtrace.
+This will only work if you did not strip the openMSX binary
+of its debug symbols.</p>
+
+<p>Another useful thing to do is to install the debug versions of libstdc++ and libc6,
+and then run openmsx with an <code>LD_LIBRARY_PATH=/usr/lib/debug</code> exported in the environment.
+This will give a more detailed stacktrace, especially in optimized code.
+</p>
+
+<h4>Visual C++</h4><p>For experienced users: if you get a crash or a hang,
+try to provide a user dump. This will work for any openMSX binary, including
+pre-built binaries obtained from <a class="external" href="http://www.openmsx.org/">www.openmsx.org</a>.</p>
+<p>As of Windows Vista SP1 and later operating systems, you can find user dump files for crashed processes
+in the &quot;%LocalAppData%\CrashDumps&quot; directory. The default Windows crash dump
+behavior can be further customized as per
+<a href="http://msdn.microsoft.com/en-us/library/bb513638(VS.85).aspx">MSDN</a>.</p>
+<p>To generate a user dump on demand on any Windows OS, please read
+<a class="external" href="http://support.microsoft.com/kb/286350">KB286350</a>.</p>
+
+</body>
+</html>

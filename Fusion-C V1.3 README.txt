@@ -1,0 +1,20 @@
+FUSION-C 1.3                                         EBSOFT - 2020
+
+
+This version comes with the support of GFX9000/V9990 's graphic cartridge, and TCPIP Protocole for the Gr8NET Cartridge
+Both in beta version. There is no documentation available right now. 
+Please take a look inside definition files :
+- fusion-c/header/g9klib.h
+- fusion-c/header/gr8net-tcpip.h
+
+V1.3 adding 54 new functions for a total of 297 functions available,
+including,  new interruption, a very fast Paint function for MSX2,
+new Pset for MSX1, 300% faster than previously, new fast VDP actions for the MSX2,
+support of interlace mode, also screen mode up to 12 for the MSX2+ and Turbo-r are supported, 
+pattern rotation functions and many more ...
+Also, introducing new System Variables, a Sprite Path, and Sprite Creation Tools.
+
+
+
+Thank you.
+Eric
