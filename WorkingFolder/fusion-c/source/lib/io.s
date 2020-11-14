@@ -44,7 +44,7 @@
 ;	OpenAttrib
 ;	Close
 ;	Create
-;	CreateAttrib
+;	CreateAttrib 
 ;	Read
 ;	Write
 ;	Lseek 
@@ -58,7 +58,7 @@
 ;	FindFirst
 ;	FindNext 
 ;
-;
+; 
 
 	.area _CODE
 ;--- proc FCBs

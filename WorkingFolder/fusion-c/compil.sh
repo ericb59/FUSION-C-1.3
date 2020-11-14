@@ -21,7 +21,7 @@
 #  It also start the openMSX emulator if it isn't already started
 # 
 # 
-#
+# 
 # -- Self Path Indentifer. Do not change this part of the script
 pushd . > /dev/null
 SCRIPT_PATH="${BASH_SOURCE[0]}";
@@ -49,6 +49,8 @@ export ASM=sdasz80
 export CC=sdcc 
   # -- Override default value is activated by default. 1:Activated  0:deactivated
 export CHECK_OVERRIDE=1
+  # -- Copy Temps files to Out folder (The folder will be created in WorkingFolder) 1: YES   0: No
+export OUT_SAVE=1
   
   #-- Where to save compilation temps files (may be usefull for debugging)
 export OUT_DIR=$PARRENT_DIR/out/  
@@ -58,6 +60,8 @@ export INCLUDE_DIR=$CURRENT_DIR/include/
 export HEADER_DIR=$CURRENT_DIR/header/
   #-- Where to find the Dynamic Library
 export LIB_DIR=$CURRENT_DIR/lib/
+  # -- DefaultMSWODS Stock Dir
+export MSXDOS_DIR=$CURRENT_DIR/source/
   # -- Default CRT0 ton use
 export DEFAULT_CRT0="${INCLUDE_DIR}crt0_msxdos.rel"
   # -- Default Code Address (sdcc parameter)
@@ -78,14 +82,18 @@ export DEFAULT_DEST_HDA="dsk/hda-1/"
 export DEFAULT_EXTENSION=com
   #-- Print on concole the full compilation command line (for controle or debug purpose) 1:Medium 2:Full  0:deactivated
 export DEFAULT_VERBOSE=2
+  # -- Which version of MSX-DOS to use.  1:MSX-DOS1   2:MSX-DOS2  0:Do not change current MSXDOS file in Destination folder
+export DEFAULT_MSXDOS=0
 
-
-if [ -d "$OUT_DIR" ]; then
-  ### Take action if $DIR exists ###
-  echo "Installing config files in ${DIR}..."
-else
-  ###  Control will jump here if $DIR does NOT exists ###
-  mkdir $OUT_DIR
+if [ "${OUT_SAVE}" = "1" ];
+then 
+    if [ -d "$OUT_DIR" ]; then
+      ### Take action if $DIR exists ###
+      echo ""
+    else
+      ###  Control will jump here if $DIR does NOT exists ###
+      mkdir $OUT_DIR
+    fi
 fi
 
   # -- Other .rel you may have to include to your code
@@ -128,6 +136,7 @@ then
     AUTOEXEC_Identifier="__SDK_AUTOEXEC__"
     EXT_Identifier="__SDK_EXT__"
     VERBOSE_Identifier="__SDK_VERBOSE__"
+    MSXDOS_Identifier="__SDK_MSXDOS__"
 
     OPTIMIZATION_VAR=`cat $1 |tr -s ' ' | grep "\#define ${OPTIMIZATION_Identifier}" | cut -d" " -f 3  | tr -d '\r\n,'`
     MSXVER_VAR=`cat $1 | tr -s ' ' | grep "\#define ${MSXVERSION_Identifier}" | cut -d" " -f 3 | tr -d '\r\n,'`
@@ -138,6 +147,7 @@ then
     AUTOEXEC_VAR=`cat $1 | tr -s ' ' | grep "\#define ${AUTOEXEC_Identifier}" | cut -d" " -f 3 | tr -d '\r\n,'`
     EXT_VAR=`cat $1 | tr -s ' ' | grep "\#define ${EXT_Identifier}" | cut -d" " -f 3 | tr -d '\r\n,'`
     VERBOSE_VAR=`cat $1 | tr -s ' ' | grep "\#define ${VERBOSE_Identifier}" | cut -d" " -f 3 | tr -d '\r\n,'`
+    MSXDOS_VAR=`cat $1 | tr -s ' ' | grep "\#define ${MSXDOS_Identifier}" | cut -d" " -f 3 | tr -d '\r\n,'`
 
 fi
 # -- END Of Override Checks --
@@ -218,7 +228,13 @@ then
 else
     export DEST=${DEST_VAR}
 fi
-
+# -- Set MSXDOS version to use --
+if [ -z "${MSXDOS_VAR}" ];
+then 
+    MSXDOS=${DEFAULT_MSXDOS}
+else
+    MSXDOS=${MSXDOS_VAR}
+fi
 
 # --
 if [ "${VERBOSE_COMPILATION}" = "0" ];
@@ -233,8 +249,7 @@ else
   echo ": Lib Dir:      ${LIB_DIR}"
   echo ": Source code:  ${prog}"
   echo ": Dest Folder:  ${DEST}"
-  echo ": Autoexec:     ${AUTOEXEC}"
-  echo ": MSX Script:   ${MSXVER}"
+  echo ": MSX: ${MSXVER} MSXDOS: ${MSXDOS} Autoexec: ${AUTOEXEC}"
   echo "_____________________________________________________"
 fi
 
@@ -272,20 +287,39 @@ then
 	 exit 0
 fi
 
+if [ "${MSXDOS}" = "1" ];
+then 
+      rm -f ${DEST}COMMAND2.COM
+      rm -f ${DEST}MSXDOS2.SYS
+      cp -f ${MSXDOS_DIR}/dos1_stock/COMMAND.COM  ${DEST}
+      cp -f ${MSXDOS_DIR}/dos1_stock/MSXDOS.SYS  ${DEST}
+fi
+
+if [ "${MSXDOS}" = "2" ];
+then 
+      rm -f ${DEST}COMMAND.COM
+      rm -f ${DEST}MSXDOS.SYS
+      cp -f ${MSXDOS_DIR}/dos2_stock/COMMAND2.COM  ${DEST}
+      cp -f ${MSXDOS_DIR}/dos2_stock/MSXDOS2.SYS  ${DEST}
+fi
+
 
 echo "[3/5]... Copying ${prog}.${EXTENSION} to ${DEST}"
 cp -f ${prog}.${EXTENSION}  ${DEST}
 
 echo "[4/5]... Removing temps files..."
-cp -f ${PARRENT_DIR}/${prog}.com ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.asm ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.ihx ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.lk ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.lst ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.map ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.noi ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.sym ${OUT_DIR}
-cp -f ${PARRENT_DIR}/${prog}.rel ${OUT_DIR}
+if [ "${OUT_SAVE}" = "1" ];
+then 
+    cp -f ${PARRENT_DIR}/${prog}.com ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.asm ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.ihx ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.lk ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.lst ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.map ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.noi ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.sym ${OUT_DIR}
+    cp -f ${PARRENT_DIR}/${prog}.rel ${OUT_DIR}
+fi
 
 rm ${PARRENT_DIR}/${prog}.com
 rm ${PARRENT_DIR}/${prog}.asm

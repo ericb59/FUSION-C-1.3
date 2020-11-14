@@ -12,7 +12,7 @@ filepool add -path ./openMSX/ -types disk
 # _______________________________________________________________________________________
 
 # -- Set The MSX Machine to emulate
-variable MSX_MACHINE Philips_NMS_8255 
+variable MSX_MACHINE Panasonic_FS-A1WSX 
 
 # -- Use Musical Memory Cartridge to have 1024K of RAM : 1=on 0=off
 variable USE_MEMORY_1024K 1
@@ -21,7 +21,7 @@ variable USE_MEMORY_1024K 1
 variable USE_GFX9000 0
 
 # -- Use FM PAC FM Cartridge : 1=on 0=off
-variable USE_FMPAC 1
+variable USE_FMPAC 0
 
 # -- Use SCC+ Cartridge : 1=on 0=off
 variable USE_SCC 1
