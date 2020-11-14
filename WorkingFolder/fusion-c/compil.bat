@@ -1,5 +1,4 @@
-
-@echo off
+@echo off >nul: 2>nul:
 REM  ___________________________________________________________
 REM /               __           _                              \
 REM |              / _|         (_)                             |
@@ -11,7 +10,7 @@ REM |               The MSX C Library for SDCC                  |
 REM |                  V1.3 - November 2020                     |
 REM |                                                           |
 REM |                         compil.bat                        |
-REM |              C ompilation Script for Windows              |
+REM |               Compilation Script for Windows              |
 REM |                      Script version 1.1                   |
 REM \___________________________________________________________/
 REM 
@@ -20,7 +19,7 @@ REM   It generate an MSX DOS executable file ready to be launch on a MSX Compute
 REM   It also start the openMSX emulator if it isn't already started
 REM
 setlocal EnableDelayedExpansion
-
+ 
 rem # -- Self Path Indentifer. Do not change this part of the script
 set SCRIPT_NAME=%~nx0
 set CURRENT_DIR=%~dp0
@@ -42,13 +41,20 @@ rem 	# -- Name of the C Compiler excutable
 set CC=sdcc 
 rem 	# -- Override default value is activated by default. 1:Activated  0:deactivated
 set CHECK_OVERRIDE=1
+rem 	# -- Copy Temps files to Out folder (The folder will be created in WorkingFolder) 1: YES   0: No
+set OUT_SAVE=1
 
+
+rem  #-- Where to save compilation temps files (may be usefull for debugging)
+set OUT_DIR=!PARENT_DIR!\out\
 rem 	#-- Where to find .rel files to include during the compilation
 set INCLUDE_DIR=%CURRENT_DIR%include\
 rem 	#-- Where to find Fusion-c's definition files
 set HEADER_DIR=%CURRENT_DIR%header\
 rem 	#-- Where to find the Dynamic Library
 set LIB_DIR=%CURRENT_DIR%lib\
+rem  # -- DefaultMSWODS Stock Dir
+set MSXDOS_DIR=%CURRENT_DIR%source\
 rem 	# -- Default CRT0 ton use
 set DEFAULT_CRT0=%INCLUDE_DIR%crt0_msxdos.rel
 Rem 	# -- Default Code Address -sdcc parameter-
@@ -69,11 +75,15 @@ rem  	# -- Default extension for the compiled program
 set DEFAULT_EXTENSION=com
 rem 	#-- Print on concole the full compilation command lines and etails -for controle or debug purpose-1:Medium 2:Full  0:deactivated
 set DEFAULT_VERBOSE=2
+rem  # -- Which version of MSX-DOS to use.  1:MSX-DOS1   2:MSX-DOS2  0:Do not change current MSXDOS file in Destination folder
+set  DEFAULT_MSXDOS=0
 
-rem Same but with path : for %%f in ("%path%") do set path=%%~dpnf
+if "%OUT_SAVE%"=="1" (
+	rem Create OUT_DIR. If the folder already exists, no error will be print
+	mkdir %OUT_DIR% >nul: 2>nul:
+)
 
 rem 	# -- Other .rel you may have to include to your code
-
 REM SET INC1=%INCLUDE_DIR
 REM SET INC2=%INCLUDE_DIR
 REM SET INC3=%INCLUDE_DIR%
@@ -114,6 +124,7 @@ if "%CHECK_OVERRIDE%"=="1" (
 	set AUTOEXEC_Identifier=__SDK_AUTOEXEC__
 	set EXT_Identifier=__SDK_EXT__
 	set VERBOSE_Identifier=__SDK_VERBOSE__
+	set MSXDOS_Identifier=__SDK_MSXDOS__
 
 	for /F "delims=" %%a in ('findstr "!OPTIMIZATION_Identifier!"  %sourcefile%') do (
 		for /f "tokens=3" %%c in ("%%a") do set OPTIMIZATION_VAR=%%c
@@ -148,6 +159,9 @@ if "%CHECK_OVERRIDE%"=="1" (
 
 	for /F "delims=" %%a in ('findstr "!VERBOSE_Identifier!"  %sourcefile%') do (
 		for /f "tokens=3" %%c in ("%%a") do set VERBOSE_VAR=%%c
+	)
+	for /F "delims=" %%a in ('findstr "!MSXDOS_Identifier!"  %sourcefile%') do (
+		for /f "tokens=3" %%c in ("%%a") do set MSXDOS_VAR=%%c
 	)
 
 )
@@ -208,6 +222,13 @@ if "%EXT_VAR%"=="" (
 		set EXTENSION=%EXT_VAR%
 )
 
+rem # -- Set MSXDOS version to use --
+if "%MSXDOS_VAR%"=="" (
+		set MSXDOS=%DEFAULT_MSXDOS%
+) else (
+		set MSXDOS=%MSXDOS_VAR%
+)
+
 
 rem # -- Destination of final file --
 set DEST=%DEFAULT_DEST_DISK%
@@ -257,8 +278,7 @@ if "%VERBOSE_COMPILATION%"=="0" (
 	echo : Lib Dir:          %LIB_DIR%
 	echo : Source Code:      %PROG%
 	echo : Dest Folder:      %DEST%
-	echo : Autoexec:         %AUTOEXEC%
-	echo : MSX Script:       %MSXVER%
+	echo : MSX: %MSXVER%  MSXDOS: %MSXDOS%  Autoexec: %AUTOEXEC%
 	echo _____________________________________________________
 )
 
@@ -297,19 +317,45 @@ if not exist %prog%.%EXTENSION% (
 	goto _ending_
 )
 
+
+if "%MSXDOS%"=="1" (
+	  del /Q %DEST%COMMAND2.COM >nul: 2>nul:
+      del /Q %DEST%MSXDOS2.SYS >nul: 2>nul:
+      copy %MSXDOS_DIR%\dos1_stock\COMMAND.COM  %DEST% >nul: 2>nul:
+      copy %MSXDOS_DIR%\dos1_stock\MSXDOS.SYS  %DEST% >nul: 2>nul:
+) 
+if "%MSXDOS%"=="2" (
+	  del /Q %DEST%COMMAND.COM >nul: 2>nul:
+      del /Q %DEST%MSXDOS.SYS >nul: 2>nul:
+      copy %MSXDOS_DIR%\dos2_stock\COMMAND2.COM  %DEST% >nul: 2>nul:
+      copy %MSXDOS_DIR%\dos2_stock\MSXDOS2.SYS  %DEST% >nul: 2>nul:
+) 
+
 echo [3]... Copying %prog%.%EXTENSION% to %DEST%
-copy %prog%.com %DEST% >nul: 2>nul:
+copy %prog%.%EXTENSION% %DEST% >nul: 2>nul:
 
 echo [4]... Removing temps files...
-del %prog%.%EXTENSION%
-del %prog%.asm
-del %prog%.ihx
-del %prog%.lk
-del %prog%.lst
-del %prog%.map
-del %prog%.noi
-del %prog%.sym
-del %prog%.rel
+if "%OUT_SAVE%"=="1" (
+	copy %prog%.%EXTENSION% %OUT_DIR% >nul: 2>nul:
+	copy %prog%.asm %OUT_DIR% >nul: 2>nul:
+	copy %prog%.%ihx %OUT_DIR% >nul: 2>nul:
+	copy %prog%.lk %OUT_DIR% >nul: 2>nul:
+	copy %prog%.lst %OUT_DIR% >nul: 2>nul:
+	copy %prog%.map %OUT_DIR% >nul: 2>nul:
+	copy %prog%.noi %OUT_DIR% >nul: 2>nul:
+	copy %prog%.sym %OUT_DIR% >nul: 2>nul:
+	copy %prog%.rel %OUT_DIR% >nul: 2>nul:
+)
+
+del /Q %prog%.%EXTENSION% >nul: 2>nul:
+del /Q %prog%.asm >nul: 2>nul:
+del /Q %prog%.ihx >nul: 2>nul:
+del /Q %prog%.lk >nul: 2>nul:
+del /Q %prog%.lst >nul: 2>nul:
+del /Q %prog%.map >nul: 2>nul:
+del /Q %prog%.noi >nul: 2>nul:
+del /Q %prog%.sym >nul: 2>nul:
+del /Q %prog%.rel >nul: 2>nul:
 
 if "%AUTOEXEC%" == "1" (
 	echo %prog% > %DEST%/autoexec.bat

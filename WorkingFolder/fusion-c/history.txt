@@ -34,6 +34,7 @@ New, overriding compilation default parameters by #define directives
 		__SDK_AUTOEXEC__
 		__SDK_EXT__
 		__SDK_VERBOSE__
+		__SDK_MSXDOS__
 
 
 New, Fusion-C Environment variables	(msx_fusion.h)
