@@ -1,3 +1,3 @@
 {
-	  "cmd": ["$file_path\\fusion-c\\compil.bat", "$file_name"]
+	  "cmd": ["$file_path\\fusion-c\\build.bat", "$file_name"]
 }

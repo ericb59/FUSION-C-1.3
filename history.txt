@@ -15,10 +15,13 @@ New, Fast Paint and Fast Pset functions
 New, Debug possibilities with openMSX Debugger
 New, Interrupt handler management
 
-New, "Working Folder" Renamed to "WorkingFolder"
-New, compilation scripts moved to "WorkingFolder/fusion-c/" folder
+Change "Working Folder" Renamed to "WorkingFolder"
+Change, the makefile compilation script for MacOS removed, replaced by build.sh
+Change, compilation scripts renamed from compil.bat to build.bat 
+Change, compilation scripts moved to folder "WorkingFolder/fusion-c/"
+
+
 New, compilation script model code
-New, abandonment of the Makefile script. Replaced by compil.sh
 New, Microsoft Microsoft Visual Studio Code configuration
 New, MSX Hard Drive Support
 New, emulated drive folder are now placed in WorkingFolder/dsk/dska  ... /dskb/ ... /hda-1/ ... /hda-2/. Depending of the mass-storage chooses.

@@ -1,4 +1,4 @@
-{
-	"shell_cmd": "make CompFile=$file_name",
+{  
+	"shell_cmd": "./fusion-c/build.sh $file_name",
 	"working_dir": "$file_path"
 }
