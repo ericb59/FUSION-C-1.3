@@ -21,7 +21,7 @@
 * 
 *  definitions & descriptions by MSX Assembly Page
 *  For details see the WEB document at:  http://map.grauw.nl/resources/dos2_functioncalls.php
-*/
+*/ 
 
 
 // MSX System Variables v0.9 17/05/2018

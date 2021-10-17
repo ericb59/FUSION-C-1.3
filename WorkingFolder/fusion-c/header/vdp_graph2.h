@@ -38,13 +38,13 @@
 *	|			256 colours can be displayed at the same time	   |
 *	|			each color is unique and can't be changed (0 to 255|
 *	| Command:	high speed graphic by VDP command available	       |
-*	| Memory requirements: 64K from 0H to FFFFH for                 |
+*	| Memory requirements: 64K from 0H to FFFFH for                |
 *   |                      each of the 2 available pages       	   |
 *	|			    (8 bits x 256 x 256)				           |
 *	---------------------------------------------------------------------------- 
 *	
 */
-/*
+/* 
 VDP High speed commands are using the global system coordonates to adress the full 128KB of VRAM
 
 	  (SCREEN 5)                       				  (SCREEN 6)
@@ -106,7 +106,7 @@ VDP High speed commands are using the global system coordonates to adress the fu
 #define opUP    0b00001000
 
 
-// fLMMM and fVDP Struture
+//  fLMMM and fVDP Struture
 
 typedef struct {
 	unsigned int X;		// source X (0 to 511)
@@ -122,50 +122,65 @@ typedef struct {
 
 
 typedef struct {
-	unsigned int sx;		// source X (0 to 511)
-	unsigned int sy;		// source Y (0 to 1023)
-	unsigned int dx;		// destination X (0 to 511)
-	unsigned int dy;		// destination Y (0 to 1023) 
-	unsigned int nx; 		// width (0 to 511)
-	unsigned int ny; 		// height (0 to 511)
-	char col;				// color used by some commands. or 0 if not used
-	char di;				// Parameters set the direction. Example opDOWN | opRIGHT 
-	char cmd;				// VDP Command + Logical Operator : Like opLMMM | LOGICAL_XOR
+
+	unsigned int sx;		// source X (0 to 511)			R32 & 	R33
+	unsigned int sy;		// source Y (0 to 1023)			R34	&	R34
+	unsigned int dx;		// destination X (0 to 511)		R36	&	R37
+	unsigned int dy;		// destination Y (0 to 1023) 	R38	&	R39
+	unsigned int nx; 		// width (0 to 511)				R40	&	R41
+	unsigned int ny; 		// height (0 to 511)			R42	&	R43
+	unsigned char col;		// color used by some commands. R44	
+	unsigned char param;	// Parameters set the direction. Example opDOWN | opRIGHT 		R45
+	unsigned char cmd;		// VDP Command + Logical Operator : Like opLMMM | LOGICAL_XOR	R46
 } FastVDP;
 
-extern int		vMSX( void );																// 1-MSX1 , 2-MSX2  */
 
-extern	void	Pset( int X,  int Y,  char colour, int OP );								// puts pixel in (X,Y), logical OP=0 (just copy)  sends data to VDP chip directly */
-extern	char	Point( int X,  int Y ); 													// gets colour 0..15 of pixel at (X,Y)  */
-extern	void	Line( int x1,  int y1,  int x2,  int y2, char color, char OP );  			/* draws line (X1,Y)1-(X2,Y2), with logical operation*/
-extern  void 	BoxFill (int x1, int y1, int x2, int y2, char color, char op );				/* draws a filled rectangle (X1,Y1)-(X2,Y2), with logical operation and color */
-extern	void	BoxLine( int x1,  int y1,  int x2,  int y2, char color, char OP ); 			/* draws rectangle (X1,Y1)-(X2,Y2), with logical operation */
-extern  void 	Polygon(int num_vertices, int *vertices, char color, char OP);
+typedef struct {
+
+	unsigned int dx;		// destination X (0 to 511)		R36	&	R37
+	unsigned int dy;		// destination Y (0 to 1023) 	R38	&	R39
+	unsigned int nx; 		// width (0 to 511)				R40	&	R41
+	unsigned int ny; 		// height (0 to 511)			R42	&	R43
+	unsigned char col;		// color used by some commands. R44	
+	unsigned char param;	// Parameters set the direction. Example opDOWN | opRIGHT 		R45
+	unsigned char cmd;		// VDP Command + Logical Operator : Like opLMMM | LOGICAL_XOR	R46
+	unsigned int address;
+} FastCOPY;
+
+
+
+extern int		vMSX( void );																									// 1-MSX1 , 2-MSX2  */
+
+extern	void	Pset( unsigned int X,  unsigned int Y,  char colour, char OP);													// puts pixel in (X,Y), logical OP=0 (just copy)  sends data to VDP chip directly */
+extern	char	Point( unsigned int X,  unsigned int Y); 																		// gets colour 0..15 of pixel at (X,Y)  */
+extern	void	Line( unsigned int x1,  unsigned int y1,  unsigned int x2,  unsigned int y2, char color, char OP);  			/* draws line (X1,Y)1-(X2,Y2), with logical operation*/
+extern  void 	BoxFill (unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, char color, char op);				/* draws a filled rectangle (X1,Y1)-(X2,Y2), with logical operation and color */
+extern	void	BoxLine( unsigned int x1,  unsigned int y1,  unsigned int x2, unsigned int y2, char color, char OP); 			/* draws rectangle (X1,Y1)-(X2,Y2), with logical operation */
+extern  void 	Polygon(unsigned int num_vertices, unsigned int *vertices, char color, char OP);
 
 /* VDP COMMANDS
    Hight speed graphic commands for the VDP.
 */
-extern	void 	HMMC( void *pixeldata, int DX, int DY, int NX, int NY); 					// High speed copy from RAM buffer to VRAM (size = DX*DY), X=0..255,Y=0..211
-extern	void 	LMMC( void *pixeldata, int DX, int DY, int NX, int NY, char OP );			// Logical copy from RAM buffer to VRAM (size = DX*DY), X=0..255,Y=0..211
+extern	void 	HMMC( void *pixeldata, unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY); 							// High speed copy from RAM buffer to VRAM (size = DX*DY), X=0..255,Y=0..211
+extern	void 	LMMC( void *pixeldata, unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY, char OP);					// Logical copy from RAM buffer to VRAM (size = DX*DY), X=0..255,Y=0..211
 
-extern	void 	LMMM( int SX, int SY, int DX, int DY, int NX, int NY, char OP );			// High speed copy rectangle image with logical OP from VRAM to VRAM at (Xt,Yt) position
-extern	void 	HMMM( int SX, int SY, int DX, int DY, int NX, int NY);						// High speed copy rectangle image from VRAM to VRAM at (Xt,Yt) position
-extern	void 	YMMM( int DX, int SY, int DY, int NY);										// High speed copy of a part of image to another Y position (DY) Block to move start at XS,YS, Block lenght on X axis is 255-XS pixels, and high is NY pixels 
+extern	void 	LMMM( unsigned int SX, unsigned int SY, unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY, char OP);	// High speed copy rectangle image with logical OP from VRAM to VRAM at (Xt,Yt) position
+extern	void 	HMMM( unsigned int SX, unsigned int SY, unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY);			// High speed copy rectangle image from VRAM to VRAM at (Xt,Yt) position
+extern	void 	YMMM( unsigned int SX, unsigned int SY, unsigned int DY, unsigned int NY);												// High speed copy of a part of image to another Y position (DY) Block to move start at XS,YS, Block lenght on X axis is 255-XS pixels, and high is NY pixels 
 
-extern	void 	HMMV( int DX, int DY, int NX, int NY, char COL);							// High speed fill of a reactangle box
-extern	void 	LMMV( int DX, int DY, int NX, int NY, char COL, char OP);					// High speed fill of a reactangle box with logical operation
+extern	void 	HMMV( unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY, char COL);									// High speed fill of a reactangle box
+extern	void 	LMMV( unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY, char COL, char OP);							// High speed fill of a reactangle box with logical operation
 
-extern 	void 	LMCM8( void *buffer, int XS, int YS, int NX, int NY, char OP);				// Logical Move from VRAM to CPU Buffer (Made for screen modes 8 to 12)
-extern 	void 	LMCM5( void *buffer, int XS, int YS, int NX, int NY, char OP);				// Logical Move from VRAM to CPU Buffer (Made for screen modes 5 and 7)
+extern 	void 	LMCM8( void *buffer, unsigned int XS, unsigned int YS, unsigned int NX, unsigned int NY, char OP);						// Logical Move from VRAM to CPU Buffer (Made for screen modes 8 to 12)
+extern 	void 	LMCM5( void *buffer, unsigned int XS, unsigned int YS, unsigned int NX, unsigned int NY, char OP);						// Logical Move from VRAM to CPU Buffer (Made for screen modes 5 and 7)
 
-extern  void 	VDPLINE( int DX,  int DY, int NX,  int NY, int COL, char PARAM, char OP); 	// VDP Command to draw a line. Sub routine used by Line Fucntion
+extern  void 	VDPLINE( unsigned int DX,  unsigned int DY, unsigned int NX,  unsigned int NY, char COL, char PARAM, char OP); 			// VDP Command to draw a line. Sub routine used by Line Fucntion
 
-extern	void 	fLMMM( MMMtask *VDPtask ) __z88dk_fastcall __naked;													// fast copy by structure
+extern	void 	fLMMM( MMMtask *VDPtask ) __z88dk_fastcall __naked;							// fast copy by structure
 
-extern void  	fVDP(void *parameters)  __z88dk_fastcall  __naked;
-
-                                          				// Check if MSX2 VDP is ready (Internal Use)
-static void     VDPready() __naked
+extern void  	fVDP(void *Address)  __z88dk_fastcall  __naked;								// Fast VDP Command function by structure
+                                          				
+static void     VDPready() __naked															// Check if MSX2 VDP is ready (Internal Use)
 { 
 __asm 
     checkIfReady:
@@ -174,12 +189,12 @@ __asm
     ld  a,#128+#15
     out (#0x99),a
     in  a,(#0x99)
-    and #1
-    jp  nz, checkIfReady            ; wait
-    xor a
+   	rra						; check CE (bit#0)
+    ld	a, #0				
     out (#0x99),a
     ld  a,#128+#15
     out (#0x99),a
+    jp		c, checkIfReady
     ret
 __endasm; 
 }

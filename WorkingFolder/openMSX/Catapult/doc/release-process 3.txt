@@ -1,0 +1,68 @@
+openMSX Catapult Release Process
+================================
+
+This is a kind of recipe for doing releases. Having it written down
+decreases the chance of forgetting a small but crucial step during the
+hectic work of getting a release out.
+
+Preparing for a release
+-----------------------
+
+- Tell all developers to commit only fixes.
+- Verify the documentation is up-to-date.
+  Currently most documentation is in "doc".
+- Write release notes in "doc/release-notes.txt".
+- Add the change list to "doc/release-history.txt".
+
+Creating a release candidate
+----------------------------
+
+- If you're creating the very first release candidate for this release, use a
+  version number that ends with -rc1, so 1.2.3-rc1. Only the final release will
+  be without the -rc suffix (in both tag and version numbers.)
+- Update the copyright year in src/catapult.rc and src/wxCatapultFrm.cpp
+- Edit the version number in build/version.mk:
+    VERSION=1.2.3
+  The version should be the version of openMSX for which this Catapult
+  release is intended.
+  Set RELEASE_FLAG to true.
+- Update build/version.py similar to build/version.mk.
+- Update the release date in "doc/release-notes.txt" and
+  "doc/release-history.txt".
+- Don't forget to commit and push all these last changes before tagging!
+- Tag the git archive:
+  git tag -a RELEASE_1_2_3 -m "Tagging release 1.2.3."
+  git push --tags
+- Get the tagged code from this URL:
+  https://github.com/openMSX/wxcatapult/archive/RELEASE_1_2_3.tar.gz
+  This step makes sure that exactly the tagged code will be released.
+- Extract this archive and chdir to the herewith created
+  wxcatapult-RELEASE_1_2_3 directory
+- Create the distribution tar.gz file:
+    make dist
+- Save the created file somewhere you can find it again:
+    mv derived/dist/openmsx-catapult-1.2.3.tar.gz
+      <some_dir>/openmsx-catapult-1.2.3.tar.gz
+  This is the release candidate.
+
+Sanity check on release candidate
+---------------------------------
+
+This is a small check to be performed by the release coordinator.
+
+- Test build:
+  * Compile and check for warnings:
+      make
+  * Test installation:
+      su
+      make install
+- Start openMSX Catapult with the supported openMSX releases.
+- Verify the version number in the About dialog.
+
+If the sanity check is passed, distribute tar.gz to fellow developers and
+testers.
+
+Post-release
+------------
+
+- Set RELEASE_FLAG to false in build/version.mk and build/version.py.

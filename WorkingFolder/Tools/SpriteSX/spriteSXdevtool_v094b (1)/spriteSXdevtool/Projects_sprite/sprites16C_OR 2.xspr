@@ -1,0 +1,47 @@
+<msxdevtools app="spriteSX devtool" version="0.9.4.0">
+  <palette name="Default Palette" group="" version="" author="">
+    <color id="0" red="0" green="0" blue="0" />
+    <color id="1" red="0" green="0" blue="0" />
+    <color id="2" red="2" green="5" blue="2" />
+    <color id="3" red="3" green="6" blue="3" />
+    <color id="4" red="2" green="2" blue="5" />
+    <color id="5" red="3" green="3" blue="7" />
+    <color id="6" red="5" green="2" blue="1" />
+    <color id="7" red="2" green="6" blue="7" />
+    <color id="8" red="6" green="2" blue="2" />
+    <color id="9" red="7" green="3" blue="3" />
+    <color id="10" red="6" green="6" blue="3" />
+    <color id="11" red="6" green="6" blue="4" />
+    <color id="12" red="1" green="4" blue="1" />
+    <color id="13" red="5" green="3" blue="5" />
+    <color id="14" red="6" green="6" blue="6" />
+    <color id="15" red="7" green="7" blue="7" />
+  </palette>
+  <sprites name="sprites16C_OR" version="1" group="303bcn" author="mvac7" startDate="635400288000000000" lastUpdate="635439168000000000" mode="2" type="2">
+    <description>http://aorante.blogspot.com.es/2013/05/sprites-del-v9938-2-or-de-colores.html</description>
+    <item name="sprite03a" order="4" type="2" mode="2" InkColor="4" BGcolor="0">
+      <gfxData>7,24,32,64,64,128,128,128,128,128,128,64,64,32,24,7,224,248,60,30,30,15,15,15,15,15,15,30,30,60,248,224</gfxData>
+      <colorData>4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4</colorData>
+    </item>
+    <item name="OR_layer" order="1" type="2" mode="2" InkColor="9" BGcolor="0">
+      <gfxData>0,7,15,63,13,13,15,6,0,11,11,3,0,3,3,0,0,224,240,240,176,176,240,224,0,192,208,208,0,64,0,0</gfxData>
+      <colorData>72,72,72,72,74,74,74,74,74,66,66,66,66,68,68,68</colorData>
+    </item>
+    <item name="sprite03a" order="5" type="2" mode="2" InkColor="4" BGcolor="0">
+      <gfxData>7,26,53,96,64,128,192,128,192,160,213,106,85,42,29,7,224,184,92,174,86,47,87,47,87,175,95,174,94,188,248,224</gfxData>
+      <colorData>4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4</colorData>
+    </item>
+    <item name="black_layer" order="0" type="2" mode="2" InkColor="1" BGcolor="14">
+      <gfxData>7,15,127,127,127,31,31,15,15,23,23,31,7,15,31,15,224,16,136,136,200,200,136,16,224,176,184,184,248,176,248,240</gfxData>
+      <colorData>1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</colorData>
+    </item>
+    <item name="sprite03a" order="2" type="2" mode="2" InkColor="4" BGcolor="0">
+      <gfxData>7,31,63,127,127,255,255,255,255,255,255,127,127,63,31,7,224,24,196,226,226,241,241,241,241,241,241,226,226,196,24,224</gfxData>
+      <colorData>4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4</colorData>
+    </item>
+    <item name="sprite03b" order="3" type="2" mode="2" InkColor="15" BGcolor="0">
+      <gfxData>0,7,31,63,63,127,127,127,127,127,127,63,63,31,7,0,0,224,248,252,252,254,254,254,254,254,254,252,252,248,224,0</gfxData>
+      <colorData>15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15</colorData>
+    </item>
+  </sprites>
+</msxdevtools>

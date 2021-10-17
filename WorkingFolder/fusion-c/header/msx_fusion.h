@@ -20,19 +20,19 @@
 *                         (°□°)
 *   
 */ 
-  
-#ifndef	NULL 
+   
+#ifndef	NULL
 #define	NULL	(void *)0
 #endif
  
 /*_______/- Quick Reminder -\______________________________________________________________
-|       
+|        
 |   Logical operators:  |    or
 |                       &    and
 |                       ^    xor
 |                       >>   Right Shifting
 |                       << Left shifting 
-|   Logical operators not implemented in C but must be programmed:
+|   Logical operators not implemented in C but must be programmed: 
 |                       nor = ~(a|b);
 |                       nand = ~(a&b);
 |   SDCC Way to write Hexadecimal numbers:  0xFF
@@ -57,9 +57,10 @@
 |   #define __SDK_ADDRDATA__ 0x0             Start Address of the data area (Default for MSX-DOS is 0x0)
 |   #define __SDK_CRT0__ crt0_msxdos.rel     CRT0 file to use for comilation. Can be any .REL file inside the folder "fusion-c/include". 
 |   #define __SDK_MSXVERSION__ 2             Which pre-defined script to start with open MSX. Can be 1 to 7 (Scripts are in folder "openMSX/MSX_config/")
-|
-|
-|
+|   #define __SDK_AUTOEXEC__ 1               Define if an autoexec.bat file is writed to automaticaly start the compiled program when openMSX will boot
+|   #define __SDK_EXT__ com                  File extension of the final compiled file program
+|   #define __SDK_VERBOSE__ 2                Information printed to terminal while compile the program. 0: minimal information  1:Medium information  2: Full information
+|   #define __SDK_DEST__ dsk/dska/           Destination folder where towrite the final compiled program
 |
 |_________________________________________________________________________________________*/   
 
@@ -101,8 +102,8 @@
 #define PSGread              PSGread
 #define SetVDPWrite          SetVDPwrite 
 #define PSGRead              PSGread 
-#define PSGWrite            PSGwrite 
-
+#define PSGwrite             PSGwrite 
+#define GetOSVersion         GetOSversion
 
 
 //
@@ -232,34 +233,37 @@ typedef struct {
 #define	NO_FILL		0x00
 
 /// Globals vars
-#define             _SpriteOn      (((*(char *)0xFFE7) >> 1) & 0x01)       // Returns 0 when sprites are activated, 1 when sprites are desactivated
-#define             _SpriteSize    (((*(char *)0xF3E0) >> 1) & 0x01)       // Returns 0 when sprite size is 8x8, 1 when size is 16x16
-#define             _SpriteMag     (((*(char *)0xF3E0)) & 0x01)            // Returns 0 when Mag is simple, 1 when sprite are double
-#define             _ActivePage    (*(char *)0xFAF6)                       // Returns the active VRAM Page (MSX2)
-#define             _DisplayPage   (*(char *)0xFAF5)                       // Returns the displayed VRAM Page (MSX2)
-#define             _VDPfreq       (((*(char *)0xFFE8) >> 1) & 0x01)       // Returns 1 for 50 Hz, 0 for 60 Hz (MSX2)
-#define             _VDPlines      (((*(char *)0xFFE8) >> 7) & 0x01)       // Returns 1 for 212 lines, 0 for 192 lines (MSX2) 
-#define             _ForegroundColor    (*(char *)0xF3E9)                  // Returns the foreground color
-#define             _BackgroundColor    (*(char *)0xF3EA)                  // Returns the background color 
-#define             _BorderColor        (*(char *)0xF3EB)                  // Returns the border color 
-#define             _ScreenMode         (*(char *)0xFCAF)                  // Returns the actual Screen mode
+#define             _SpriteOn           (((*(char *)0xFFE7) >> 1) & 0x01)       // Returns 0 when sprites are activated, 1 when sprites are desactivated
+#define             _SpriteSize         (((*(char *)0xF3E0) >> 1) & 0x01)       // Returns 0 when sprite size is 8x8, 1 when size is 16x16
+#define             _SpriteMag          (((*(char *)0xF3E0)) & 0x01)            // Returns 0 when Mag is simple, 1 when sprite are double
+#define             _ActivePage         (*(char *)0xFAF6)                       // Returns the active VRAM Page (MSX2)
+#define             _DisplayPage        (*(char *)0xFAF5)                       // Returns the displayed VRAM Page (MSX2)
+#define             _VDPfreq            (((*(char *)0xFFE8) >> 1) & 0x01)       // Returns 1 for 50 Hz, 0 for 60 Hz (MSX2)
+#define             _VDPlines           (((*(char *)0xFFE8) >> 7) & 0x01)       // Returns 1 for 212 lines, 0 for 192 lines (MSX2) 
+#define             _ForegroundColor    (*(char *)0xF3E9)                                      // Returns the foreground color
+#define             _BackgroundColor    (*(char *)0xF3EA)                                      // Returns the background color 
+#define             _BorderColor        (*(char *)0xF3EB)                                      // Returns the border color 
+#define             _ScreenMode         (*(char *)0xFCAF)                                      // Returns the actual Screen mode
 #define             _SpritePatternAddr  (*( (volatile unsigned int*)(0xF926)))                 // Returns Default Sprite Pattern table Address in Vram for the current screen mode
 #define             _SpriteAttribAddr   (*( (volatile unsigned int*)(0xF928)))                 // Returns Default Sprite attributs table Address in Vram for the current screen mode
 #define             _SpriteColorAddr    ((*( (volatile unsigned int*)(0xF928)))-512)           // Returns Default Sprite colors table Address in Vram for the current screen mode (MSX2 & upper only)
 #define             _WidthScreen0       (*(char *)0xF3AE)                                      // Returns the actual Screen width for screen mode 0
 #define             _WidthScreen1       (*(char *)0xF3AF)                                      // Returns the actual Screen width for screen mode 1
+#define             _Time               (*(unsigned int *)0xFC9E)                              // Returns Current MSX TImer 0..65535
 #define             _FusionVer          (char)13                                               // Fusion-C Version (Divide by 10 to understand version number)
 #define             _FusionRev          (unsigned int)11211                                    // Fusion-C last Revision Date First digit is number of year after 2019. 2 next digits is day of revision, 2 last digits are month of revision 
+#define             _TPAAddress         (*(unsigned int *)0x0006)                              // Returns the high TPA address in MSX-DOS environement (Highest ram memory address available) 
+#define             _HiAddress          (*(unsigned int *)0xFC4A)                              // Returns the Highest ram memory address available for ROM dev.
 
 /* --------------------------------------------------------- */
 /* console	functions										 */
 void 				bchput(char value);                                             // Internal use
-void 				num2Dec16(unsigned int aNumber, char *address, char emptyChar); // internal use
+void 				num2Dec16(unsigned int Number, char *address, char emptyChar); // internal use
 void 				Print(char *text);												// Print a string to Text screen mode
 void 				PrintFNumber(unsigned int value, char emptyChar, char length);  // Print a  Number on Screen with formating parameters to Text screen mode
 void 				PrintNumber(unsigned int num);								    // Print a number on Screen to Text screen mode
 char				InputChar (void);												// read char from console 
-int	 				InputString (char *dest, int len); 								// String input from console. dest - pointer of buffer where to store entered string. len - [0..255] is length of buffer dest, user can enter (len-2) chars, max.length=253. Returns length of string 
+char 				InputString (char *dest, int len); 								// String input from console. dest - pointer of buffer where to store entered string. len - [0..255] is length of buffer dest, user can enter (len-2) chars, max.length=253. Returns length of string 
 void				PrintChar (char c);												// display char 
 void				Locate (char x, char y); 										// set cursor to x,y 
 void				PrintDec (int num);												// displays signed integer value  -32768 to 32767  (larges code) 
@@ -271,7 +275,7 @@ int					CheckBreak(void);												// Check CTRL-STOP. returns 0 if CTRL-STOP 
 
 /* --------------------------------------------------------- */
 /* miscellaneous functions									 */
-#define 			KeySound( data )  Poke(0xF3DB, (data) );					    // Disable/Enable KeySound (0|1)
+#define 			KeySound( data )  Poke(0xF3DB, (data) );					    // Disable/Enable Key click Sound (0|1)
 #define             RealTimer()  Peekw(0xFC9E)                                      // Return the Timer value (Timer is incemented 50 or 60 times / Seconds)
 #define             SetRealTimer( data )  Pokew(0xFC9E, (data ) )                   // Set The Real Timer to a specific value
 void 				FunctionKeys (char n);										    // Hide or Show Function Keys (0|1)
@@ -289,14 +293,18 @@ void                PatternRotation(void *Pattern, void *buffer, char rotation);
 void                PatternHFlip(void *Pattern, void *buffer);                      // Flip Horizontally a 8x8 pixels pattern
 void                PatternVFlip(void *Pattern, void *buffer);                      // Flip Vertically a 8x8 pixels pattern
 void                TurboMode(char mode);                                           // Activates the 5.37 MHz Mode Only works on Panasonic FS-A1WSX, FS-A1WX, FS-A1FX. 1: To activate  0: To desactivate
+void                MSXinf(void *MSXdata);
+
+char                GetOSversion(void);                                             //get OS version   1-> MSXDOS 1.X, 2-> MSXDOS2, 0-not initiated 
+void                Exit(char n) __z88dk_fastcall;                                  //  Exit program, and come back to MSX DOS, or Reseting the MSX on ROM mode
 
 /* --------------------------------------------------------- */
 /* Joystick functions										 */
-char 		        JoystickRead(char joyNumber)__z88dk_fastcall;				 // Read Joystick Port (joynumber)
-char 		        TriggerRead(char TriggerNumber);							 // Read Button state (Joynnmber)
-unsigned int 		MouseRead(int  MousePort);									 // Read Mouse Offset x and y
-void		 		MouseReadTo(char MousePort, MOUSE_DATA *md); 		         // Read Mouse Offset x and y, mouse button and return to the MOUSE_DATA Structure
-void 				JoystickReadTo(JOY_DATA *jd) __z88dk_fastcall;               // Direct Joystick Read. Faster than JoystickRead. Returns Directions and buttons at the same time. 
+char 		        JoystickRead(char joyNumber) __z88dk_fastcall;				   // Read Joystick Port (joynumber)
+char 		        TriggerRead(char TriggerNumber);    		                   // Read Button state (TriggerNumber) 0:Space Barre 1:Trigger1 of JoystickA 2:Trigger2 of Joystick A 3:Trigger 1 of Joystick B  4:Trigger2 of Joystick B
+unsigned int 		MouseRead(int MousePort);									   // Read Mouse Offset x and y
+void		 		MouseReadTo(char MousePort, MOUSE_DATA *md); 		           // Read Mouse Offset x and y, mouse button and return to the MOUSE_DATA Structure
+void 				JoystickReadTo(JOY_DATA *jd) __z88dk_fastcall;                 // Direct Joystick Read. Faster than JoystickRead. Returns Directions and buttons at the same time. 
 
 /* --------------------------------------------------------- */
 /* I/O port functions										 */
@@ -317,11 +325,11 @@ void 				OutPorts( char port, char *p_data, char count );            // Send a d
 #define             SetColor( color )   ( *( (volatile char*)( 0xF3E9 ) ) = ( (char)( color ) ) )
 void                SetDisplayPage(  char page ) __z88dk_fastcall;              // Set the Display Page in MSX2 Screen Mode 5 to 12
 void 				SetColors ( char foreground,  char background,  char border); // Set Colors
-void 				SetBorderColor( char BorderCol);					        // Set Screen 's border color
+void 				SetBorderColor( char BorderCol) __z88dk_fastcall; 		    // Set Screen 's border color
 void 				VDPwrite( char vdpreg, char data ); 	                    // write to VDP Register
-char 		        VDPstatus( char vdpreg );							        // Read VDP Status Register
+char 		        VDPstatus( char vdpreg ) __z88dk_fastcall;  		        // Read VDP Status Register
 void 				VDPwriteNi(  char vdpreg, char data ); 	                    // write to VDP Register 
-char 		        VDPstatusNi( char vdpreg );						            // Read VDP Status Register
+char 		        VDPstatusNi( char vdpreg ) __z88dk_fastcall;	            // Read VDP Status Register
 void 				Vpoke( unsigned int address, char data );                   // Write a byte in VRAM Memory
 char 		        Vpeek( unsigned int address );                              // Read a Byte in VRAM memory				
 void                SetScrollMask(char n) __z88dk_fastcall;                     // Active the Horizontal Scrolling mask (MSX2+ / Turbo-R)
@@ -331,12 +339,14 @@ void 				SetScrollV(char n) __z88dk_fastcall;  						// Vertical hardware scroll
 void 				Width(char n);												// Screen Width in Text mode
 void 				HideDisplay(void);											// Disable Video Display (Black Screen)
 void 				ShowDisplay(void);											// Enable Video Display
-void 				FillVram( int Startadress, char value,  int length);		// Fill the Vram from startadress, with Value, for Length bytes. Not using Bios
+void 				FillVram( unsigned int Startadress, char value,  unsigned int length);		// Fill the Vram from startadress, with Value, for Length bytes. Not using Bios
 void 				PutText( int X, int Y,  char *str, char LogOp );			// Print Text string on Graphic screen
 void				VDP50Hz(void);												// Switch MSX2 VDP to 50hz (PAL) Mode
 void				VDP60Hz(void);												// Switch MSX2 VDP to 60Hz NTSC Mode
 void 				VDPlineSwitch(void);										// Switch MSX2 VDP to 192 / 212 vertical lines
 void 				CopyRamToVram(void *SrcRamAddress, unsigned int DestVramAddress, unsigned int Length); // Copy a Ram Block To VRAM memory
+void                CopyRamToVram2(void *SrcRamAddress, unsigned int DestVramAddress, unsigned int Length); // Copy a Ram Block To VRAM memory MSX2 Optimised Version
+void                CopyRamToVram2NI(void *SrcRamAddress, unsigned int DestVramAddress, unsigned int Length);
 void 				CopyVramToRam(unsigned int SrcVramAddress, void *DestRamAddress, unsigned int Length); // Copy a Vram memory block to RAM
 char 		        GetVramSize(void);                                          // Return the VRAM Size of the Computer / 16 / 64 or 128
 void 				SetVDPwrite(unsigned int Address) __z88dk_fastcall;         // Set the VDP Ready for Writing in VRAM
@@ -345,6 +355,9 @@ void                SetPalette (Palette *palette);                              
 void                RestorePalette ( void );                                    // Sets default MSX palette
 void                SetColorPalette(char ColorNumber, char Red, char Green, char Blue); // Set R,G,B Parameters of One color
 void                VDPinterlace(char oddpage) ;                                // Activating Interlace mode
+
+void                initialize_intr(void);
+
 void                VDPalternate(char oddpage, char OnTime, char Offtime);           // Activation Alternate mode
 void                SetExpandVDPcmd(char n) __z88dk_fastcall;                   // Expande MSX2+ VDP command to Screen mode 0 to 4
 void                SetScreen10(char n) __z88dk_fastcall;                       // Activating MSX2+ Screen mode 10 (Activate screeen(8) before use) 
@@ -456,9 +469,9 @@ __asm
 __endasm; 
 }
 
-void                InitInterruptHandler(int InterruptFunctionHandler);
+void                InitInterruptHandler(unsigned int InterruptFunctionHandler);
 void                EndInterruptHandler(void);
-void                InitVDPInterruptHandler(int VdpInterruptFunctionHandler);
+void                InitVDPInterruptHandler(unsigned int VdpInterruptFunctionHandler);
 void                EndVDPInterruptHandler(void);
 
 /* --------------------------------------------------------- */
@@ -538,11 +551,10 @@ typedef struct {
 
 void				GetDate (DATE *date);  										// get date 
 void				GetTime (TIME *time);										// get time 
-int					SetDate (int Year, char month, char day);  					// set date, returns 0 if valid 
-int					SetTime (TIME *time);										// set time, returns 0 if valid 
+char				SetDate (int Year, char month, char day);  					// set date, returns 0 if valid 
+char				SetTime (TIME *time);										// set time, returns 0 if valid 
 char                GetDisk(void);                                              // gets current drive number 
 char                SetDisk(int diskno);                                        // sets drive number 
-void 				Exit(char n);												// Proper Exit program, and come back to MSX DOS, sending  n as error code
 void                CallBios(void *registers) __z88dk_fastcall __naked;         // Call a MSX BIOS Function thru REGDATA Structure
 void                CallDos(void *registers) __z88dk_fastcall __naked;          // Call a MSX DOS Function thru REGDATA Structure
 void                CallSub(void *registers) __z88dk_fastcall __naked;          // Call a MSX2 SubRom Function thru REGDATA Structure
@@ -559,18 +571,7 @@ void 				PCMPlay(int start, int lenght); 							// Play a PCM sound stored in th
 
 /* =============================================================================
    GetKeyMatrix
-   Version: 1.0
-   Date: 2 March 2016
-   Author: mvac7/303bcn
-
-   Function : Returns the value of the specified line from the keyboard matrix.
-              Each line provides the status of 8 keys.
-              To know which keys correspond, you will need documentation that 
-              includes a keyboard table.
-   Input    : [char] line 
-   Output   : [char] state of the keys. 1 = not pressed; 0 = pressed
-
-   International
+   International Matrix
   
 bit  7     6     5     4     3     2     1     0
 ----------------------------------------------------
@@ -615,5 +616,5 @@ bit  7     6     5     4     3     2     1     0
 #define __FUSIONC  
 /* --------------------------------------------------------------------------------------------------- */
 /* FUSION-C Version tag                                                                                */
-static const char Done_Version_tag[]="Made with FUSION-C 1.3 R11211 (c)EBSOFT:2020";      
+static const char Done_Version_tag[]="Made with FUSION-C 1.3 R21010 (c)EBSOFT:2021";      
 #endif

@@ -1,0 +1,386 @@
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:05:35 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:13:08 CET
+------------------------------------
+PrintBitmap.c:53: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:54: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:55: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:56: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:57: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:58: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:59: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:60: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:53: error 101: too many parameters 
+PrintBitmap.c:54: error 101: too many parameters 
+PrintBitmap.c:55: error 101: too many parameters 
+PrintBitmap.c:56: error 101: too many parameters 
+PrintBitmap.c:57: error 101: too many parameters 
+PrintBitmap.c:58: error 101: too many parameters 
+PrintBitmap.c:59: error 101: too many parameters 
+PrintBitmap.c:60: error 101: too many parameters 
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:14:58 CET
+------------------------------------
+PrintBitmap.c:53: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:54: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:57: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:58: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:61: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:62: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:65: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:66: warning 112: function 'Pset' implicit declaration
+PrintBitmap.c:53: error 101: too many parameters 
+PrintBitmap.c:54: error 101: too many parameters 
+PrintBitmap.c:57: error 101: too many parameters 
+PrintBitmap.c:58: error 101: too many parameters 
+PrintBitmap.c:61: error 101: too many parameters 
+PrintBitmap.c:62: error 101: too many parameters 
+PrintBitmap.c:65: error 101: too many parameters 
+PrintBitmap.c:66: error 101: too many parameters 
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:15:34 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:17:26 CET
+------------------------------------
+../../header/fonts/font_1.h:49: syntax error: token -> 'while' ; column 7
+PrintBitmap.c:51: warning 85: in function PrintBitmapChar_SC8 unreferenced function argument : 'letter'
+PrintBitmap.c:53: error 1: Syntax error, declaration ignored at 'n'
+PrintBitmap.c:54: syntax error: token -> '.' ; column 24
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:18:30 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:19:17 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:20:22 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 31 déc 2020 15:30:05 CET
+------------------------------------
+PrintBitmap.c:34: error 20: Undefined identifier 'Font'
+PrintBitmap.c:34: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:34: error 78: incompatible types
+from type 'void'
+  to type 'unsigned-int generic* fixed'
+PrintBitmap.c:43: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:45: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:48: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:50: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:50: error 23: Array index not an integer
+PrintBitmap.c:52: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:52: error 47: indirections to different types assignment   
+from type 'void'
+  to type 'unsigned-char auto'
+PrintBitmap.c:53: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:53: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:54: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:54: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:56: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:56: error 45: operand invalid for bitwise operation
+PrintBitmap.c:56: warning 113: left & right types are 
+void,const-int literal
+PrintBitmap.c:57: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:57: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:58: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:58: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:60: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:60: error 45: operand invalid for bitwise operation
+PrintBitmap.c:60: warning 113: left & right types are 
+void,const-int literal
+PrintBitmap.c:61: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:61: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:62: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:62: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:64: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:64: error 47: indirections to different types assignment   
+from type 'void'
+  to type 'unsigned-char auto'
+PrintBitmap.c:65: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:65: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:66: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:66: error 22: Array or pointer required for '[]' operation 
+PrintBitmap.c:68: error 25: Structure/Union expected left of '.->'
+Internal error: validateLink failed in SPEC_NOUN(type) @ /Users/sdcc-builder/build/sdcc-build/orig/sdcc/src/SDCCsymt.c:2162: expected SPECIFIER, got null-link
+------------------------------------ FUSION-C
+Mar  5 jan 2021 15:15:50 CET
+------------------------------------
+PrintBitmap.c:29: error 98: conflict with previous declaration of 'SetBitmapFontColor' for attribute 'type' at ../../header/fonts/font_1.h:918
+from type 'void function ( unsigned-char fixed, unsigned-char fixed, struct __00000010 generic* fixed) fixed'
+  to type 'void function ( unsigned-char fixed, unsigned-char fixed) fixed'
+PrintBitmap.c:37: error 98: conflict with previous declaration of 'PrintBitmapChar_SC8' for attribute 'type' at ../../header/fonts/font_1.h:917
+from type 'void function ( struct __00000010 generic* fixed) __z88dk_fastcall fixed'
+  to type 'void function ( struct __00000010 generic* fixed) fixed'
+PrintBitmap.c:74: error 98: conflict with previous declaration of 'PrintBitmapChar_SC5' for attribute 'type' at ../../header/fonts/font_1.h:916
+from type 'void function ( struct __00000010 generic* fixed) __z88dk_fastcall fixed'
+  to type 'void function ( struct __00000010 generic* fixed) fixed'
+PrintBitmap.c:113: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:117: error 25: Structure/Union expected left of '.->'
+PrintBitmap.c:119: error 25: Structure/Union expected left of '.->'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 15:17:05 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 15:21:20 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 15:22:36 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 15:23:18 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 15:24:35 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 17:50:56 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 17:51:18 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mar  5 jan 2021 17:51:59 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu  7 jan 2021 09:36:31 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu  7 jan 2021 09:37:24 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:31:50 CET
+------------------------------------
+hmmc.c:29: error 98: conflict with previous declaration of 'HMMC' for attribute 'type' at ../../header/vdp_graph2.h:154
+from type 'void function ( void generic* fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed) fixed'
+  to type 'void function ( void generic* fixed, int fixed, int fixed, int fixed, int fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:32:22 CET
+------------------------------------
+hmmm.c:29: error 98: conflict with previous declaration of 'HMMM' for attribute 'type' at ../../header/vdp_graph2.h:158
+from type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed) fixed'
+  to type 'void function ( int fixed, int fixed, int fixed, int fixed, int fixed, int fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:36:17 CET
+------------------------------------
+line.c:32: error 98: conflict with previous declaration of 'Line' for attribute 'type' at ../../header/vdp_graph2.h:146
+from type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+  to type 'void function ( int fixed, int fixed, int fixed, int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:36:55 CET
+------------------------------------
+point.c:29: error 98: conflict with previous declaration of 'Point' for attribute 'type' at ../../header/vdp_graph2.h:145
+from type 'unsigned-char function ( unsigned-int fixed, unsigned-int fixed) fixed'
+  to type 'unsigned-char function ( int fixed, int fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:38:38 CET
+------------------------------------
+polygon.c:32: error 98: conflict with previous declaration of 'Polygon' for attribute 'type' at ../../header/vdp_graph2.h:149
+from type 'void function ( unsigned-int fixed, unsigned-int generic* fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+  to type 'void function ( int fixed, int generic* fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:38:59 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+vdpline.c:29: error 98: conflict with previous declaration of 'VDPLINE' for attribute 'type' at ../../header/vdp_graph2.h:167
+from type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+  to type 'void function ( int fixed, int fixed, int fixed, int fixed, int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:43:25 CET
+------------------------------------
+boxline.c:31: error 98: conflict with previous declaration of 'BoxLine' for attribute 'type' at ../../header/vdp_graph2.h:148
+from type 'void function ( int fixed, int fixed, int fixed, int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+  to type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:44:26 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+vdpline.c:29: error 98: conflict with previous declaration of 'VDPLINE' for attribute 'type' at ../../header/vdp_graph2.h:167
+from type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+  to type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-char fixed, unsigned-char fixed, unsigned-char fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:45:33 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+ymmm.c:29: error 98: conflict with previous declaration of 'YMMM' for attribute 'type' at ../../header/vdp_graph2.h:159
+from type 'void function ( unsigned-int fixed, unsigned-int fixed, unsigned-int fixed, unsigned-int fixed) fixed'
+  to type 'void function ( int fixed, int fixed, int fixed, int fixed) fixed'
+------------------------------------ FUSION-C
+Mer 13 jan 2021 08:46:05 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Sam 16 jan 2021 09:32:53 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Sam 16 jan 2021 19:30:21 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Dim 17 jan 2021 17:47:51 CET
+------------------------------------
+removing vdpstatus.rel
+------------------------------------ FUSION-C
+Dim 17 jan 2021 17:49:24 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Dim 17 jan 2021 17:59:55 CET
+------------------------------------
+removing VDPWrite.rel
+------------------------------------ FUSION-C
+Dim 17 jan 2021 18:00:13 CET
+------------------------------------
+removing VDPWrite.rel
+------------------------------------ FUSION-C
+Dim 17 jan 2021 19:42:56 CET
+------------------------------------
+../../header/fonts/font_1.h:965: warning 112: function 'HMMC' implicit declaration
+../../header/fonts/font_1.h:965: error 101: too many parameters 
+------------------------------------ FUSION-C
+Dim 17 jan 2021 19:43:43 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Ven 22 jan 2021 15:15:28 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Ven 22 jan 2021 15:16:58 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Ven 22 jan 2021 17:16:49 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Ven 22 jan 2021 17:20:24 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 18 mar 2021 09:25:38 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 18 mar 2021 14:05:46 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Jeu 18 mar 2021 14:12:23 CET
+------------------------------------
+printf.c:110: warning 196: pointer target lost const qualifier
+printf.c:111: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'
+------------------------------------ FUSION-C
+Mer  1 sep 2021 08:54:43 CEST
+------------------------------------
+printf.c:109: warning 196: pointer target lost const qualifier
+printf.c:110: warning 196: pointer target lost const qualifier
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'colour'
+pset.c:93: warning 85: in function Pset unreferenced function argument : 'OP'

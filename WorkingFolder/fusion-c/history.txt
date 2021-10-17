@@ -1,5 +1,5 @@
 —————————————————— 2020 - September ————————————————————————————————————————————————————
-Fusion-C 1.3. R10106
+Fusion-C 1.3. R21010
 
 MAJOR INCOMPATIBILITY
 Because some functions where removed in FUSION-C 1.3 your code made for FUSION-C 1.2 or FUSION-C 1.1 may not be 100% compatible with this new release.
@@ -24,7 +24,7 @@ Change, compilation scripts moved to folder "WorkingFolder/fusion-c/"
 New, compilation script model code
 New, Microsoft Microsoft Visual Studio Code configuration
 New, MSX Hard Drive Support
-New, emulated drive folder are now placed in WorkingFolder/dsk/dska  ... /dskb/ ... /hda-1/ ... /hda-2/. Depending of the mass-storage chooses.
+New, emulated drive folder are now placed in WorkingFolder/dsk/dska  ... /dskb/ ... /hda-1/ ... /hda-2/. Depending of the mass-storage you chooses.
  
 
 New, overriding compilation default parameters by #define directives
@@ -61,75 +61,79 @@ New, Fusion-C Environment variables	(msx_fusion.h)
 		_FusionRev
 
 New, added functions to the library and to manual/book:
-		SC2BoxLine (Replacing Old Rect function)	(vdp_graph1.h)
+		SC2BoxLine 					(vdp_graph1.h) (Replacing Old Rect function)	
 		SC2BoxFill 					(vdp_graph1.h)
 		BitReturn					(msx_fusion.h)
 		BitReset					(msx_fusion.h)
 		Vsynch 						(msx_fusion.h)
-		SetScrollMask					(msx_fusion.h)
-		SetScrollDouble					(msx_fusion.h)
-		JoystickReadTo					(msx_fusion.h) 
+		SetScrollMask				(msx_fusion.h)
+		SetScrollDouble				(msx_fusion.h)
+		JoystickReadTo				(msx_fusion.h) 
 		StrToLower					(msx_fusion.h)
 		StrToUpper 					(msx_fusion.h)
 		TurboMode					(msx_fusion.h)
-		SpriteOverlap					(vdp_sprites.h)
-		SpriteOverlapId					(vdp_sprites.h)
-		Pattern8RotationRam				(vdp_sprites.h)
-		Pattern8RotationVram				(vdp_sprites.h)
-		Pattern16RotationRam				(vdp_sprites.h)
-		Pattern16RotationVram				(vdp_sprites.h)
-		Pattern8FlipRam					(vdp_sprites.h)
-		Pattern16FlipRam				(vdp_sprites.h)
-		Sprite8FlipVram					(vdp_sprites.h)
-		Pattern16FlipVram				(vdp_sprites.h)
-		PatternRotation					(vdp_sprites.h)
-		PatternHFlip					(vdp_sprites.h)
-		PatternVFlip					(vdp_sprites.h)
-		SpriteFollow					(vdp_sprites.h)
+		SpriteOverlap				(vdp_sprites.h)
+		SpriteOverlapId				(vdp_sprites.h)
+		Pattern8RotationRam			(vdp_sprites.h)
+		Pattern8RotationVram		(vdp_sprites.h)
+		Pattern16RotationRam		(vdp_sprites.h)
+		Pattern16RotationVram		(vdp_sprites.h)
+		Pattern8FlipRam				(vdp_sprites.h)
+		Pattern16FlipRam			(vdp_sprites.h)
+		Sprite8FlipVram				(vdp_sprites.h)
+		Pattern16FlipVram			(vdp_sprites.h)
+		PatternRotation				(vdp_sprites.h)
+		PatternHFlip				(vdp_sprites.h)
+		PatternVFlip				(vdp_sprites.h)
+		SpriteFollow				(vdp_sprites.h)
 		LMCM5						(vdp_graph2.h)
 		LMCM8						(vdp_graph2.h)
 		VDPLINE						(vdp_graph2.h)
 		TurboMode					(msx_fusion.h)
-		Paint   (New Fast Paint function for MSX2)	(vdp_paint.h)
-		SetPaintBuffer					(vdp_paint.h)
+		Paint   					(vdp_paint.h) (New Fast Paint function for MSX2)	
+		SetPaintBuffer				(vdp_paint.h)
 		SetColor					(msx_fusion.h)
 		fVDP						(vdp_graph2.h)
 		Polygon						(vdp_graph2.h)
 		Rkeys						(msx_fusion.h)
 		Fkeys						(msx_fusion.h)
-		ReadKeyboardType				(msx_fusion.h)
-		VDPalternate					(msx_fusion.h)
-		VDPinterlace					(msx_fusion.h)
-		SetExpandVDPcmd					(msx_fusion.h)
+		ReadKeyboardType			(msx_fusion.h)
+		VDPalternate				(msx_fusion.h)
+		VDPinterlace				(msx_fusion.h)
+		SetExpandVDPcmd				(msx_fusion.h)
 		SetScreen10					(msx_fusion.h)
 		SetScreen12					(msx_fusion.h)
-		SetTransparent					(msx_fusion.h)
+		SetTransparent				(msx_fusion.h)
 		SetAdjust					(msx_fusion.h)
 		ReadAdjust 					(msx_fusion.h)
 		fPutSprite					(msx_fusion.h)
-		InitVDPInterruptHandler				(msx_fusion.h)
-		EndVDPInterruptHandler				(msx_fusion.h)	
+		InitVDPInterruptHandler		(msx_fusion.h)
+		EndVDPInterruptHandler		(msx_fusion.h)	
 		PT3FXInit					(ayfx_player.h
 		PT3FXPlay					(pt3replayer.h)
 		PT3FXRout					(pt3replayer.h)
-		CovoxPlayRam					(msx_fusion.h)
+		CovoxPlayRam				(msx_fusion.h)
 		FcbDelete					(msx_fusion.h)	
 		CallSub						(msx_fusion.h)
-		SaveScreenBoot					(msx_fusion.h)
-		SetRamDisk					(msx_fusion.h
+		SaveScreenBoot				(msx_fusion.h)
+		SetRamDisk					(msx_fusion.h)
 		Ensure						(io.h)
+		CopyRamToVram2				(msx_fusion.h)
+		CopyRamToVram2NI			(msx_fusion.h)
+
+
 
 - Fixed error or rewritten functions: 
-		SC2Pset (500 % Faster than previous version)	(vdp_graph1.h)
-		SC2Line	(500 % Faster than previous version)	(vdp_graph1.h)
+		SC2Pset 					(vdp_graph1.h) (500 % Faster than previous version)
+		SC2Line						(vdp_graph1.h) (500 % Faster than previous version)
 		SC2Point					(vdp_graph1.h)
 		SetScrollH					(vdp_graph1.h)
 		SetScrollV					(vdp_graph1.h)
-		SetSpriteColors					(vdp_sprites.h)
-		YMMM Fixed definition last parameter removed 	(vdp_graph2.h)
-		GetKeyMatrix					(msx_fusion.h)
-		InitInterruptHandler				(msx_fusion.h)
-		EndInterruptHandler				(msx_fusion.h)
+		SetSpriteColors				(vdp_sprites.h)
+		YMMM 						(vdp_graph2.h) (Fixed definition last parameter removed) 	
+		GetKeyMatrix				(msx_fusion.h)
+		InitInterruptHandler		(msx_fusion.h)
+		EndInterruptHandler			(msx_fusion.h)
 		Lseek						(io.h)
 		InitFX						(ayfx_player.h)
 		PlayFX						(ayfx_player.h)
@@ -143,18 +147,18 @@ New, added functions to the library and to manual/book:
 - Removed functions:
 		SC2Rect 					Replaced identically by 	SC2BoxLine
 		DosCLS						Replaced identically by 	Cls		
-		SC5SpriteColors					Replaced identically by		SetSpriteColors
-		SC8SpriteColors					Replaced identically by 	SetSpriteColors
-		HMCM						Replaced by 			LMCM5			(vdp_graph2.h)
-		HMCM_SC8					Replaced by 			LMCM8			(vdp_graph2.h)
-		WriteScr					Totally removed			(vdp_graph2.h)
-		ReadScr						totally removed			(vdp_graph2.h)
-		KeyboardRead					Replaced by			Rkeys
-		SetInterruptHandler				Totally removed			(msx_fusion.h)
+		SC5SpriteColors				Replaced identically by		SetSpriteColors
+		SC8SpriteColors				Replaced identically by 	SetSpriteColors
+		HMCM						Replaced by 				LMCM5			(vdp_graph2.h)
+		HMCM_SC8					Replaced by 				LMCM8			(vdp_graph2.h)
+		WriteScr					Totally removed				(vdp_graph2.h)
+		ReadScr						totally removed				(vdp_graph2.h)
+		KeyboardRead				Replaced by					Rkeys
+		SetInterruptHandler			Totally removed				(msx_fusion.h)
 		TestFX						Totally remove
 		FreeFX						Totally remove	
-		IntDos						Replaced by			CallDos
-		IntBios						Replaced by			Callbios
+		IntDos						Replaced by					CallDos
+		IntBios						Replaced by					Callbios
 		Sc2Draw						Totally Removed 
 		Draw						Totally Removed
 
@@ -169,14 +173,15 @@ New, added functions to the library and to manual/book:
 		fcb_find_first		to   FcbFindFirst
 		fcb_find_next  		to   FcbFindNext
 		SetSC5ColorPalette	to   SetColorPalette	(msx_fusion.h)
-		SetSC5Palette		to   SetPalette		(msx_fusion.h)
-		RestoreSC5Palette	to   RestorePalette	(msx_fusion.h)
+		SetSC5Palette		to   SetPalette			(msx_fusion.h)
+		RestoreSC5Palette	to   RestorePalette		(msx_fusion.h)
 		VDPLineSwitch 		to   VDPlineSwitch
-		PSGRead			to   PSGread
-		PSGWrite 		to   PSGwrite		
-		SetVDPWrite		to   SetVDPwrite
-		SetVDPRead		to   SetVDPread
-		CovoxPlay		to   CovoxPlayVram
+		PSGRead				to   PSGread
+		PSGWrite 			to   PSGwrite		
+		SetVDPWrite			to   SetVDPwrite
+		SetVDPRead			to   SetVDPread
+		CovoxPlay			to   CovoxPlayVram
+		GetOSVersion 		to 	 GetOSversion
 
 
 - Added Example :

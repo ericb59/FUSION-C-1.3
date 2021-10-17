@@ -1,10 +1,16 @@
-# MACHINE DEFINITION USED with FUSION-C 1.3
-# Script version 1.1
+# openMSX MACHINE DEFINITION for  FUSION-C SDK
+# Script version 1.2
 #
 # MSX2 With Floppy A
 # Config based on
-# MSX2 Philips NMS 8255. + MSXDOS 2
+# MSX2 Philips NMS 8255 + Slot Expander + MSXDOS 2 + 1024K Expansion + SCC
 # 
+
+
+filepool add -path ./openMSX/share/systemroms -types system_rom
+filepool add -path ./openMSX/ -types disk
+
+
 
 # _______________________________________________________________________________________
 # -- Machine Configuration Variables --
@@ -20,7 +26,7 @@ variable USE_MEMORY_1024K 1
 variable USE_GFX9000 0
 
 # -- Use FM PAC FM Cartridge : 1=on 0=off
-variable USE_FMPAC 1
+variable USE_FMPAC 0
 
 # -- Use SCC+ Cartridge : 1=on 0=off
 variable USE_SCC 1
@@ -32,7 +38,7 @@ variable USE_EXPANDER 1
 variable USE_FUSIONSKIN 1
 
 # -- Default Scale Factor (OPenMSX's Window size  : 1, 2, 3)
-variable DEFAULT_SCALE 2
+variable DEFAULT_SCALE 3
 
 # _______________________________________________________________________________________
 # -- Drives source folders --
@@ -50,6 +56,9 @@ variable CONTENT_DSK_FOLDER1 "dsk/dska/"
 # -- Drive B: Content folders --
 variable CONTENT_DSK_FOLDER2 "dsk/dskb/"
 
+# -- ROM content folder --
+variable ROM_CONTENT_FOLDER "dsk/rom/"
+
 # _______________________________________________________________________________________
 # -- Export folders --
 # _______________________________________________________________________________________
@@ -66,7 +75,7 @@ variable CONTENT_EXPORT_DSKB "dsk/export/dskb/"
 # _______________________________________________________________________________________
 
 #-- Video & sound Settings --
-set horizontal_stretch 302
+set horizontal_stretch 320
 set scale_algorithm simple
 set scale_factor $DEFAULT_SCALE
 set scanline 23
@@ -121,13 +130,23 @@ bind META+W "toggle power"
 bind META+R reset	
 
 # Press META+Y to Type the content of the file "autoexec.bat" to the MSX DOS windows / Basic Screen
-bind META+Y "type_from_file $CONTENT_DSK_FOLDER1/autoexec.bat"	
+bind META+Y "type_from_file $CONTENT_DSK_FOLDER1/AUTOEXEC.BAT"	
 
 
 # _______________________________________________________________________________________
 
 # MSX Machine emulated
+
+#Search if a ROM is passed as parameter
+set cartridge_insert_A [lindex [carta] 1]
+
 machine $MSX_MACHINE
+
+# Insert the ROM as Cartridge Slot A
+if {[string trim $cartridge_insert_A] != ""} {
+	carta $cartridge_insert_A
+}
+
 
 # Plug a Slot Expansion cartridge
 if {$USE_EXPANDER eq "1"} {
@@ -185,8 +204,6 @@ if {$USE_FLOPPY_B eq "1"} {
 }
 
 ext msxdos2
-
-
 
 	
 

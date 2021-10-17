@@ -7,7 +7,7 @@
 ; hex2bin -e ROM -s 4000 -l 8000 CFILENAME.ihx <--- generate a binary file and fill to 32768 Bytes size (8000h)
 
 ; Version: 1.1
-
+ 
 ; Date: 12/04/2018
 
 ; Author: mvac7/303bcn

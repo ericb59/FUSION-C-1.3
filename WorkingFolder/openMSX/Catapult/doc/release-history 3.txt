@@ -1,0 +1,304 @@
+Release History
+===============
+
+This is an overview of the changes that were incorporated into past releases.
+
+openMSX Catapult 16.0 (2020-08-25)
+----------------------------------
+
+This release we again didn't change much, so here is the full list:
+- Fix hidden openMSX window when launching from Catapult
+- Migrated build to Python 3
+- Migrated to wxWidgets 3.0
+- Make supported extensions consistent with openMSX command line
+- Replaced Accuracy control with VSync button
+- Replaced Min and Max Frameskip controls with fast forward speed controls
+- Added button to enable full speed when loading ("Fast Load")
+
+openMSX Catapult 0.15.0 (2018-12-05)
+------------------------------------
+
+This release we again didn't change much, so here is the full list:
+- Disable controls for joystick/printer port if the machine doesn't have them
+- Fix Catapult trashing the replay at time 0 (when reversing back to time 0)
+- Added .hdd extension when browsing for harddisk images
+- The test machine for extensions is now C-BIOS_MSX2+ (if available)
+
+openMSX Catapult 0.14.0 (2017-08-03)
+------------------------------------
+
+This release we again didn't change much, so here is the full list:
+- Added noise control to Video Control Page
+- Improved customization of build for distros
+- Added support for showing build commands
+- Fixed browse extension for openMSX executable
+- Upgraded Visual Studio files to 2017
+
+openMSX Catapult 0.13.0 (2016-07-31)
+------------------------------------
+
+This release we again didn't change much, so here is the full list:
+- Fixed Catapult interrupting a replay directly after loading it
+- Fixed drag-and-drop: put dropped file's path in input box, not in history
+- Fixed memory leak noticable when reversing
+- Fixed performance when reversing
+- Fixed failure of handling files with quotes and with [] in their path
+- Fixed plugging MIDI devices on non-Windows platforms
+- Improved screenshot controls
+- Upgraded Visual Studio files to 2015
+
+openMSX Catapult 0.12.0 (2015-09-12)
+------------------------------------
+
+This release we again didn't change much, so here is the full list:
+- Query machine and extension list directly from openMSX. This also eliminates
+  the share dir setting, which was confusing our users, as they thought they
+  could use it to configure openMSX, while it was only meant to let Catapult
+  find the list of extensions and machines.
+- Query ROM mapper type list from openMSX. This makes sure that Catapult will
+  always offer all possible mapper types that are supported by openMSX. It also
+  means not all have a full description, as that is not queried (yet) from
+  openMSX.
+- Fix handling of MIDI connectors: it only supported MSX-MIDI, now it is
+  generic.
+- Fixed some update bugs. Now Catapult should be properly updated when changing
+  hardware in openMSX itself, like plugging connectors or changing machine.
+- Fixed initial value of the printer port's plug: now shows --empty-- instead
+  of blank.
+
+openMSX Catapult 0.11.0 (2014-11-03)
+------------------------------------
+
+This release we didn't change much, so here is the full list:
+- fixed inserting cartridges from Catapult at run time when browsing for a new
+  cartridge (it did work when choosing one from history)
+- added higher resolution PNG icon for non-Windows systems
+- added workaround for Catapult telling that certain extensions are not
+  working, although they're working fine
+
+openMSX Catapult 0.10.1 (2014-05-01)
+------------------------------------
+
+This release we cleaned up some more code (most of the session page), and
+therewith fixed even more bugs. We also added a few new features, most
+importantly support for hard disks and support for changing cartridges at run
+time. Be careful though, the latter will cause extensions inserted in that slot
+to get removed, without Catapult showing you that!
+
+All highlights:
+- fixed disk image file not shown on UI when inserting a disk twice
+- made behaviour the same for all media (was inconsistent at places)
+- added support for changing cartridges at run time
+- add DESTDIR support (for packagers)
+- made Catapult code compatible with wxWidgets 3.0. It requires 2.8 or 3.0 now.
+- fixed several bugs on the session page
+- in the history of previously used media, now also store the accompanying IPS
+  patches
+- fixed setting the video source when there's a space in its name (e.g. Neos
+  MA-20)
+- removed annoying CTRL-A short cut for the About dialog
+- fixed layout of About dialog
+- added support for hard disk images (works of course only when such an
+  extension is present)
+- fixed Catapult interrupting a replay because it plugged in the cassette
+  player
+- fixed fps-display in the Catapult status bar
+- added build support for 64-bit ARM
+- added higher resolution Windows icon and logo in about box
+
+openMSX Catapult 0.10.0 (2014-01-05)
+------------------------------------
+
+Catapult release to match openMSX 0.10.0.
+
+This release we mostly cleaned up the code (so that other people can more
+easily help improving Catapult) and fixed some (minor) bugs.
+
+- some updates to recognize the new openMSX machine/extension directory
+  structure
+- fixes for several small bugs
+- fixes for some memory leaks
+- updated to libxml 2.8.0
+- updated to wxWidgets 2.8.12
+- allow setting up multiple IPS files
+- added video source setting
+- added disable sprites setting (for easy map creating)
+- support DMK file extension in file filters
+- fixed invalid PNG files (libpng 1.6 would refuse to load them)
+
+openMSX Catapult 0.9.1 (2012-09-30)
+-----------------------------------
+
+Catapult release to match openMSX 0.9.1. No changes in Catapult.
+
+openMSX Catapult 0.9.0 (2012-08-12)
+-----------------------------------
+
+Catapult release to match openMSX 0.9.0. No changes in Catapult.
+
+openMSX Catapult 0.8.2 (2012-01-15)
+-----------------------------------
+
+Catapult release to match openMSX 0.8.2. No changes in Catapult.
+
+openMSX Catapult 0.8.1 (2011-03-12)
+-----------------------------------
+
+Catapult release to match openMSX 0.8.1. No changes in Catapult.
+
+openMSX Catapult 0.8.0 (2010-06-02)
+-----------------------------------
+
+Catapult release to match openMSX 0.8.0. No changes in Catapult.
+
+openMSX Catapult 0.7.2 (2009-06-30)
+-----------------------------------
+
+Catapult release to match openMSX 0.7.2. No changes in Catapult.
+
+openMSX Catapult 0.7.1 (2009-06-28)
+-----------------------------------
+
+This release comes mostly with good news for Windows users: we have a brand new
+installer with binaries which have been created in a brand new way, using
+Microsoft Visual C++ 2008. This means smaller binaries and also support for
+64-bit Windows operating systems.
+
+Other Windows-specific changes include:
+  - Catapult is now a stand-alone binary, statically linked with wxWidgets 2.8.9
+    and libxml2 2.7.3.
+  - Unicode is now fully supported (no more problems with localized versions of
+    Windows e.g.). Note: this means Catapult requires Windows 2000 or higher as
+    of this release.
+
+openMSX Catapult 0.7.0-R1 (2009-01-07)
+--------------------------------------
+
+This is a release to go with openMSX 0.7.0. The only change is that a bug in
+the build system was fixed, nothing else has changed. The plan is still to
+release a completely new Catapult as soon as possible; unfortunately we didn't
+make it in time for openMSX 0.7.0.
+
+openMSX Catapult 0.6.3-R1 (2007-12-09)
+--------------------------------------
+
+This is a release to make openMSX Catapult compatible with openMSX 0.6.3.
+Like previous version, no features were added, only some compatibility issues
+were fixed: added new mapper types and translated channel modes to the new
+balance settings. The plan is still to release a successor for Catapult as
+soon as possible; unfortunately we didn't make it in time for openMSX 0.6.3.
+
+openMSX Catapult 0.6.2-R1 (2007-04-15)
+--------------------------------------
+
+This is a release to make openMSX Catapult compatible with openMSX 0.6.2.
+No features were added, only some minor bugs were fixed. The plan is to release
+a successor for Catapult as soon as possible; unfortunately we didn't make it
+in time for openMSX 0.6.2.
+
+openMSX Catapult 0.6.1-R1 (2006-07-30)
+--------------------------------------
+
+This is a release to make openMSX Catapult compatible with openMSX 0.6.1.
+No features were added, only some minor bugs were fixed. The plan is to work
+on a successor of Catapult as soon as possible.
+
+openMSX Catapult 0.6.0-R2 (2006-01-29)
+--------------------------------------
+
+This is a bugfix release for Windows users.
+
+One problem was fixed in Catapult itself: no machine was selected at the very
+first startup (after scanning the available machines).
+
+A new Windows binary release is built with a differently configured wxWidgets:
+the FontMap stuff of wxWidgets gives registry problems for some Windows users,
+so we disabled it.
+
+openMSX Catapult 0.6.0-R1 (2006-01-21)
+--------------------------------------
+
+User interface:
+
+Added: support for 2 keyjoysticks
+Added: dialog to check which openMSX hardware configurations are working.
+Added: menu option to display or hide broken hardware configurations.
+Added: option to disable config check after setup.
+Added: record button for cassette recorder, for new openMSX functionality.
+Added: scaler factor selector, for new openMSX functionality.
+Fixed: several details.
+
+Compilation:
+
+Added: Support for wxWidgets 2.6.x, which is now preferred as well.
+
+openMSX Catapult 0.5.2-R2 (2005-06-26)
+--------------------------------------
+
+This second release of openMSX Catapult 0.5.2 is only a bug fix release.
+We found that on platforms that use wxGTK, the extensions didn't work anymore.
+This is due to some bug in wxGTK, but we implemented a work around for it in
+this release, which should make Catapult usable again. Also, we made some
+errors in the new CPU build files, which are corrected in this release.
+Note: none of these changes affect Win32 users, so we will not release a new
+Win32 binary.
+
+openMSX Catapult 0.5.2-R1 (2005-06-18)
+--------------------------------------
+
+Fixed: The rensha Turbo slider wasn't updated when updated in openMSX.
+Fixed: Choosing a printer log file works now as it should.
+Fixed: In Windows, it was possible to crash openMSX by using F10 or ALT
+Added: Experimental and untested support for the following CPU's:
+	DEC Alpha, ARM, HP PA-RISC, IA-64, Motorola 680x0, MIPS, IBM S/390,
+	Sparc
+
+openMSX Catapult 0.5.1-R1 (2005-03-05)
+--------------------------------------
+
+Fixed: Some wrong behaviour with speed/throttle settings.
+Added: Popup menus for diskA, diskB, cartA, cartB and cassette
+Added: Mapper selection for cartridges.
+Added: IPS support for disks and cartridges.
+Changed: There are no longer two cassette types.
+Changed: History is now limited to 25 items
+Changed: The input page is no longer capable of displaying formatted text.
+Added: Mingw compilation support. (Although it works fine it produces a larger
+       executable and it needs the mingw runtime dll).
+Added: wxWidgets 2.5 unicode compile support (Not perfect yet).
+
+openMSX Catapult 0.5.0-R1 (2004-10-18)
+--------------------------------------
+
+- Fixed: Loading and saving of used hardware, media and configuration
+- Fixed: Disabled controls are much clearer now
+- Added: Individual sound channels can now be muted
+- Added: Minimum and Maximum Frameskip support
+- Added: Saving openMSX Settings
+- Added: openMSX type support (typing remotely into the MSX)
+- Added: Screenshot support
+- Added: Printerport connector
+- Added: Saving of Joystick settings
+- Added: Ren Sha Turbo support (turboR only)
+- Changed: Throttle into Max Speed
+- Changed: underscores in machine and extension names are now showed as spaces
+- Changed: Removed tear-off menu style in gtk
+
+openMSX Catapult 0.4.0-R1 (2004-05-28)
+--------------------------------------
+
+This was the first Catapult new style, with the following features:
+- Select machine and multiple extensions
+- Select media to put in the MSX (disk/tape/carts)
+- Disks and tapes can be changed when openMSX is running
+- Various controls to vary the openMSX speed (speed, max frameskip, throttle)
+- Ability to plug devices into the joystick ports (before and at run time)
+- openMSX render control (renderer, scalers, accuracy, blur, glow, gamma and
+  scanlines)
+- Complete audio mixer (consisting of all available sounddevices)
+- MIDI in/out pluggable support (for TurboR GT)
+- PCM Wave input selection (for TurboR)
+- openMSX errors and warnings display
+- MSX LEDs visualisation
+- Frame rate indicator
+- Full communication with openMSX (back and forth)

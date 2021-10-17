@@ -1,0 +1,48 @@
+<msxdevtools app="spriteSX devtool" version="0.9.3.0">
+  <palette name="Default Palette" group="" version="" author="">
+    <color id="0" red="0" green="0" blue="0" />
+    <color id="1" red="0" green="0" blue="0" />
+    <color id="2" red="2" green="5" blue="2" />
+    <color id="3" red="3" green="6" blue="3" />
+    <color id="4" red="2" green="2" blue="5" />
+    <color id="5" red="3" green="3" blue="7" />
+    <color id="6" red="5" green="2" blue="1" />
+    <color id="7" red="2" green="6" blue="7" />
+    <color id="8" red="6" green="2" blue="2" />
+    <color id="9" red="7" green="3" blue="3" />
+    <color id="10" red="6" green="6" blue="3" />
+    <color id="11" red="6" green="6" blue="4" />
+    <color id="12" red="1" green="4" blue="1" />
+    <color id="13" red="5" green="3" blue="5" />
+    <color id="14" red="6" green="6" blue="6" />
+    <color id="15" red="7" green="7" blue="7" />
+  </palette>
+  <sprites name="faces_x8" version="1" group="303bcn" author="mvac7" startDate="635400288000000000" lastUpdate="635400288000000000" mode="1" type="1">
+    <description>
+    </description>
+    <item name="jeto02" order="1" type="1" mode="1" InkColor="15" BGcolor="1">
+      <gfxData>124,254,146,254,214,254,198,254</gfxData>
+    </item>
+    <item name="jeto03" order="2" type="1" mode="1" InkColor="3" BGcolor="1">
+      <gfxData>124,254,146,254,214,254,198,254</gfxData>
+    </item>
+    <item name="jeto06" order="6" type="1" mode="1" InkColor="1" BGcolor="15">
+      <gfxData>126,129,129,139,129,143,129,129</gfxData>
+    </item>
+    <item name="jeto03" order="7" type="1" mode="1" InkColor="3" BGcolor="1">
+      <gfxData>131,1,109,1,41,1,57,1</gfxData>
+    </item>
+    <item name="jeto05" order="4" type="1" mode="1" InkColor="1" BGcolor="15">
+      <gfxData>126,129,129,149,129,157,129,129</gfxData>
+    </item>
+    <item name="jeto01" order="0" type="1" mode="1" InkColor="15" BGcolor="1">
+      <gfxData>124,254,146,254,214,254,198,254</gfxData>
+    </item>
+    <item name="jeto06" order="5" type="1" mode="1" InkColor="1" BGcolor="15">
+      <gfxData>129,126,126,116,126,112,126,126</gfxData>
+    </item>
+    <item name="jeto04" order="3" type="1" mode="1" InkColor="1" BGcolor="15">
+      <gfxData>126,129,129,149,129,141,129,129</gfxData>
+    </item>
+  </sprites>
+</msxdevtools>

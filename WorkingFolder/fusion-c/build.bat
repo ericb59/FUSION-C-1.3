@@ -7,15 +7,15 @@ REM |             |  _| | | / __| |/ _ \| '_ \                  |
 REM |             | | | |_| \__ \ | (_) | | | |                 |
 REM |                                                           |
 REM |               The MSX C Library for SDCC                  |
-REM |                  V1.3 - November 2020                     |
+REM |                  V1.3 - October 2021                      |
 REM |                                                           |
 REM |                         compil.bat                        |
 REM |               Compilation Script for Windows              |
-REM |                      Script version 1.1                   |
+REM |                      Script version 1.2                   |
 REM \___________________________________________________________/
 REM 
 REM   What does this file ?
-REM   It generate an MSX DOS executable file ready to be launch on a MSX Computer with MSX-DOS 
+REM   It generate an MSX DOS executable file or a MSX ROM ready to be launch on a MSX Computer with MSX-DOS 
 REM   It also start the openMSX emulator if it isn't already started
 REM
 setlocal EnableDelayedExpansion
@@ -44,6 +44,11 @@ set CHECK_OVERRIDE=1
 rem 	# -- Copy Temps files to Out folder (The folder will be created in WorkingFolder) 1: YES   0: No
 set OUT_SAVE=1
 
+rem  #-- OpenMSX APP path (Relative to WorkingFolder directory)
+set OPENMSX_APP_PATH=openMSX\
+rem  # -- OpenMSX MSX Machine Definition Screipt (relative to WorkindFolder)
+set MSX_MACHINE_SCRIPT_PATH=openMSX\MSX_config\
+
 
 rem  #-- Where to save compilation temps files (may be usefull for debugging)
 set OUT_DIR=!PARENT_DIR!\out\
@@ -71,12 +76,29 @@ rem  	# -- Default destination folder for the compiled program
 set DEFAULT_DEST_DISK=dsk\dska\
 rem  	# -- Default destination folder for the compiled program, in case of using HD -Hard-drive-
 set DEFAULT_DEST_HDA=dsk\hda-1\
+rem -- Default destination folder for for ROM type compiled files (Extension=ROM)
+set DEFAULT_DEST_ROM="dsk\rom\"
+
+rem 	# -- Default Hex2Bin Extra Parameters Set the Final Rom Size in KB. Must be set in a Hex Value. 8000 = 32768 KB
+set DEFAULT_HEX2BIN_SIZE=
 rem  	# -- Default extension for the compiled program
 set DEFAULT_EXTENSION=com
 rem 	#-- Print on concole the full compilation command lines and etails -for controle or debug purpose-1:Medium 2:Full  0:deactivated
 set DEFAULT_VERBOSE=2
 rem  # -- Which version of MSX-DOS to use.  1:MSX-DOS1   2:MSX-DOS2  0:Do not change current MSXDOS file in Destination folder
 set  DEFAULT_MSXDOS=0
+rem  # -- Set The default ROM size, in case of compiling a ROM
+set DEFAULT_ROMSIZE_VAR=8000
+rem  # -- Set the Default CRT0 for ROM, in case of compiling a ROM
+set DEFAULT_ROM_CRT0="${INCLUDE_DIR}crt032K.rel"
+rem  # -- Default Data Address (sdcc parameter), in case of compiling a ROM
+set DEFAULT_ROM_ADDR_DATA="0xC000"
+rem  # -- Default Code Address (sdcc parameter), in case of compiling a ROM
+set DEFAULT_ROM_ADDR_CODE="0x4010"
+
+
+set CARTRIDGE_SLOT_A=""
+set CARTRIDGE_SLOT_B=""
 
 if "%OUT_SAVE%"=="1" (
 	rem Create OUT_DIR. If the folder already exists, no error will be print
@@ -96,6 +118,7 @@ REM SET INC9=%INCLUDE_DIR%
 
 
 Rem ########## END OF CONFIGURATION AREA ######################
+set NOW=%date%  %time%
 
 rem # -- Check if Argument is provided
 if ["%~1"]==[""] (
@@ -125,6 +148,8 @@ if "%CHECK_OVERRIDE%"=="1" (
 	set EXT_Identifier=__SDK_EXT__
 	set VERBOSE_Identifier=__SDK_VERBOSE__
 	set MSXDOS_Identifier=__SDK_MSXDOS__
+	set ROMSIZE_Identifier="__SDK_ROMSIZE__"
+
 
 	for /F "delims=" %%a in ('findstr "!OPTIMIZATION_Identifier!"  %sourcefile%') do (
 		for /f "tokens=3" %%c in ("%%a") do set OPTIMIZATION_VAR=%%c
@@ -163,6 +188,9 @@ if "%CHECK_OVERRIDE%"=="1" (
 	for /F "delims=" %%a in ('findstr "!MSXDOS_Identifier!"  %sourcefile%') do (
 		for /f "tokens=3" %%c in ("%%a") do set MSXDOS_VAR=%%c
 	)
+	for /F "delims=" %%a in ('findstr "!ROMSIZE_Identifier!"  %sourcefile%') do (
+		for /f "tokens=3" %%c in ("%%a") do set ROMSIZE_VAR=%%c
+	)
 
 )
 
@@ -171,6 +199,32 @@ rem # -- END Of Override Checks --
 
 rem # -- setting compilation directives 
 
+
+if "%EXT_VAR%"=="" (
+		set EXTENSION=%DEFAULT_EXTENSION%
+) else (
+		set EXTENSION=%EXT_VAR%
+)
+
+if "%EXTENSION%"=="ROM" (
+		set CRT0=%DEFAULT_ROM_CRT0%
+		set ADDR_DATA=%DEFAULT_ROM_ADDR_DATA%
+		set ADDR_CODE=%DEFAULT_ROM_ADDR_CODE%
+
+) else (
+		set CRT0=%DEFAULT_CRT0%
+		set ADDR_DATA=%DEFAULT_ADDR_DATA%
+		set ADDR_CODE=%DEFAULT_ADDR_CODE%
+
+)
+
+
+if "%CRT0_VAR%"=="" (
+		REM --
+) else (
+		set CRT0=%INCLUDE_DIR%%CRT0_VAR%
+)
+
 if "%VERBOSE_VAR%"=="" (
 		set VERBOSE_COMPILATION=%DEFAULT_VERBOSE%
 ) else (
@@ -178,13 +232,13 @@ if "%VERBOSE_VAR%"=="" (
 )
 
 if "%ADDRDATA_VAR%"=="" (
-		set ADDR_DATA=%DEFAULT_ADDR_DATA%
+		REM --
 ) else (
 		set ADDR_DATA=%ADDRDATA_VAR%
 )
 
 if "%ADDRCODE_VAR%"=="" (
-		set ADDR_CODE=%DEFAULT_ADDR_CODE%
+		REM --
 ) else (
 		set ADDR_CODE=%ADDRCODE_VAR%
 )
@@ -194,13 +248,6 @@ if "%OPTIMIZATION_VAR%"=="1" (
 		set CODEPRIO=--opt-code-speed
 ) else (
 		set CODEPRIO=%DEFAULT_PRIO%
-)
-
-
-if "%CRT0_VAR%"=="" (
-		set CRT0=%DEFAULT_CRT0%
-) else (
-		set CRT0=%INCLUDE_DIR%%CRT0_VAR%
 )
 
 
@@ -216,17 +263,11 @@ if "%AUTOEXEC_VAR%"=="" (
 		set AUTOEXEC=%AUTOEXEC_VAR%
 )
 
-if "%EXT_VAR%"=="" (
-		set EXTENSION=%DEFAULT_EXTENSION%
-) else (
-		set EXTENSION=%EXT_VAR%
-)
+if "%ROMSIZE_VAR%"=="" (
 
-rem # -- Set MSXDOS version to use --
-if "%MSXDOS_VAR%"=="" (
-		set MSXDOS=%DEFAULT_MSXDOS%
+    set ROMSIZE=%DEFAULT_ROMSIZE_VAR%
 ) else (
-		set MSXDOS=%MSXDOS_VAR%
+    set ROMSIZE=%ROMSIZE_VAR%
 )
 
 
@@ -259,40 +300,84 @@ if "%MSXVER%"=="7" (
 		set DEST=%PARENT_DIR%\%DEFAULT_DEST_HDA%
 )
 
+rem # -- Set MSXDOS version to use --
+if "%MSXDOS_VAR%"=="" (
+		set MSXDOS=%DEFAULT_MSXDOS%
+) else (
+		set MSXDOS=%MSXDOS_VAR%
+)
+
+
+
+rem # -- If Building a ROM --
+if "${EXTENSION}"=="ROM" (
+ 
+    set DEST=%DEFAULT_DEST_ROM%
+    set LIB_FILE=fusion-ROM.lib
+    set AUTOEXEC=0;
+    set MSXDOS=0;
+	set DEFAULT_HEX2BIN_SIZE=-l %ROMSIZE_VAR%
+)
+
+
 if "%DEST_VAR%"=="" (
 		 echo 
 ) else (
 		set DEST=%DEST_VAR%
 )
 
-rem # --
+
+
+rem # ----------
+
+if "${EXTENSION}"=="ROM" (
+	set COMPILATION_TEXT=MSX: %MSXVER%  ROM:%prog%.%EXTENSION%  SIZE: %ROMSIZE_VAR%  ADDRCODE: %ADDR_CODE%  ADDRDATA: %ADDR_DATA}%
+) else (
+	set COMPILATION_TEXT=MSX: %MSXVER%  MSXDOS: %MSXDOS%  Autoexec: %AUTOEXEC%  ADDRCODE: %ADDR_CODE%  ADDRDATA: %ADDR_DATA}%
+)
+
+echo /  START_COMPILATION  \\
+echo ._____________________.
+echo . %NOW% .
+echo \_____________________/
 
 if "%VERBOSE_COMPILATION%"=="0" (
 	echo _____________________________________________________
 ) else (
 	echo _____________________________________________________
-	echo : Verbose mode:     %VERBOSE_COMPILATION%
-	echo : Current Dir:      %CURRENT_DIR%
-	echo : Parent Dir:       %PARENT_DIR%
-	echo : Header Dir:       %HEADER_DIR%
-	echo : Lib Dir:          %LIB_DIR%
-	echo : Source Code:      %PROG%
-	echo : Dest Folder:      %DEST%
-	echo : MSX: %MSXVER%  MSXDOS: %MSXDOS%  Autoexec: %AUTOEXEC%
-	echo _____________________________________________________
+	echo - Current Dir:      %CURRENT_DIR%
+	echo - Parent Dir:       %PARENT_DIR%
+	echo - Header Dir:       %HEADER_DIR%
+	echo - Library:          %LIB_DIR%
+	echo - Source Code:      %PROG%
+	echo - Dest Folder:      %DEST%
+	echo - CRT0:      %CRT0%
+	echo - %COMPILATION_TEXT%
 )
-
+echo _____________________________________________________
 
 
 
 Rem ########## COMPILATION PROCESS ######################
-set CCFLAGS=--code-loc %ADDR_CODE% --data-loc %ADDR_DATA% --disable-warning 196 -mz80 --no-std-crt0 %CODEPRIO% fusion.lib -L %LIB_DIR% -I %HEADER_DIR% %CRT0%  %INC1% %INC2% %INC3% %INC4% %INC5% %INC6% %INC7% %INC8% %INC9% %prog%.c
+
+if "${EXTENSION}"=="ROM" (
+ 	rem pre-compilation
+    sdcc -c -mz80 ${prog}.c -I %HEADER_DIR%
+    set CCFLAGS=-o %prog%.ihx --code-loc %ADDR_CODE% --data-loc %ADDR_DATA% --disable-warning 196 -mz80 --no-std-crt0 %CODEPRIO% %LIB_FILE% -L %LIB_DIR% -I %HEADER_DIR% %CRT0% %INC1% %INC2% %INC3% %INC4% %INC5% %INC6% %INC7% %INC8% %INC9% %prog%.rel
+    set CARTRIDGE_SLOT_A=-carta %DEST%%prog%.%EXTENSION%
+
+) else (
+    
+    set CCFLAGS=--code-loc %ADDR_CODE% --data-loc %ADDR_DATA% --disable-warning 196 -mz80 --no-std-crt0 %CODEPRIO% fusion.lib -L %LIB_DIR% -I %HEADER_DIR% %CRT0%  %INC1% %INC2% %INC3% %INC4% %INC5% %INC6% %INC7% %INC8% %INC9% %prog%.c
+
+)
 
 
-echo [1]... %CC% is Processing '%sourcefile%' ... 
+echo [1/5]... %CC% is Processing '%sourcefile%' ... 
 
 if "%VERBOSE_COMPILATION%"=="2" (
-	echo Compilation command line : %CC% !CCFLAGS!
+	echo - Compilation command line: %CC% !CCFLAGS!
+	echo _____________________________________________________
 )
 
 
@@ -300,41 +385,45 @@ sdcc !CCFLAGS!
 
 
 if not exist %prog%.ihx (
-	echo ERROR with Compilation can't find: %prog%.ihx
+	echo ERROR: %CC% with Compilation error !
 	goto _ending_
 )
-
-echo [2]... %HEX2BIN% is Processing %prog%.ihx' ...
+echo _____________________________________________________
+echo [2/5]... %HEX2BIN% is Processing %prog%.ihx' %DEFAULT_HEX2BIN_SIZE% 
 if "%VERBOSE_COMPILATION%"=="2" (
-	hex2bin -e %EXTENSION% %prog%.ihx
+	hex2bin -e %EXTENSION% %DEFAULT_HEX2BIN_SIZE% %prog%.ihx
 ) else (
-	hex2bin -e %EXTENSION% %prog%.ihx >nul: 2>nul:
+	hex2bin -e %EXTENSION% %DEFAULT_HEX2BIN_SIZE% %prog%.ihx >nul: 2>nul:
 )
 
 
 if not exist %prog%.%EXTENSION% (
-	echo ERROR Hex2Bin Error
+	echo ERROR: Hex2Bin Error !
 	goto _ending_
 )
-
+ 
 
 if "%MSXDOS%"=="1" (
-	  del /Q %DEST%COMMAND2.COM >nul: 2>nul:
-      del /Q %DEST%MSXDOS2.SYS >nul: 2>nul:
-      copy %MSXDOS_DIR%\dos1_stock\COMMAND.COM  %DEST% >nul: 2>nul:
-      copy %MSXDOS_DIR%\dos1_stock\MSXDOS.SYS  %DEST% >nul: 2>nul:
+	echo [3a/5]... Preparing MSXDOS 1 environment
+	del /Q %DEST%COMMAND2.COM >nul: 2>nul:
+    del /Q %DEST%MSXDOS2.SYS >nul: 2>nul:
+    del /Q %DEST%autoexec.bat >nul: 2>nul:
+    copy %MSXDOS_DIR%\dos1_stock\COMMAND.COM  %DEST% >nul: 2>nul:
+    copy %MSXDOS_DIR%\dos1_stock\MSXDOS.SYS  %DEST% >nul: 2>nul:
 ) 
 if "%MSXDOS%"=="2" (
-	  del /Q %DEST%COMMAND.COM >nul: 2>nul:
-      del /Q %DEST%MSXDOS.SYS >nul: 2>nul:
-      copy %MSXDOS_DIR%\dos2_stock\COMMAND2.COM  %DEST% >nul: 2>nul:
-      copy %MSXDOS_DIR%\dos2_stock\MSXDOS2.SYS  %DEST% >nul: 2>nul:
+	 echo [3a/5]... Preparing MSXDOS 1 environment
+	 del /Q %DEST%COMMAND.COM >nul: 2>nul:
+     del /Q %DEST%MSXDOS.SYS >nul: 2>nul:
+     del /Q %DEST%autoexec.bat >nul: 2>nul:
+     copy %MSXDOS_DIR%\dos2_stock\COMMAND2.COM  %DEST% >nul: 2>nul:
+     copy %MSXDOS_DIR%\dos2_stock\MSXDOS2.SYS  %DEST% >nul: 2>nul:
 ) 
 
-echo [3]... Copying %prog%.%EXTENSION% to %DEST%
+echo [3b/5]... Copying %prog%.%EXTENSION% to %DEST%
 copy %prog%.%EXTENSION% %DEST% >nul: 2>nul:
 
-echo [4]... Removing temps files...
+echo [4/5]... Removing temps files...
 if "%OUT_SAVE%"=="1" (
 	copy %prog%.%EXTENSION% %OUT_DIR% >nul: 2>nul:
 	copy %prog%.asm %OUT_DIR% >nul: 2>nul:
@@ -364,33 +453,33 @@ if "%AUTOEXEC%" == "1" (
 Rem # -- Starting OpenMSX --
 
 if "%MSXVER%" == "0" (
-	echo [5]... Ending.
+	echo [5/5]... No emulation requiered.
 	goto _ending_
 )
 
 Set MyProcess=openmsx.exe
-tasklist | find /i "%MyProcess%">nul  && (goto _end_) || echo [5]... Starting openMSX with Script : %MSXVER%
+tasklist | find /i "%MyProcess%">nul  && (goto _end_) || echo [5/5]... Starting openMSX with Script : %MSXVER%
 
 if "%MSXVER%" == "1" (
-	start /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\1-emul_start_MSX1_config.txt
+	start /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%1-emul_start_MSX1_config.txt %CARTRIDGE_SLOT_A%
 )
 if "%MSXVER%" == "2" (
-	 start /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\2-emul_start_MSX2_config.txt
+	 start /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%2-emul_start_MSX2_config.txt %CARTRIDGE_SLOT_A%
 )
 if "%MSXVER%" == "3" (
-	start  /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\3-emul_start_MSX2p_config.txt
+	start  /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%3-emul_start_MSX2p_config.txt %CARTRIDGE_SLOT_A%
 )
 if "%MSXVER%" == "4" (
-	start /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\4-emul_start_TURBOR_config.txt
+	start /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%4-emul_start_TURBOR_config.txt %CARTRIDGE_SLOT_A%
 )
 if "%MSXVER%" == "5" (
-	start /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\5-emul_start_MSX2HD_config.txt
+	start /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%5-emul_start_MSX2HD_config.txt %CARTRIDGE_SLOT_A%
 )
 if "%MSXVER%" == "6" (
-	start /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\6-emul_start_MSX2pHD_config.txt
+	start /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%6-emul_start_MSX2pHD_config.txt %CARTRIDGE_SLOT_A%
 )
 if "%MSXVER%" == "7" (
-	start /b /d %PARENT_DIR% openMSX\openmsx.exe -script openMSX\MSX_config\7-emul_start_TURBORHD_config.txt
+	start /b /d %PARENT_DIR% %OPENMSX_APP_PATH%openmsx.exe -script %MSX_MACHINE_SCRIPT_PATH%7-emul_start_TURBORHD_config.txt %CARTRIDGE_SLOT_A%
 )
 goto _ending_
 
@@ -399,7 +488,7 @@ echo You must provide a source file
 goto _ending_
 
 :_end_
-echo [5]... %MyProcess% is Already running
+echo [5/5]... %MyProcess% is Already running
 
 :_ending_
 echo End.

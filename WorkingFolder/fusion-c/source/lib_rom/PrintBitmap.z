@@ -1,0 +1,126 @@
+/*
+ ___________________________________________________________
+/               __           _                              \
+|              / _|         (_)                             |
+|             | |_ _   _ ___ _  ___  _ __                   |
+|             |  _| | | / __| |/ _ \| '_ \                  |
+|             | | | |_| \__ \ | (_) | | | |                 |
+|             |_|  \__,_|___/_|\___/|_| |_| *               |
+|                                                           |
+|               The MSX C Library for SDCC                  |
+|                   V1.3 -  12 - 2020                       |
+|                                                           |
+|                Eric Boez &  Fernando Garcia               |
+|                                                           |
+|             A S M  &  C  S O U R C E   C O D E            |
+|                                                           |
+\___________________________________________________________/
+*/
+/*  Sprite Pattern Rotation & Sprite Pattern flip routines
+|    
+|     2020 Eric Boez
+|    
+*/ 
+
+#define FUSION 2020
+#include "../../header/msx_fusion.h"
+#include "../../header/fonts/font_1.h"
+
+void SetBitmapFontColor(char ForeColor, char BackColor )
+{
+    char ntab[][]={{BackColor,BackColor},{BackColor,ForeColor},{ForeColor,BackColor},{ForeColor,ForeColor}};
+
+    MemCopy(*Font.TabColor, *ntab, 8 );
+
+}
+
+void PrintBitmapChar_SC8(GraphPrint *Font)
+{
+  char n;
+  char y=0;
+
+  Font.letter_addr=Font.letter * 8;
+  
+  Font.VramAddr=Font.x + Font.y * 256;
+  
+
+  while (y < Font.Height)
+  {
+        Font.letter_data = font[Font.letter_addr++];
+       
+        n=Font.letter_data >> 6;
+        Font.Mtemp[0]=Font.TabColor[n][0];
+        Font.Mtemp[1]=Font.TabColor[n][1];
+ 
+        n=(Font.letter_data >> 4) & 0b00000011;
+        Font.Mtemp[2]=Font.TabColor[n][0];
+        Font.Mtemp[3]=Font.TabColor[n][1];
+
+        n=(Font.letter_data >> 2) & 0b00000011;
+        Font.Mtemp[4]=Font.TabColor[n][0];
+        Font.Mtemp[5]=Font.TabColor[n][1];
+
+        n=(Font.letter_data) & 0b00000011;
+        Font.Mtemp[6]=Font.TabColor[n][0];
+        Font.Mtemp[7]=Font.TabColor[n][1];
+
+       CopyRamToVram2(&Font.Mtemp[0], Font.VramAddr, 8);
+       Font.VramAddr+=256;
+      
+        y++;
+    }
+}
+
+void PrintBitmapChar_SC5(GraphPrint *Font)
+{
+  char n;
+  char y=0;
+
+  Font.letter_addr=Font.letter * 8;
+  
+  Font.VramAddr=Font.x + Font.y * 256;
+  
+  while (y < 8)
+  {
+        Font.letter_data = font[Font.letter_addr++];
+       
+        n=Font.letter_data >> 6;
+        Font.Mtemp[0]=Font.TabColor[n][0]<<4 | Font.TabColor[n][1];
+    
+ 
+        n=(Font.letter_data >> 4) & 0b00000011;
+        Font.Mtemp[1]=Font.TabColor[n][0]<<4 | Font.TabColor[n][1];
+
+
+        n=(Font.letter_data >> 2) & 0b00000011;
+        Font.Mtemp[2]=Font.TabColor[n][0]<<4 | Font.TabColor[n][1];
+
+
+        n=(Font.letter_data) & 0b00000011;
+        Font.Mtemp[3]=Font.TabColor[n][0]<<4 | Font.TabColor[n][1];
+
+        CopyRamToVram2(&Font.Mtemp[0], Font.VramAddr, 4);
+        Font.VramAddr+=128;
+        y++;
+    }
+}
+
+
+
+void PrintBitmap(char *string, char x, char y, GraphPrint *Font)
+{
+      char i=0;
+      Font.y=y;
+
+     while (string[i])          // Send Each Letter to the print Bitmap function
+     {
+         Font.x=x+i*8;
+       
+         Font.letter=string[i]-32;
+         if (_ScreenMode>7)
+            PrintBitmapChar_SC8(Font);
+          else
+            PrintBitmapChar_SC5(Font);
+         i++;
+      }
+}

@@ -72,8 +72,7 @@
 #define	O_APPEND	0x41
 #define	O_TEMP		0x80
 
-/* get OS version	1-> MSXDOS 1.X, 2-> MSXDOS2, 0-not initiated */
-extern	int	GetOSVersion( void );
+
 /* available after get_OS_version */
 extern	char	_os_ver;	// MSX-DOS kernel version (better set to 1)
 extern	char	_mx_ver;	// MSXDOS2.SYS version number (informational)
@@ -132,17 +131,15 @@ extern	int	_io_errno;	/* to see error code in register A after CALL 5 */
 	/* FILE READ,WRITE OPERATIONS */
 
 
-extern	int		Open( char *name, int mode ); 					/* opens file, returns number fH= 3...15 as file handler, or -1 on error */
-extern	int		OpenAttrib( char *name, int mode, int attr ); 	/* opens file providing attributes for MSXDOS2, (attributes = mode, default) */
-extern	int		Create(char *name); 							/* creates file, opens, see open */
-extern	int		CreateAttrib(char *name, int attr); 			/* creates file providing attributes for MSXDOS2, (attributes = mode, default) */
-extern	int		Close( int fH ); 								/* closes file by file handler, returns 0, or -1 on error in _io_error */
-extern	int		Ensure( int fH ); 								/* ensures file by file handler, returns 0 on success, or -1 on error in _io_error */
-extern	int		Read(int fH, void *buf, unsigned int nbytes); 	/* reads from file to buffer */
-extern	int		Write(int fH, void *buf, unsigned int nbytes); 	/* writes buffer to file */
-extern	int		GetCWD(char *buf, int bufsize); 				/* gets the A: into buffer, returns 0 on success */
-extern	char	GetDisk(void); 									/* gets current drive number */
-extern	char 	SetDisk(int diskno); 							/* sets drive number */
+extern	int	Open( char *name,  int mode ); 					/* opens file, returns number fH= 3...15 as file handler, or -1 on error */
+extern	int	OpenAttrib( char *name,  int mode, int attr ); 	/* opens file providing attributes for MSXDOS2, (attributes = mode, default) */
+extern	int	Create(char *name); 							/* creates file, opens, see open */
+extern	int	CreateAttrib(char *name, int attr); 			/* creates file providing attributes for MSXDOS2, (attributes = mode, default) */
+extern	char Close( int fH ); 								/* closes file by file handler, returns 0, or -1 on error in _io_error */
+extern	int	Ensure( int fH ); 								/* ensures file by file handler, returns 0 on success, or -1 on error in _io_error */
+extern	int	Read(int fH, void *buf, unsigned int nbytes); 	/* reads from file to buffer */
+extern	int	Write(int fH, void *buf, unsigned int nbytes); 	/* writes buffer to file */
+extern	int GetCWD(char *buf, unsigned int bufsize); 		/* gets the A: into buffer, returns 0 on success */
 
 extern 	char			SectorRead(unsigned int SectorStart, char drive, char NbSectors); /* read Nbsectors from drive. Start reading at sector */
 extern 	char			SectorWrite(unsigned int SectorStart, char drive, char NbSectors); /* Write Nbsectors to drive. Start writing at sector */
@@ -156,31 +153,31 @@ extern	char 			GetDiskParam(DSKPARAMS *info, char Drive); /*Get Disk current Par
 		/* read file position, returns 0, or error in _io_error.
 		address is like 0xABCD, asm will operate as 4-bytes long value
 		*/
-extern	int		Ltell(int fH, unsigned long address);
+extern	int	Ltell( int fH, unsigned long address);
 
 		/* set file position, returns 0, or error in _io_error.
 		ot = 0,1,2. On return long value is set to current record */
-extern	int		Lseek(int fH, unsigned long address, unsigned int offset);
+extern	int	Lseek( int fH, unsigned long address, unsigned int offset);
 
 
 		/* FILE DIRECTORY OPERATIONS */
 		/* removes file, returns 0 on success, or error in _io_error */
-extern	int		Remove(char *filename);
+extern	char	Remove(char *filename);
 		/* renames file,folder, returns 0 on success, or error in _io_error */
-extern	int		Rename(char *old_name, char *new_name);
+extern	char	Rename(char *old_name, char *new_name);
 		/* finds files or folders by will-card as "*.COM", "????", etc.
 		, returns 0 on success, or error in _io_error.
 		Provide 0 or attributes for MSXDOS2. */
-extern	int		FindFirst(char *willcard, char *result, int attr);
+extern	int	FindFirst(char *willcard, char *result, int attr);
 		/* continue search after findfirst */
-extern	int		FindNext(char *result);
+extern	int	FindNext(char *result);
 
 
 		/* MSXDOS2 only */
 		/* sets current path, returns 0, or error in _io_error */
-extern	int		ChangeDir(char *path);
+extern	char	ChangeDir(char *path);
 		/* creates folder, returns 0, or error in _io_error */
-extern	int		MakeDir(char *folderName);
+extern	char	MakeDir(char *folderName);
 		/* removes folder, returns 0, or error in _io_error */
 extern	char	RemoveDir(char *folderName);
 
@@ -209,6 +206,6 @@ extern	unsigned long _size(int fH) { return B8dH.file_size; }*/
 *
 */
 
-extern	int 	DiskLoad( char* filename, unsigned int address, unsigned int runat );
+extern	char	DiskLoad( char* filename, unsigned int address, unsigned int runat );
 
 #endif

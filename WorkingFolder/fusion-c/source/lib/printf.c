@@ -9,7 +9,7 @@
 |                                                           |
 |               The MSX C Library for SDCC                  |
 |                   V1.2 - 08 2019                          |
-|                                                           |
+|              Modified for SDCC4.0.3 31/08/2021            |
 |                Eric Boez &  Fernando Garcia               |
 |                                                           |
 |                C   S O U R C E   C O D E                  |
@@ -38,15 +38,14 @@
 */
 
 #define SUPPORT_LONG
-
 #include <stdarg.h>
 
 #ifdef SUPPORT_LONG
-extern void _ultoa(long val, char* buffer, char base);
-extern void _ltoa(long val, char* buffer, char base);
+extern void __ultoa(long val, char* buffer, char base);
+extern void __ltoa(long val, char* buffer, char base);
 #endif
-extern void _uitoa(int val, char* buffer, char base);
-extern void _itoa(int val, char* buffer, char base);
+extern void __uitoa(int val, char* buffer, char base);
+extern void __itoa(int val, char* buffer, char base);
 extern void putchar(char* c);
 
 static int format_string(const char* buf, const char *fmt, va_list ap);
@@ -172,20 +171,20 @@ static int format_string(const char* buf, const char *fmt, va_list ap)
       val = va_arg(ap, int);
 
     if(isUnsigned && isLong)
-      _ultoa(val, buffer, base);
+      __ultoa(val, buffer, base);
     else if(isUnsigned)
-      _uitoa(val, buffer, base);
+      __uitoa(val, buffer, base);
     else if(isLong)
-      _ltoa(val, buffer, base);
+      __ltoa(val, buffer, base);
     else
-      _itoa(val, buffer, base);
+      __itoa(val, buffer, base);
 #else
     val = va_arg(ap, int);
     
     if(isUnsigned)
-      _uitoa(val, buffer, base);
+      __uitoa(val, buffer, base);
     else
-      _itoa(val, buffer, base);
+      __itoa(val, buffer, base);
 #endif
 
     strPnt = buffer;

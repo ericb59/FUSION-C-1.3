@@ -1,0 +1,48 @@
+<msxdevtools app="spriteSX devtool" version="0.9.3.0">
+  <palette name="Color MSX Palette" group="" version="" author="">
+    <color id="0" red="0" green="0" blue="0" />
+    <color id="1" red="0" green="0" blue="0" />
+    <color id="2" red="2" green="5" blue="2" />
+    <color id="3" red="3" green="6" blue="3" />
+    <color id="4" red="2" green="2" blue="5" />
+    <color id="5" red="3" green="3" blue="7" />
+    <color id="6" red="4" green="1" blue="0" />
+    <color id="7" red="1" green="5" blue="6" />
+    <color id="8" red="6" green="2" blue="2" />
+    <color id="9" red="7" green="4" blue="2" />
+    <color id="10" red="7" green="7" blue="0" />
+    <color id="11" red="7" green="7" blue="4" />
+    <color id="12" red="1" green="4" blue="1" />
+    <color id="13" red="6" green="2" blue="6" />
+    <color id="14" red="5" green="5" blue="5" />
+    <color id="15" red="7" green="7" blue="7" />
+  </palette>
+  <sprites name="Frutas 16x" version="1" group="303bcn" author="mvac7" startDate="635400288000000000" lastUpdate="635400288000000000" mode="1" type="2">
+    <description>
+    </description>
+    <item name="TOMATO" order="4" type="2" mode="1" InkColor="8" BGcolor="1">
+      <gfxData>5,7,31,63,127,127,127,125,127,127,120,63,31,4,4,12,64,192,240,248,252,252,252,124,252,252,60,248,240,64,64,96</gfxData>
+    </item>
+    <item name="PEPINO" order="0" type="2" mode="1" InkColor="2" BGcolor="1">
+      <gfxData>15,31,61,63,123,124,191,191,159,239,111,31,15,5,5,29,192,224,96,192,64,128,128,132,134,222,192,192,128,0,0,192</gfxData>
+    </item>
+    <item name="mushroom" order="6" type="2" mode="1" InkColor="13" BGcolor="1">
+      <gfxData>5,30,63,111,87,110,63,0,7,5,7,4,6,3,2,6,96,248,244,234,118,190,124,0,224,96,224,32,96,192,64,96</gfxData>
+    </item>
+    <item name="PEAR" order="2" type="2" mode="1" InkColor="3" BGcolor="1">
+      <gfxData>3,7,79,207,77,79,44,30,63,63,63,63,31,2,2,6,192,226,230,226,162,244,56,124,254,254,254,252,248,64,64,96</gfxData>
+    </item>
+    <item name="Orange" order="5" type="2" mode="1" InkColor="9" BGcolor="1">
+      <gfxData>7,31,63,63,127,113,127,127,127,126,62,63,31,7,2,6,224,248,252,252,254,142,254,254,254,126,124,252,248,224,64,96</gfxData>
+    </item>
+    <item name="ONION" order="1" type="2" mode="1" InkColor="11" BGcolor="1">
+      <gfxData>5,7,26,46,111,91,92,91,95,88,111,45,22,2,2,6,64,192,184,212,212,106,234,106,234,106,212,212,248,64,64,96</gfxData>
+    </item>
+    <item name="CHAMPI" order="3" type="2" mode="1" InkColor="14" BGcolor="1">
+      <gfxData>5,30,63,111,87,110,63,0,7,5,7,4,6,3,2,6,96,248,244,234,118,190,124,0,224,96,224,32,96,192,64,96</gfxData>
+    </item>
+    <item name="LEMON" order="7" type="2" mode="1" InkColor="10" BGcolor="1">
+      <gfxData>0,7,31,63,127,113,255,255,123,124,63,31,7,2,2,6,0,224,248,252,254,142,255,255,222,62,252,248,224,64,64,96</gfxData>
+    </item>
+  </sprites>
+</msxdevtools>

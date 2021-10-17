@@ -1,0 +1,75 @@
+# Multipaint 2020 preferences file
+
+# Window size. 1=mini, 2=normal, 3=maxi
+
+ZOOM=2
+
+# One of: C64, C64M, SPECTRUM, ULAPLUS, MSX, PLUS4, PLUS4M, CPC, CPC1, CPCOC, QLLOW, ATARIST, AMIGA (unfinished). Leave empty to ask each time.
+
+MACHINE=
+
+# Default image path, leave empty for default.
+
+PATH=
+
+# Main toolbar at left side of screen?
+
+INVERTGUI=0
+
+# Use dark toolbar theme?
+
+DARKTHEME=0
+
+# Grid intensity 8 - 248
+
+GRIDBRIGHTNESS=192
+
+# Contents scale lock when resizing app window?
+
+SCALELOCK=
+
+# Full path to load a default palette file in .act format (C64 Modes only!)
+
+PALETTE64=
+
+# Forces the multipaint window size regardless of ZOOM size. Empty to opt out. Be careful!
+
+FORCEX=
+FORCEY=
+
+# For forced windows only, position target screen as a pixel distance from right/bottom.
+
+HADJUST=0
+VADJUST=0
+
+# FILELIST is no longer in use
+
+# PNG export options, scale, horizontal and vertical border sizes.
+# Default borders 64 & 72, 320 x 200 image results in 384 x 272
+
+PNGSCALE=1
+PNGHBORDER=
+PNGVBORDER=
+
+# 1 = Force aspect ratio to 1:1 (Does not currently apply)
+
+NOASPECT=1
+
+# Mousewheel custom ASCII keycodes
+# e.g. swap these if you want to invert zoom
+# Some valid examples:
+# 40 / 41 dither next - prev
+# 43 / 45 brush size bigger - smaller
+# 58 / 59 zoom in - out [default]
+# 10002 / 10003 scroll up - down
+
+WHEELUP=58
+WHEELDOWN=59
+
+# Mouse middle button ASCII keycode 
+# 44 = grab color [default]
+
+MIDDLEBUTTON=44
+
+# end
+
