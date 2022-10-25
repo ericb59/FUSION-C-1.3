@@ -1,11 +1,12 @@
 # FUSION-C-1.3 BETA
- Fusion-C Library and SDK for MSX Computers 
- 
+----------------------------------------------------------
  
  PLEASE NOTE : THIS VERSION IS A BETA VERSION, and was abandonned.
 The new FUSION-C 2.0 is based on this 1.3 version, and will come to life as soon as possible.
+---------------------------------------------------------
 
- 
+
+ Fusion-C Library and SDK for MSX Computers 
  
  What are the promises of FUSION-C 1.3!
 More useful functions for games.
