@@ -28,11 +28,8 @@
 
 void	HMMC( void *pixeldata, unsigned int DX, unsigned int DY, unsigned int NX, unsigned int NY) __naked
 {
-	pixeldata,DX,DY,NX,NY;
+	pixeldata,DX,DY,NX,NY; 
 __asm
-
-
-
 
 ;**************************************************************************************
 ; HMMC High speed move CPU RAM to VRAM                   Eric
@@ -88,18 +85,19 @@ __asm
         ld  a,#128+#17
         out (#0x99),a       ; VDP(17)<=44
 
-   loopHMMC:
+
          ld  a,#2           ; Read Status Register #2
          out (#0x99),a
          ld  a,#0x8f
          out (#0x99),a
+         inc hl
+   loopHMMC:
+       
          in  a,(#0x99)
 
          rra
          jp nc, exitHMMC    ; is CE finish ?
-         rla
-         rla
-         jp nc, loopHMMC    ; TR? transferring?
+
          outi
 
          jp loopHMMC
@@ -109,9 +107,9 @@ __asm
         
         out (#0x99),a
         ld  a,#0x8f
-        out (#0x99),a
-
         ei
+        out (#0x99),a
+        
         pop ix
         ret
 

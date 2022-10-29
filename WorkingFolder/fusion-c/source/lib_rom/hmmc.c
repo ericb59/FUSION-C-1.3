@@ -90,15 +90,14 @@ __asm
          out (#0x99),a
          ld  a,#0x8f
          out (#0x99),a
+         inc hl
    loopHMMC:
        
          in  a,(#0x99)
 
          rra
          jp nc, exitHMMC    ; is CE finish ?
-         ;rla
-         ;rla
-         ;jp nc, loopHMMC    ; TR? transferring?
+
          outi
 
          jp loopHMMC
@@ -108,9 +107,9 @@ __asm
         
         out (#0x99),a
         ld  a,#0x8f
-        out (#0x99),a
-
         ei
+        out (#0x99),a
+        
         pop ix
         ret
 
