@@ -1,3 +1,0 @@
-{
-	  "cmd": ["$file_path\\fusion-c\\build.bat", "$file_name"]
-}
